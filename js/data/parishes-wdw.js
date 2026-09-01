@@ -97,35 +97,36 @@ export const parishesData = [
     lng: -81.4721
   },
   {
-    id: "st-thomas-aquinas-tlm",
-    name: "St. Thomas Aquinas Catholic Church (Diocesan TLM)",
+    id: "all-souls-historic-tlm",
+    name: "All Souls Catholic Church (Historic Chapel TLM)",
     diocese: "Diocese of Orlando",
     rite: "Traditional Latin Mass (1962 Missal / TLM)",
     traditionCategory: "tlm",
-    tagline: "Approved Diocesan Traditional Latin Mass Community",
-    address: "700 Brown Chapel Rd, St. Cloud, FL 34769",
-    distance: "25-30 minutes from Disney World (South-East)",
-    phone: "(407) 892-3768",
-    website: "https://www.stacatholic.org",
+    tagline: "Diocesan-Approved Traditional Latin Mass Community",
+    address: "800 S Oak Ave, Sanford, FL 32771 (Historic Chapel)",
+    distance: "35-45 minutes north of Disney World (Seminole County)",
+    phone: "(407) 322-3795",
+    website: "https://asccsanford.org",
     isFlagship: false,
-    description: "Home to the Diocese of Orlando's dedicated Traditional Latin Mass apostolate. Offers the classical Roman Rite (Usus Antiquior / 1962 Missale Romanum) with Gregorian chant, sacred polyphony, and traditional rubrics.",
-    liturgyNotes: "Celebrated in Latin according to the 1962 Roman Missal with Missa Cantata (Sung High Mass), incense, traditional altar servers, and communion at the altar rail.",
+    description: "The official Diocesan-approved home for the Traditional Latin Mass in the Diocese of Orlando, celebrated in the historic 1937 Romanesque All Souls Chapel in downtown Sanford. Features the 1962 Roman Missal with reverent liturgical music and Gregorian chant.",
+    liturgyNotes: "Celebrated in Latin according to the 1962 Missale Romanum with diocesan permission. 1st & 3rd Sundays: Low Mass; 2nd & 4th Sundays: High Mass (Missa Cantata); 5th Sundays: Alternating.",
     features: [
-      "Diocesan-approved Traditional Latin Mass (Missa Cantata)",
-      "Dedicated Gregorian Schola & Polyphonic Choir",
-      "Active, growing young family community"
+      "Diocesan-approved Traditional Latin Mass under bishop's permission",
+      "Historic 1937 Romanesque Chapel with traditional altar and communion rail",
+      "Gregorian chant & sacred polyphony for High Masses",
+      "Active traditional young family community"
     ],
     massSchedule: {
-      sunday: ["12:30 PM (Traditional Latin High Mass / Missa Cantata)", "8:30 AM (Novus Ordo)", "10:30 AM (Novus Ordo)"],
-      saturdayVigil: ["4:00 PM"],
-      weekday: ["8:00 AM (Mon–Fri Novus Ordo)", "Check parish bulletin for Latin Low Masses"],
-      holyDays: ["Check bulletin for Latin Mass schedule"]
+      sunday: ["2:00 PM (Traditional Latin Mass / 1962 Missal)", "8:00 AM (Novus Ordo - Main Church)", "10:00 AM (Novus Ordo - Main Church)", "12:00 PM (Spanish - Main Church)"],
+      saturdayVigil: ["4:00 PM (Main Church)"],
+      weekday: ["8:30 AM (Mon–Fri Novus Ordo at Historic Chapel)"],
+      holyDays: ["Check parish bulletin for Latin Mass solemnity times"]
     },
-    confessions: "Sunday: 11:45 AM - 12:15 PM; Saturday: 2:45 PM - 3:45 PM",
+    confessions: "Sunday: 1:15 PM - 1:45 PM (before Latin Mass) & Saturday: 3:00 PM - 3:45 PM",
     languages: ["Latin (1962 Missal)", "English readings & homily"],
-    uberTip: "Take FL-417 South / Narcoossee Rd to St. Cloud.",
-    lat: 28.2483,
-    lng: -81.2811
+    uberTip: "Take I-4 East / Express lanes north toward Sanford; visit historic downtown Sanford along Lake Monroe afterwards.",
+    lat: 28.8056,
+    lng: -81.2678
   },
   {
     id: "st-jude-maronite",
