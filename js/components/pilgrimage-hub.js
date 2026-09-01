@@ -248,6 +248,21 @@ function renderPrayerNooks() {
 function setupPilgrimageFilters() {
   const parishChips = document.querySelectorAll('#parish-filter-chips .filter-chip');
   const parishSearch = document.getElementById('parish-search-input');
+  const parishGrid = document.getElementById('parishes-grid');
+  const prevBtn = document.getElementById('parish-scroll-prev');
+  const nextBtn = document.getElementById('parish-scroll-next');
+
+  if (prevBtn && parishGrid) {
+    prevBtn.addEventListener('click', () => {
+      parishGrid.scrollBy({ left: -380, behavior: 'smooth' });
+    });
+  }
+
+  if (nextBtn && parishGrid) {
+    nextBtn.addEventListener('click', () => {
+      parishGrid.scrollBy({ left: 380, behavior: 'smooth' });
+    });
+  }
 
   let currentParishFilter = 'all';
 
@@ -257,12 +272,14 @@ function setupPilgrimageFilters() {
       chip.classList.add('active');
       currentParishFilter = chip.getAttribute('data-filter') || 'all';
       renderParishFinder(currentParishFilter, parishSearch ? parishSearch.value : '');
+      if (parishGrid) parishGrid.scrollTo({ left: 0, behavior: 'smooth' });
     });
   });
 
   if (parishSearch) {
     parishSearch.addEventListener('input', (e) => {
       renderParishFinder(currentParishFilter, e.target.value);
+      if (parishGrid) parishGrid.scrollTo({ left: 0, behavior: 'smooth' });
     });
   }
 
@@ -281,5 +298,6 @@ function setupPilgrimageFilters() {
     parishChips.forEach(c => c.classList.remove('active'));
     if (parishChips[0]) parishChips[0].classList.add('active');
     renderParishFinder('all', '');
+    if (parishGrid) parishGrid.scrollTo({ left: 0, behavior: 'smooth' });
   };
 }

@@ -58,9 +58,6 @@
         <span>☀️ Faith • Family • Holy Fun</span>
       </div>
       <img src="assets/images/hero.jpg" alt="Catholic Disney Theme Park with Friars, Nuns, Priests, and Families" class="hero-art-img">
-      <button class="hero-art-zoom-btn" onclick="window.openImageLightbox('assets/images/hero.jpg', 'Catholic Disney Theme Park')">
-        🔍 View Full Artwork
-      </button>
     </div>
 
     <!-- Clean Headline Banner (Unobstructed below the art) -->
@@ -129,12 +126,19 @@
 
       <!-- Mass & Parish Finder with Liturgical Traditions -->
       <div style="margin: 50px 0 30px;">
-        <h3 style="font-size: 1.8rem; margin-bottom: 6px; color: var(--text-primary);">
-          ⛪ Catholic Parishes & Liturgical Traditions Near Disney World
-        </h3>
-        <p style="color: var(--text-secondary); margin-bottom: 24px;">
-          Find Sunday morning, evening, or daily Mass within 15 minutes of Disney gates across the Roman Rite, Traditional Latin Mass (TLM), Anglican Use Ordinariate, and Byzantine Eastern Catholic Rites.
-        </p>
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 10px; margin-bottom: 8px;">
+          <div>
+            <h3 style="font-size: 1.8rem; margin-bottom: 4px; color: var(--text-primary);">
+              ⛪ Catholic Parishes & Liturgical Traditions Near Disney World
+            </h3>
+            <p style="color: var(--text-secondary); margin-bottom: 0;">
+              Find Sunday morning, evening, or daily Mass within 15 minutes of Disney gates across all Catholic rites.
+            </p>
+          </div>
+          <span style="font-size: 0.85rem; color: var(--blue-primary); font-weight: 700;">
+            ↔ Scroll horizontally to explore
+          </span>
+        </div>
 
         <!-- Filter Bar -->
         <div class="filter-bar">
@@ -157,8 +161,12 @@
           </div>
         </div>
 
-        <!-- Parishes Cards Grid -->
-        <div id="parishes-grid" class="cards-grid-3"></div>
+        <!-- Horizontal Scroll Carousel for Churches -->
+        <div class="carousel-wrapper">
+          <button class="carousel-arrow prev" id="parish-scroll-prev" aria-label="Previous Parishes">‹</button>
+          <div id="parishes-grid" class="horizontal-scroll-carousel"></div>
+          <button class="carousel-arrow next" id="parish-scroll-next" aria-label="Next Parishes">›</button>
+        </div>
       </div>
 
       <!-- Faith Secrets & Stained Glass in the Parks -->
