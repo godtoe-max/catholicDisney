@@ -1,35 +1,46 @@
-// Catholic Animation & Creative Arts Showcase ("The Next Golden Age")
+// Catholic Animation, Graphic Novels & Creative Arts Showcase ("The Next Golden Age")
 export const creatorsData = [
   {
-    id: "studio-sacra-lux",
-    name: "Sacra Lux Animation Studios",
-    category: "Independent Animation & CGI",
-    founder: "Catholic visual effects artists & storyboard animators",
-    mission: "Crafting feature-length and short animated saint epics and Biblical narratives utilizing cinematic hand-drawn and Pixar-tier CGI technology.",
-    featuredProject: "The Legend of Saint George & The Dragon (Short Film)",
-    description: "Aiming to resurrect the golden age of storytelling by wedding breathtaking artistic excellence with the profound theology of the Catholic tradition.",
-    tags: ["2D/3D Animation", "Saint Stories", "Crowdfunded"],
-    status: "In Production"
+    id: "voyage-comics",
+    name: "Voyage Comics & Publishing",
+    category: "Catholic Graphic Novels & Comic Art",
+    founder: "Philip Kosloski (with veteran artists from Marvel & DC)",
+    mission: "Creating world-class, heroic Catholic graphic novels, saint epics, and fantasy adventures with the visual caliber of modern mainstream comic powerhouses.",
+    featuredProject: "Finnian and the Seven Mountains & Carlo Acutis: Miracles of the Eucharist",
+    description: "Submits all titles for official theological review (carrying Nihil Obstat & Imprimatur) while delivering breathtaking full-color sequential art that inspires youth and adults to lives of heroic virtue.",
+    tags: ["Graphic Novels", "Saint Stories", "Marvel/DC Alumni", "Youth & Teens"],
+    status: "Active Publisher"
   },
   {
-    id: "gospel-illuminated",
-    name: "The Illuminated Ink Guild",
-    category: "Graphic Novels & Illustrated Classics",
-    founder: "Former feature animation concept artists",
-    mission: "Creating lushly illustrated graphic novels of Church Fathers, martyrs, and Marian apparitions with the visual whimsy of classic 1950s Golden Age Disney art.",
-    featuredProject: "Our Lady of Guadalupe: The Tepeyac Epic",
-    description: "Bringing high-art visual storytelling to Catholic children and teens across the world.",
-    tags: ["Graphic Novels", "Marian Art", "Youth"],
-    status: "Published"
+    id: "herald-brother-francis",
+    name: "Herald Entertainment (Brother Francis)",
+    category: "Catholic Children's Animation & Music",
+    founder: "Award-winning faith-based animation studio",
+    mission: "Teaching the Catholic faith, the Holy Mass, the Rosary, and the lives of the saints to children through delightful 2D & 3D animation, catchy songs, and character-driven storytelling.",
+    featuredProject: "The Brother Francis Animated Series (Featured on FORMED.org)",
+    description: "One of the most widely watched animated Catholic educational series in the world, bringing joy, humor, and orthodox catechesis to young children and homeschool families.",
+    tags: ["2D/3D Animation", "Family & Children", "Music", "Catechesis"],
+    status: "Active Production"
+  },
+  {
+    id: "word-on-fire-classics",
+    name: "Word on Fire Votive & Illustrated Classics",
+    category: "High-Art Literature & Illuminated Books",
+    founder: "Bishop Robert Barron & Word on Fire Institute",
+    mission: "Reviving the Catholic aesthetic tradition of high craftsmanship, golden-age typography, and classical illustration to draw minds to God through Beauty.",
+    featuredProject: "Illuminated Gospels & Children's Golden Treasury of Saints",
+    description: "Proving that modern Catholic media can rival the finest design houses and publishers in the world by leading with beauty (the 'Via Pulchritudinis').",
+    tags: ["Illuminated Books", "Sacred Art", "Via Pulchritudinis"],
+    status: "Active Imprint"
   },
   {
     id: "orlando-catholic-disney-fellowship",
     name: "Central Florida Catholic Disney Fellowship",
-    category: "Community & Pilgrimage Meetups",
+    category: "Local Community & Pilgrimage Meetups",
     founder: "Local Florida Catholic Families & Annual Passholders",
-    mission: "Organizing monthly family park meetups, morning Mass at the Basilica of Mary Queen of the Universe, Epcot Catholic cultural walks, and Catholic Dapper Days.",
+    mission: "Organizing family park meetups, morning Mass at the Basilica of Mary Queen of the Universe, Epcot Catholic cultural walks, and Catholic Dapper Days.",
     featuredProject: "Annual 'St. Michael & The Castles' Autumn Park Pilgrimage",
-    description: "A growing community of faithful families living in or traveling to Orlando who love Disney storytelling and the Catholic Church.",
+    description: "A grassroots community of faithful families living in or traveling to Orlando who love Disney storytelling and the Catholic Church.",
     tags: ["Orlando Local", "Family Meetups", "Annual Pilgrimage"],
     status: "Active Community"
   }
