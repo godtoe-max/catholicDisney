@@ -27,26 +27,30 @@
         </div>
       </a>
 
-      <nav class="nav-tabs-wrapper" role="tablist" aria-label="Main Navigation">
-        <button class="nav-tab-btn active" data-tab="pilgrimage-tab" role="tab" aria-selected="true">
-          <span>🏰</span> Florida & Parks
+      <div class="header-nav-group">
+        <!-- Desktop Quick Links (Hidden on small mobile) -->
+        <nav class="desktop-nav-links" aria-label="Desktop Navigation">
+          <button class="desktop-nav-link active" data-tab="pilgrimage-tab">
+            <span>🏰</span> Florida & Parks
+          </button>
+          <button class="desktop-nav-link" data-tab="virtue-tab">
+            <span>📖</span> Movie Guides
+          </button>
+          <button class="desktop-nav-link" data-tab="wallpapers-tab">
+            <span>📱</span> Wallpapers
+          </button>
+          <button class="desktop-nav-link" data-tab="planner-tab">
+            <span>🗺️</span> Planner
+          </button>
+        </nav>
+
+        <!-- Hamburger Menu Toggle Button -->
+        <button class="hamburger-btn" id="hamburger-btn" aria-label="Open Navigation Menu" aria-expanded="false">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
         </button>
-        <button class="nav-tab-btn" data-tab="virtue-tab" role="tab" aria-selected="false">
-          <span>📖</span> Virtue in the Vault
-        </button>
-        <button class="nav-tab-btn" data-tab="liturgical-tab" role="tab" aria-selected="false">
-          <span>👨‍👩‍👧‍👦</span> Liturgical Living
-        </button>
-        <button class="nav-tab-btn" data-tab="planner-tab" role="tab" aria-selected="false">
-          <span>🗺️</span> Pilgrimage Planner
-        </button>
-        <button class="nav-tab-btn" data-tab="wallpapers-tab" role="tab" aria-selected="false">
-          <span>📱</span> Wallpapers
-        </button>
-        <button class="nav-tab-btn" data-tab="creators-tab" role="tab" aria-selected="false">
-          <span>🎨</span> Animation & Arts
-        </button>
-      </nav>
+      </div>
     </div>
   </header>
 
@@ -516,6 +520,85 @@
     <div class="modal-container">
       <button class="modal-close-btn" onclick="window.closeVirtueModal()" aria-label="Close dialog">✕</button>
       <div id="virtue-modal-content"></div>
+    </div>
+  </div>
+
+  <!-- Slide-out Navigation Drawer (Mobile & Desktop Hamburger Menu) -->
+  <div id="nav-drawer-backdrop" class="nav-drawer-backdrop" aria-hidden="true">
+    <div id="nav-drawer" class="nav-drawer" role="dialog" aria-modal="true" aria-label="Site Navigation">
+      <div class="nav-drawer-header">
+        <div class="logo-wrapper">
+          <div class="logo-crest">☩</div>
+          <div class="logo-text-group">
+            <span class="logo-title" style="font-size: 1.15rem;">Catholic Disney</span>
+            <span class="logo-subtitle">Navigation Menu</span>
+          </div>
+        </div>
+        <button class="modal-close-btn" id="drawer-close-btn" aria-label="Close Navigation Menu" style="position: static;">✕</button>
+      </div>
+
+      <div class="nav-drawer-body">
+        <button class="drawer-nav-item active" data-tab="pilgrimage-tab">
+          <span class="drawer-nav-icon">🏰</span>
+          <div class="drawer-nav-text">
+            <span class="drawer-nav-title">Florida & Theme Parks</span>
+            <span class="drawer-nav-subtext">Basilica, Parishes, Catholic Art & Sanctuaries</span>
+          </div>
+        </button>
+
+        <button class="drawer-nav-item" data-tab="virtue-tab">
+          <span class="drawer-nav-icon">📖</span>
+          <div class="drawer-nav-text">
+            <span class="drawer-nav-title">Virtue in the Vault</span>
+            <span class="drawer-nav-subtext">Theological Film Breakdowns & Family Discussions</span>
+          </div>
+        </button>
+
+        <button class="drawer-nav-item" data-tab="liturgical-tab">
+          <span class="drawer-nav-icon">👨‍👩‍👧‍👦</span>
+          <div class="drawer-nav-text">
+            <span class="drawer-nav-title">Liturgical Living</span>
+            <span class="drawer-nav-subtext">Feast Day Pairings & Catholic Discernment</span>
+          </div>
+        </button>
+
+        <button class="drawer-nav-item" data-tab="planner-tab">
+          <span class="drawer-nav-icon">🗺️</span>
+          <div class="drawer-nav-text">
+            <span class="drawer-nav-title">Pilgrimage Planner</span>
+            <span class="drawer-nav-subtext">Custom Vacation & Holy Day Itinerary Generator</span>
+          </div>
+        </button>
+
+        <button class="drawer-nav-item" data-tab="wallpapers-tab">
+          <span class="drawer-nav-icon">📱</span>
+          <div class="drawer-nav-text">
+            <span class="drawer-nav-title">Free HD Wallpapers</span>
+            <span class="drawer-nav-subtext">Phones (9:16), 4K Desktops, and iPads</span>
+          </div>
+        </button>
+
+        <button class="drawer-nav-item" data-tab="creators-tab">
+          <span class="drawer-nav-icon">🎨</span>
+          <div class="drawer-nav-text">
+            <span class="drawer-nav-title">Animation & Community</span>
+            <span class="drawer-nav-subtext">Faithful Studios, Meetups & Netlify Tips Mailbox</span>
+          </div>
+        </button>
+
+        <div style="margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border-subtle);">
+          <button class="btn btn-sun" id="drawer-submit-tip-btn" style="width: 100%; font-size: 0.95rem;">
+            💡 Submit a Tip or Idea
+          </button>
+        </div>
+      </div>
+
+      <div class="nav-drawer-footer">
+        <div style="font-size: 0.82rem; color: var(--text-muted); text-align: center;">
+          ☩ <em>Ad Majorem Dei Gloriam</em><br>
+          For the greater glory of God & family joy
+        </div>
+      </div>
     </div>
   </div>
 

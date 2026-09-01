@@ -8,6 +8,7 @@ import { initWallpapersHub } from './components/wallpapers-hub.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   initTabNavigation();
+  initHamburgerMenu();
   initPilgrimageHub();
   initVirtueHub();
   initLiturgicalHub();
@@ -21,14 +22,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Tab Switching & Deep Linking
 function initTabNavigation() {
-  const tabButtons = document.querySelectorAll('.nav-tab-btn');
+  const navLinks = document.querySelectorAll('.desktop-nav-link, .drawer-nav-item');
   const tabContents = document.querySelectorAll('.tab-content');
 
   function switchTab(targetTabId) {
-    tabButtons.forEach(btn => {
-      const isTarget = btn.getAttribute('data-tab') === targetTabId;
-      btn.classList.toggle('active', isTarget);
-      btn.setAttribute('aria-selected', isTarget ? 'true' : 'false');
+    navLinks.forEach(link => {
+      const isTarget = link.getAttribute('data-tab') === targetTabId;
+      link.classList.toggle('active', isTarget);
+      link.setAttribute('aria-selected', isTarget ? 'true' : 'false');
     });
 
     tabContents.forEach(content => {
@@ -41,10 +42,13 @@ function initTabNavigation() {
     }
   }
 
-  tabButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const target = btn.getAttribute('data-tab');
-      if (target) switchTab(target);
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      const target = link.getAttribute('data-tab');
+      if (target) {
+        switchTab(target);
+        window.closeNavDrawer();
+      }
     });
   });
 
@@ -55,11 +59,92 @@ function initTabNavigation() {
 
   window.navigateToTab = (tabId) => {
     switchTab(tabId);
+    window.closeNavDrawer();
     const element = document.getElementById(tabId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
   };
+
+  window.scrollToTipSection = () => {
+    window.closeNavDrawer();
+    setTimeout(() => {
+      const formSection = document.getElementById('submit-tip-section');
+      if (formSection) {
+        formSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 150);
+  };
+}
+
+// Hamburger Menu & Navigation Drawer Controller
+function initHamburgerMenu() {
+  const hamburgerBtn = document.getElementById('hamburger-btn');
+  const drawerBackdrop = document.getElementById('nav-drawer-backdrop');
+  const drawerCloseBtn = document.getElementById('drawer-close-btn');
+  const drawerTipBtn = document.getElementById('drawer-submit-tip-btn');
+
+  function openDrawer() {
+    if (drawerBackdrop) {
+      drawerBackdrop.classList.add('open');
+      drawerBackdrop.setAttribute('aria-hidden', 'false');
+    }
+    if (hamburgerBtn) {
+      hamburgerBtn.classList.add('active');
+      hamburgerBtn.setAttribute('aria-expanded', 'true');
+    }
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDrawer() {
+    if (drawerBackdrop) {
+      drawerBackdrop.classList.remove('open');
+      drawerBackdrop.setAttribute('aria-hidden', 'true');
+    }
+    if (hamburgerBtn) {
+      hamburgerBtn.classList.remove('active');
+      hamburgerBtn.setAttribute('aria-expanded', 'false');
+    }
+    document.body.style.overflow = '';
+  }
+
+  window.openNavDrawer = openDrawer;
+  window.closeNavDrawer = closeDrawer;
+
+  if (hamburgerBtn) {
+    hamburgerBtn.addEventListener('click', () => {
+      if (drawerBackdrop && drawerBackdrop.classList.contains('open')) {
+        closeDrawer();
+      } else {
+        openDrawer();
+      }
+    });
+  }
+
+  if (drawerCloseBtn) {
+    drawerCloseBtn.addEventListener('click', closeDrawer);
+  }
+
+  if (drawerBackdrop) {
+    drawerBackdrop.addEventListener('click', (e) => {
+      if (e.target === drawerBackdrop) {
+        closeDrawer();
+      }
+    });
+  }
+
+  if (drawerTipBtn) {
+    drawerTipBtn.addEventListener('click', () => {
+      window.navigateToTab('creators-tab');
+      window.scrollToTipSection();
+    });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && drawerBackdrop && drawerBackdrop.classList.contains('open')) {
+      closeDrawer();
+    }
+  });
 }
 
 // Netlify Community Tips Form Handler
