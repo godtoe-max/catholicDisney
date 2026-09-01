@@ -453,51 +453,44 @@
         </div>
 
         <!-- Netlify Form -->
-        <form name="catholic-disney-tips" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="community-tips-form">
-          <input type="hidden" name="form-name" value="catholic-disney-tips">
+        <form name="contact" method="POST" netlify data-netlify="true" netlify-honeypot="bot-field" id="community-tips-form">
+          <input type="hidden" name="form-name" value="contact">
           <p style="display: none;">
             <label>Don’t fill this out if you're human: <input name="bot-field"></label>
           </p>
 
-          <div class="planner-form-grid" style="margin-bottom: 16px;">
-            <div class="form-group">
-              <label class="form-label" for="tip-name">Your Name or Family Name</label>
-              <input type="text" id="tip-name" name="name" class="form-input" placeholder="e.g. The Garcia Family" required>
-            </div>
+          <p class="form-group" style="margin-bottom: 16px;">
+            <label class="form-label" for="contact-name">Name <input type="text" id="contact-name" name="name" class="form-input" placeholder="Your name or family name" required></label>
+          </p>
 
-            <div class="form-group">
-              <label class="form-label" for="tip-email">Email Address</label>
-              <input type="email" id="tip-email" name="email" class="form-input" placeholder="name@example.com" required>
-            </div>
+          <p class="form-group" style="margin-bottom: 16px;">
+            <label class="form-label" for="contact-email">Email <input type="email" id="contact-email" name="email" class="form-input" placeholder="name@example.com" required></label>
+          </p>
 
-            <div class="form-group">
-              <label class="form-label" for="tip-type">Tip Category</label>
-              <select id="tip-type" name="tipType" class="form-select" required>
-                <option value="park-secret">🏰 Park Secret / Christian Symbolism</option>
-                <option value="prayer-nook">🕊️ Quiet Prayer Nook / Sanctuary</option>
-                <option value="mass-update">⛪ Parish / Mass Schedule Update</option>
-                <option value="virtue-idea">📖 Movie / Virtue Vault Idea</option>
-                <option value="community-idea">☀️ Florida Community & Meetup Idea</option>
-                <option value="general-feedback">💡 General Feedback / Suggestion</option>
+          <p class="form-group" style="margin-bottom: 16px;">
+            <label class="form-label" for="contact-category">Category
+              <select id="contact-category" name="category" class="form-select" required>
+                <option value="Park Secret / Christian Art">🏰 Park Secret / Christian Art</option>
+                <option value="Quiet Prayer Nook">🕊️ Quiet Prayer Nook / Sanctuary</option>
+                <option value="Parish / Mass Update">⛪ Parish / Mass Schedule Update</option>
+                <option value="Movie / Virtue Vault Idea">📖 Movie / Virtue Vault Idea</option>
+                <option value="Florida Community Idea">☀️ Florida Community & Meetup Idea</option>
+                <option value="General Feedback">💡 General Feedback / Idea</option>
               </select>
-            </div>
-          </div>
+            </label>
+          </p>
 
-          <div class="form-group" style="margin-bottom: 16px;">
-            <label class="form-label" for="tip-location">Related Park, Ride, Parish, or Movie</label>
-            <input type="text" id="tip-location" name="location" class="form-input" placeholder="e.g. Epcot Italy Pavilion, Cinderella Castle, Hallow / Movie...">
-          </div>
+          <p class="form-group" style="margin-bottom: 24px;">
+            <label class="form-label" for="contact-message">Tip or Idea
+              <textarea id="contact-message" name="message" class="form-textarea" placeholder="Describe your tip, sanctuary spot, or idea in detail..." required></textarea>
+            </label>
+          </p>
 
-          <div class="form-group" style="margin-bottom: 24px;">
-            <label class="form-label" for="tip-message">Your Tip, Reflection, or Recommendation</label>
-            <textarea id="tip-message" name="message" class="form-textarea" placeholder="Describe the location, secret detail, spiritual tip, or your suggestion in detail..." required></textarea>
-          </div>
-
-          <div style="text-align: center;">
+          <p style="text-align: center; margin-bottom: 0;">
             <button type="submit" id="tip-submit-btn" class="btn btn-sun" style="font-size: 1.05rem; padding: 14px 36px;">
-              ✨ Submit Catholic Tip
+              Send
             </button>
-          </div>
+          </p>
         </form>
       </div>
 

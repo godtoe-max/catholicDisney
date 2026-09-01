@@ -102,7 +102,7 @@ function initTipsForm() {
       .finally(() => {
         if (submitBtn) {
           submitBtn.disabled = false;
-          submitBtn.textContent = '✨ Submit Catholic Tip';
+          submitBtn.textContent = 'Send';
         }
       });
   });
