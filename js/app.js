@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initItineraryPlanner();
   initCreatorsHub();
   initWallpapersHub();
+  initTipsForm();
   initModalListeners();
   initLightbox();
 });
@@ -59,6 +60,52 @@ function initTabNavigation() {
       element.scrollIntoView({ behavior: 'smooth' });
     }
   };
+}
+
+// Netlify Community Tips Form Handler
+function initTipsForm() {
+  const form = document.getElementById('community-tips-form');
+  const successBanner = document.getElementById('tip-form-success');
+  const submitBtn = document.getElementById('tip-submit-btn');
+
+  if (!form) return;
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Submitting...';
+    }
+
+    const formData = new FormData(form);
+
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(formData).toString()
+    })
+      .then((response) => {
+        if (response.ok || response.status === 200 || response.status === 302) {
+          if (successBanner) {
+            successBanner.style.display = 'block';
+            successBanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+          form.reset();
+        } else {
+          form.submit();
+        }
+      })
+      .catch((error) => {
+        console.error('Netlify form submission error:', error);
+        form.submit();
+      })
+      .finally(() => {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = '✨ Submit Catholic Tip';
+        }
+      });
+  });
 }
 
 // Global modal backdrop close & escape key

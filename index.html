@@ -434,6 +434,73 @@
 
       <div id="creators-cards-grid" class="cards-grid-3"></div>
 
+      <!-- Community Tips & Ideas (Netlify Forms Powered) -->
+      <div class="community-form-card" id="submit-tip-section">
+        <div style="text-align: center; max-width: 680px; margin: 0 auto 28px;">
+          <span class="section-tag" style="background: #fef3c7; color: #92400e;">Community Mailbox</span>
+          <h3 style="color: var(--text-primary); font-size: 1.8rem; margin: 6px 0 8px;">
+            💡 Submit a Catholic Park Tip, Sanctuary, or Idea
+          </h3>
+          <p style="font-size: 0.98rem; margin-bottom: 0;">
+            Did you discover a quiet prayer spot, Christian symbol in a ride, local Mass update, or great movie discussion question? Share it with the Catholic Disney community!
+          </p>
+        </div>
+
+        <!-- Success Message Banner -->
+        <div id="tip-form-success" class="form-success-banner">
+          <strong style="font-size: 1.05rem;">🙏 Deo Gratias! Thank you for your submission!</strong><br>
+          Your tip or recommendation has been received and will be reviewed for inclusion on CatholicDisney.com.
+        </div>
+
+        <!-- Netlify Form -->
+        <form name="catholic-disney-tips" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="community-tips-form">
+          <input type="hidden" name="form-name" value="catholic-disney-tips">
+          <p style="display: none;">
+            <label>Don’t fill this out if you're human: <input name="bot-field"></label>
+          </p>
+
+          <div class="planner-form-grid" style="margin-bottom: 16px;">
+            <div class="form-group">
+              <label class="form-label" for="tip-name">Your Name or Family Name</label>
+              <input type="text" id="tip-name" name="name" class="form-input" placeholder="e.g. The Garcia Family" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="tip-email">Email Address</label>
+              <input type="email" id="tip-email" name="email" class="form-input" placeholder="name@example.com" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="tip-type">Tip Category</label>
+              <select id="tip-type" name="tipType" class="form-select" required>
+                <option value="park-secret">🏰 Park Secret / Christian Symbolism</option>
+                <option value="prayer-nook">🕊️ Quiet Prayer Nook / Sanctuary</option>
+                <option value="mass-update">⛪ Parish / Mass Schedule Update</option>
+                <option value="virtue-idea">📖 Movie / Virtue Vault Idea</option>
+                <option value="community-idea">☀️ Florida Community & Meetup Idea</option>
+                <option value="general-feedback">💡 General Feedback / Suggestion</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label class="form-label" for="tip-location">Related Park, Ride, Parish, or Movie</label>
+            <input type="text" id="tip-location" name="location" class="form-input" placeholder="e.g. Epcot Italy Pavilion, Cinderella Castle, Hallow / Movie...">
+          </div>
+
+          <div class="form-group" style="margin-bottom: 24px;">
+            <label class="form-label" for="tip-message">Your Tip, Reflection, or Recommendation</label>
+            <textarea id="tip-message" name="message" class="form-textarea" placeholder="Describe the location, secret detail, spiritual tip, or your suggestion in detail..." required></textarea>
+          </div>
+
+          <div style="text-align: center;">
+            <button type="submit" id="tip-submit-btn" class="btn btn-sun" style="font-size: 1.05rem; padding: 14px 36px;">
+              ✨ Submit Catholic Tip
+            </button>
+          </div>
+        </form>
+      </div>
+
       <!-- Florida Community & Meetup Banner -->
       <div class="community-cta-box">
         <div>
