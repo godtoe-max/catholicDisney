@@ -1,68 +1,73 @@
 /* ==========================================================
-   CatholicDisney.com Design System
-   Aesthetic: Celestial Marian Blue & Cathedral Gold Glassmorphism
+   CatholicDisney.com Design System - Bright, Sunny & Cheerful
    ========================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800;900&family=Outfit:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Inter:wght@400;500;600&display=swap');
 
 :root {
-  /* Color Palette */
-  --bg-darkest: #040914;
-  --bg-deep: #081224;
-  --bg-surface: #0e1e38;
-  --bg-card: rgba(14, 30, 56, 0.78);
-  --bg-card-hover: rgba(22, 45, 82, 0.88);
-  --bg-glass-light: rgba(255, 255, 255, 0.05);
+  /* Bright, Fresh Color Palette */
+  --bg-main: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-surface-soft: #f1f5f9;
+  --bg-card: #ffffff;
+  --bg-card-hover: #ffffff;
+  --bg-highlight: #fffbeb;
 
-  /* Borders & Glows */
-  --border-subtle: rgba(212, 175, 55, 0.22);
-  --border-gold-glow: rgba(212, 175, 55, 0.55);
-  --border-light: rgba(255, 255, 255, 0.12);
+  /* Borders & Dividers */
+  --border-subtle: #e2e8f0;
+  --border-light: #f1f5f9;
+  --border-focus: #3b82f6;
+  --border-gold: #f59e0b;
 
-  /* Metallic Gold Accents */
-  --gold-primary: #d4af37;
-  --gold-light: #f5d77f;
-  --gold-dark: #a88420;
-  --gold-gradient: linear-gradient(135deg, #f7df94 0%, #d4af37 50%, #aa8214 100%);
-  --gold-gradient-soft: linear-gradient(135deg, rgba(247, 223, 148, 0.25) 0%, rgba(212, 175, 55, 0.1) 100%);
+  /* Primary Disney Sky Blue & Royal Blue */
+  --blue-primary: #1a73e8;
+  --blue-dark: #0f4bb5;
+  --blue-light: #e8f0fe;
+  --blue-gradient: linear-gradient(135deg, #1a73e8 0%, #3b82f6 100%);
 
-  /* Marian Blue & Celestial Accents */
-  --marian-blue: #2a64b2;
-  --marian-light: #6ba4f8;
-  --marian-glow: rgba(107, 164, 248, 0.35);
-  --marian-gradient: linear-gradient(135deg, #1c4987 0%, #2a64b2 50%, #468be0 100%);
+  /* Warm Florida Sunshine & Gold */
+  --sun-gold: #f59e0b;
+  --sun-yellow: #fbbf24;
+  --sun-light: #fef3c7;
+  --sun-gradient: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  --badge-gold-bg: #fef9c3;
 
-  /* Text Colors */
-  --text-primary: #fdfaf2;
-  --text-secondary: #c5d3e8;
-  --text-muted: #8ea5c8;
-  --text-gold: #f5d77f;
+  /* Cheerful Accents */
+  --coral-accent: #f43f5e;
+  --coral-light: #ffe4e6;
+  --green-accent: #10b981;
+  --green-light: #d1fae5;
+  --purple-accent: #8b5cf6;
+  --purple-light: #ede9fe;
 
-  /* Status & Tags */
-  --badge-bg: rgba(212, 175, 55, 0.15);
-  --badge-border: rgba(212, 175, 55, 0.4);
-  --success-color: #38b000;
-  --info-color: #48cae4;
+  /* High Legibility Text Colors */
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --text-blue: #1d4ed8;
 
   /* Typography */
-  --font-serif: 'Cinzel', Georgia, serif;
-  --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 
-  /* Shadows */
-  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
-  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.6);
-  --shadow-gold: 0 0 25px rgba(212, 175, 55, 0.25);
-  --shadow-marian: 0 0 30px rgba(42, 100, 178, 0.35);
+  /* Soft, Friendly Shadows */
+  --shadow-xs: 0 1px 3px rgba(15, 23, 42, 0.05);
+  --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 10px 25px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.04);
+  --shadow-lg: 0 20px 35px -5px rgba(15, 23, 42, 0.1), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+  --shadow-gold: 0 8px 20px rgba(245, 158, 11, 0.25);
+  --shadow-blue: 0 8px 20px rgba(26, 115, 232, 0.25);
 
   /* Transitions */
-  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-normal: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: 0.18s ease;
+  --transition-normal: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 
-  /* Radius */
+  /* Border Radius */
   --radius-sm: 8px;
   --radius-md: 14px;
   --radius-lg: 20px;
+  --radius-xl: 28px;
   --radius-full: 9999px;
 }
 
@@ -75,18 +80,18 @@
 
 html {
   scroll-behavior: smooth;
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 body {
-  font-family: var(--font-sans);
-  background-color: var(--bg-darkest);
+  font-family: var(--font-body);
+  background-color: var(--bg-main);
   color: var(--text-primary);
   line-height: 1.65;
   background-image: 
-    radial-gradient(circle at 15% 15%, rgba(42, 100, 178, 0.18) 0%, transparent 45%),
-    radial-gradient(circle at 85% 25%, rgba(212, 175, 55, 0.12) 0%, transparent 40%),
-    radial-gradient(circle at 50% 80%, rgba(28, 73, 135, 0.15) 0%, transparent 55%);
+    radial-gradient(circle at 10% 5%, rgba(59, 130, 246, 0.07) 0%, transparent 40%),
+    radial-gradient(circle at 90% 12%, rgba(251, 191, 36, 0.12) 0%, transparent 45%),
+    radial-gradient(circle at 50% 80%, rgba(244, 63, 94, 0.04) 0%, transparent 50%);
   background-attachment: fixed;
   min-height: 100vh;
   overflow-x: hidden;
@@ -94,24 +99,23 @@ body {
 
 /* Headings */
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-serif);
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-weight: 800;
   color: var(--text-primary);
   line-height: 1.25;
-  letter-spacing: 0.02em;
+  letter-spacing: -0.02em;
 }
 
 h1 {
-  font-size: clamp(2.2rem, 5vw, 3.8rem);
-  letter-spacing: 0.04em;
+  font-size: clamp(2.3rem, 5.2vw, 3.8rem);
 }
 
 h2 {
-  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  font-size: clamp(1.7rem, 3.6vw, 2.5rem);
 }
 
 h3 {
-  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+  font-size: clamp(1.3rem, 2.6vw, 1.8rem);
 }
 
 p {
@@ -121,50 +125,53 @@ p {
 }
 
 a {
-  color: var(--gold-light);
+  color: var(--blue-primary);
   text-decoration: none;
+  font-weight: 600;
   transition: var(--transition-fast);
 }
 
 a:hover {
-  color: #fff;
-  text-shadow: 0 0 8px var(--gold-light);
+  color: var(--blue-dark);
 }
 
 /* Container */
 .container {
   width: 100%;
-  max-width: 1280px;
+  max-width: 1240px;
   margin: 0 auto;
   padding: 0 24px;
 }
 
-.container-narrow {
-  max-width: 960px;
-}
-
-/* Gold Gradient Text Utility */
-.text-gold-gradient {
-  background: var(--gold-gradient);
+/* Text Gradient Utility */
+.text-gradient-sun {
+  background: var(--sun-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline-block;
 }
 
-/* Custom Scrollbar */
+.text-gradient-blue {
+  background: var(--blue-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+/* Scrollbars */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg-deep);
+  background: #f1f5f9;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--surface-border, rgba(212, 175, 55, 0.3));
+  background: #cbd5e1;
   border-radius: var(--radius-full);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--gold-primary);
+  background: #94a3b8;
 }

@@ -1,40 +1,31 @@
 /* ==========================================================
-   CatholicDisney.com Animations & Micro-interactions
+   CatholicDisney.com Animations - Light, Happy & Cheerful
    ========================================================== */
 
-@keyframes twinkle {
+@keyframes sunGlow {
   0%, 100% {
-    opacity: 0.2;
-    transform: scale(0.8);
+    transform: scale(1);
+    opacity: 0.8;
   }
   50% {
+    transform: scale(1.05);
     opacity: 1;
-    transform: scale(1.2);
   }
 }
 
-@keyframes goldPulse {
-  0%, 100% {
-    box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
-  }
-  50% {
-    box-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
-  }
-}
-
-@keyframes floatSlow {
+@keyframes floatGentle {
   0%, 100% {
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-8px);
+    transform: translateY(-6px);
   }
 }
 
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(16px);
   }
   to {
     opacity: 1;
@@ -48,23 +39,23 @@
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.4s ease-out forwards;
+  animation: fadeIn 0.35s ease-out forwards;
 }
 
 .animate-fade-in-up {
-  animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fadeInUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .animate-float {
-  animation: floatSlow 6s ease-in-out infinite;
+  animation: floatGentle 5s ease-in-out infinite;
 }
 
-.pulse-gold {
-  animation: goldPulse 3s infinite ease-in-out;
+.sun-pulse {
+  animation: sunGlow 3s infinite ease-in-out;
 }
 
-/* Starlight particles background */
-.starlight-layer {
+/* Subtle background sunbeams / sparkles layer */
+.sunlight-layer {
   position: absolute;
   inset: 0;
   pointer-events: none;
@@ -72,10 +63,9 @@
   z-index: 1;
 }
 
-.star {
+.sparkle {
   position: absolute;
-  background: #ffffff;
+  background: radial-gradient(circle, rgba(251, 191, 36, 0.6) 0%, transparent 70%);
   border-radius: 50%;
-  animation: twinkle var(--duration, 4s) infinite ease-in-out var(--delay, 0s);
-  box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+  animation: sunGlow var(--duration, 4s) infinite ease-in-out var(--delay, 0s);
 }
