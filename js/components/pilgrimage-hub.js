@@ -283,6 +283,22 @@ function setupPilgrimageFilters() {
     });
   }
 
+  const parkSecretsGrid = document.getElementById('park-secrets-grid');
+  const secretsPrevBtn = document.getElementById('secrets-scroll-prev');
+  const secretsNextBtn = document.getElementById('secrets-scroll-next');
+
+  if (secretsPrevBtn && parkSecretsGrid) {
+    secretsPrevBtn.addEventListener('click', () => {
+      parkSecretsGrid.scrollBy({ left: -380, behavior: 'smooth' });
+    });
+  }
+
+  if (secretsNextBtn && parkSecretsGrid) {
+    secretsNextBtn.addEventListener('click', () => {
+      parkSecretsGrid.scrollBy({ left: 380, behavior: 'smooth' });
+    });
+  }
+
   const parkChips = document.querySelectorAll('#park-filter-chips .filter-chip');
   parkChips.forEach(chip => {
     chip.addEventListener('click', () => {
@@ -290,6 +306,7 @@ function setupPilgrimageFilters() {
       chip.classList.add('active');
       const park = chip.getAttribute('data-park') || 'all';
       renderParkSecrets(park);
+      if (parkSecretsGrid) parkSecretsGrid.scrollTo({ left: 0, behavior: 'smooth' });
     });
   });
 

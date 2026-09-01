@@ -186,9 +186,17 @@
             <button class="filter-chip" data-park="Epcot">Epcot World Showcase</button>
             <button class="filter-chip" data-park="Animal Kingdom">Animal Kingdom</button>
           </div>
+          <span style="font-size: 0.85rem; color: var(--sun-gold); font-weight: 700;">
+            ↔ Swipe to explore secrets
+          </span>
         </div>
 
-        <div id="park-secrets-grid" class="cards-grid-2"></div>
+        <!-- Horizontal Scroll Carousel for Park Art & Secrets -->
+        <div class="carousel-wrapper">
+          <button class="carousel-arrow prev" id="secrets-scroll-prev" aria-label="Previous Park Secrets">‹</button>
+          <div id="park-secrets-grid" class="horizontal-scroll-carousel"></div>
+          <button class="carousel-arrow next" id="secrets-scroll-next" aria-label="Next Park Secrets">›</button>
+        </div>
       </div>
 
       <!-- Tested Quiet Prayer Nooks -->
