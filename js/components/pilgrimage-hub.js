@@ -1,4 +1,4 @@
-// Pilgrimage & Florida WDW Hub Component
+// Pilgrimage & Florida WDW Hub Component with Diverse Catholic Traditions & Rites
 import { parishesData } from '../data/parishes-wdw.js';
 import { parkSecretsData } from '../data/park-secrets.js';
 import { prayerNooksData } from '../data/prayer-nooks.js';
@@ -22,10 +22,15 @@ function renderBasilicaSpotlight() {
     <div class="flagship-spotlight-card">
       <div class="spotlight-image-side">
         <div class="spotlight-overlay">
-          <span class="spotlight-badge">★ Orlando Flagship Pilgrimage Site</span>
+          <span class="spotlight-badge">☀️ Orlando Flagship Pilgrimage Site</span>
         </div>
       </div>
       <div class="spotlight-content-side">
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+          <span class="park-pill" style="background: var(--blue-light); color: var(--blue-dark); font-weight: 800;">
+            ${basilica.rite}
+          </span>
+        </div>
         <h3 class="spotlight-title">${basilica.name}</h3>
         <div class="spotlight-subtitle">${basilica.tagline}</div>
         <p>${basilica.description}</p>
@@ -54,12 +59,25 @@ function renderBasilicaSpotlight() {
         </ul>
 
         <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 10px;">
-          <a href="${basilica.website}" target="_blank" rel="noopener noreferrer" class="btn btn-gold">Official Shrine Website ↗</a>
+          <a href="${basilica.website}" target="_blank" rel="noopener noreferrer" class="btn btn-sun">Official Shrine Website ↗</a>
           <a href="https://maps.google.com/?q=${encodeURIComponent(basilica.address)}" target="_blank" rel="noopener noreferrer" class="btn btn-outline">Directions (4 mi from WDW) ↗</a>
         </div>
       </div>
     </div>
   `;
+}
+
+function getRiteBadgeStyle(tradition) {
+  if (tradition === 'tlm') {
+    return { bg: '#ede9fe', color: '#6d28d9', icon: '☩' }; // Purple for Traditional Latin Mass
+  }
+  if (tradition === 'ordinariate') {
+    return { bg: '#ffe4e6', color: '#be123c', icon: '👑' }; // Royal Crimson for Anglican Ordinariate
+  }
+  if (tradition === 'byzantine') {
+    return { bg: '#fef3c7', color: '#b45309', icon: '☦' }; // Gold/Amber for Eastern Byzantine/Maronite
+  }
+  return { bg: '#e8f0fe', color: '#1d4ed8', icon: '☀️' }; // Sky Blue for Roman Rite
 }
 
 export function renderParishFinder(filter = 'all', searchQuery = '') {
@@ -72,13 +90,19 @@ export function renderParishFinder(filter = 'all', searchQuery = '') {
     // Search match
     const matchesSearch = !query || 
       parish.name.toLowerCase().includes(query) ||
+      parish.rite.toLowerCase().includes(query) ||
+      parish.diocese.toLowerCase().includes(query) ||
       parish.address.toLowerCase().includes(query) ||
       parish.description.toLowerCase().includes(query);
 
     if (!matchesSearch) return false;
 
-    // Category filter
+    // Filter logic
     if (filter === 'all') return true;
+    if (filter === 'tlm') return parish.traditionCategory === 'tlm';
+    if (filter === 'ordinariate') return parish.traditionCategory === 'ordinariate';
+    if (filter === 'byzantine') return parish.traditionCategory === 'byzantine';
+    if (filter === 'roman') return parish.traditionCategory === 'roman';
     if (filter === 'sunday-am') {
       return parish.massSchedule.sunday.some(t => t.includes('AM'));
     }
@@ -100,50 +124,68 @@ export function renderParishFinder(filter = 'all', searchQuery = '') {
   if (filtered.length === 0) {
     container.innerHTML = `
       <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted);">
-        <p style="font-size: 1.2rem;">No parishes found matching your search.</p>
-        <button class="btn btn-outline" onclick="window.resetParishFilters()">Reset Filters</button>
+        <p style="font-size: 1.2rem; margin-bottom: 12px;">No parishes found matching your filter or search.</p>
+        <button class="btn btn-outline" onclick="window.resetParishFilters()">View All Parishes & Traditions</button>
       </div>
     `;
     return;
   }
 
-  container.innerHTML = filtered.map(parish => `
-    <div class="parish-card">
-      <div>
-        <div class="parish-header">
-          <span class="parish-distance">📍 ${parish.distance}</span>
-          <h4 class="parish-name">${parish.name}</h4>
-          <div class="parish-address">${parish.address} • ${parish.diocese}</div>
+  container.innerHTML = filtered.map(parish => {
+    const badgeStyle = getRiteBadgeStyle(parish.traditionCategory);
+
+    return `
+      <div class="parish-card">
+        <div>
+          <div class="parish-header">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; margin-bottom: 8px;">
+              <span class="park-pill" style="background: ${badgeStyle.bg}; color: ${badgeStyle.color}; font-weight: 800; font-size: 0.8rem; padding: 4px 12px;">
+                ${badgeStyle.icon} ${parish.rite}
+              </span>
+              <span class="parish-distance">📍 ${parish.distance}</span>
+            </div>
+            
+            <h4 class="parish-name">${parish.name}</h4>
+            <div class="parish-address">${parish.address} • <em>${parish.diocese}</em></div>
+          </div>
+
+          <p style="font-size: 0.92rem; margin-bottom: 12px; color: var(--text-secondary);">${parish.description}</p>
+
+          ${parish.liturgyNotes ? `
+            <div style="background: #f8fafc; border-left: 3px solid ${badgeStyle.color}; padding: 10px 14px; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; margin-bottom: 14px; font-size: 0.88rem; color: #334155;">
+              <strong style="color: ${badgeStyle.color}; font-size: 0.8rem; text-transform: uppercase;">Liturgical Notes:</strong> ${parish.liturgyNotes}
+            </div>
+          ` : ''}
+
+          <div class="mass-times-box" style="margin-bottom: 14px;">
+            <div class="mass-grid-row">
+              <span class="mass-day">Sunday Schedule:</span>
+              <span class="mass-times">${parish.massSchedule.sunday.join(', ')}</span>
+            </div>
+            ${parish.massSchedule.saturdayVigil && parish.massSchedule.saturdayVigil.length > 0 ? `
+              <div class="mass-grid-row">
+                <span class="mass-day">Saturday Vigil:</span>
+                <span class="mass-times">${parish.massSchedule.saturdayVigil.join(', ')}</span>
+              </div>
+            ` : ''}
+            <div class="mass-grid-row">
+              <span class="mass-day">Confessions:</span>
+              <span class="mass-times">${parish.confessions}</span>
+            </div>
+          </div>
+
+          <div style="font-size: 0.84rem; color: #b45309; margin-bottom: 8px;">
+            <strong>🚗 Travel / Rideshare Tip:</strong> ${parish.uberTip}
+          </div>
         </div>
 
-        <p style="font-size: 0.92rem; margin-bottom: 16px;">${parish.description}</p>
-
-        <div class="mass-times-box" style="margin-bottom: 14px;">
-          <div class="mass-grid-row">
-            <span class="mass-day">Sunday:</span>
-            <span class="mass-times">${parish.massSchedule.sunday.join(', ')}</span>
-          </div>
-          <div class="mass-grid-row">
-            <span class="mass-day">Saturday Vigil:</span>
-            <span class="mass-times">${parish.massSchedule.saturdayVigil.join(', ')}</span>
-          </div>
-          <div class="mass-grid-row">
-            <span class="mass-day">Confessions:</span>
-            <span class="mass-times">${parish.confessions}</span>
-          </div>
-        </div>
-
-        <div style="font-size: 0.82rem; color: var(--gold-light); margin-bottom: 8px;">
-          <strong>🚗 Rideshare / Travel Tip:</strong> ${parish.uberTip}
+        <div class="parish-actions">
+          <a href="${parish.website}" target="_blank" rel="noopener noreferrer" class="btn btn-sun" style="font-size: 0.85rem; padding: 8px 16px;">Parish Website ↗</a>
+          <a href="https://maps.google.com/?q=${encodeURIComponent(parish.address)}" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="font-size: 0.85rem; padding: 8px 16px;">Map & Directions ↗</a>
         </div>
       </div>
-
-      <div class="parish-actions">
-        <a href="${parish.website}" target="_blank" rel="noopener noreferrer" class="btn btn-gold" style="font-size: 0.85rem; padding: 8px 16px;">Visit Website ↗</a>
-        <a href="https://maps.google.com/?q=${encodeURIComponent(parish.address)}" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="font-size: 0.85rem; padding: 8px 16px;">Map & Directions ↗</a>
-      </div>
-    </div>
-  `).join('');
+    `;
+  }).join('');
 }
 
 export function renderParkSecrets(parkFilter = 'all') {
@@ -158,19 +200,19 @@ export function renderParkSecrets(parkFilter = 'all') {
     <div class="secret-card">
       <div class="secret-badge-group">
         <span class="park-pill">${secret.park}</span>
-        <span style="font-size: 0.78rem; color: var(--gold-light); font-weight: 600;">${secret.category}</span>
+        <span style="font-size: 0.8rem; color: #b45309; font-weight: 700;">${secret.category}</span>
       </div>
       <h4 class="secret-title">${secret.title}</h4>
-      <div style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 10px;">📍 ${secret.location}</div>
-      <p style="font-size: 0.92rem;">${secret.description}</p>
+      <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px;">📍 ${secret.location}</div>
+      <p style="font-size: 0.93rem;">${secret.description}</p>
       
       <div class="secret-catholic-box">
         <strong>✦ Catholic & Sacramental Significance</strong>
         ${secret.catholicConnection}
       </div>
 
-      <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: auto;">
-        <span style="color: var(--gold-light); font-weight: 600;">Family Tip:</span> ${secret.insiderTip}
+      <div style="font-size: 0.88rem; color: var(--text-secondary); margin-top: auto;">
+        <span style="color: #b45309; font-weight: 700;">Family Tip:</span> ${secret.insiderTip}
       </div>
     </div>
   `).join('');
@@ -184,16 +226,16 @@ function renderPrayerNooks() {
     <div class="cards-grid-2">
       ${prayerNooksData.map(group => `
         <div class="parish-card">
-          <h4 style="color: var(--gold-light); font-size: 1.3rem; margin-bottom: 16px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 8px;">
+          <h4 style="color: var(--blue-primary); font-size: 1.3rem; margin-bottom: 16px; border-bottom: 2px solid var(--blue-light); padding-bottom: 8px;">
             🏰 ${group.park}
           </h4>
-          <div style="display: grid; gap: 18px;">
+          <div style="display: grid; gap: 16px;">
             ${group.nooks.map(nook => `
-              <div style="background: rgba(4, 9, 20, 0.5); padding: 14px; border-radius: var(--radius-sm); border: 1px solid rgba(255, 255, 255, 0.05);">
-                <div style="font-weight: 700; color: #fff; font-size: 1.05rem; margin-bottom: 4px;">${nook.name}</div>
-                <div style="font-size: 0.82rem; color: var(--marian-light); margin-bottom: 6px;">📍 ${nook.location}</div>
-                <div style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 6px;">${nook.ambiance}</div>
-                <div style="font-size: 0.84rem; color: var(--gold-light);"><strong>Ideal for:</strong> ${nook.bestFor}</div>
+              <div style="background: var(--bg-surface-soft); padding: 14px; border-radius: var(--radius-sm); border-left: 3px solid var(--sun-gold);">
+                <div style="font-weight: 800; color: var(--text-primary); font-size: 1.05rem; margin-bottom: 4px;">${nook.name}</div>
+                <div style="font-size: 0.82rem; color: var(--blue-primary); margin-bottom: 6px;">📍 ${nook.location}</div>
+                <div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 6px;">${nook.ambiance}</div>
+                <div style="font-size: 0.85rem; color: #b45309;"><strong>Ideal for:</strong> ${nook.bestFor}</div>
               </div>
             `).join('')}
           </div>
@@ -204,7 +246,6 @@ function renderPrayerNooks() {
 }
 
 function setupPilgrimageFilters() {
-  // Parish Filter chips
   const parishChips = document.querySelectorAll('#parish-filter-chips .filter-chip');
   const parishSearch = document.getElementById('parish-search-input');
 
@@ -225,7 +266,6 @@ function setupPilgrimageFilters() {
     });
   }
 
-  // Park Secrets Filter chips
   const parkChips = document.querySelectorAll('#park-filter-chips .filter-chip');
   parkChips.forEach(chip => {
     chip.addEventListener('click', () => {

@@ -84,8 +84,8 @@
       <!-- Stats Ribbon -->
       <div class="hero-stats-ribbon">
         <div class="stat-item">
-          <span class="stat-number">6+</span>
-          <span class="stat-label">Parishes Near WDW</span>
+          <span class="stat-number">10+</span>
+          <span class="stat-label">Parishes & Rites Tracked</span>
         </div>
         <div class="stat-item">
           <span class="stat-number">8+</span>
@@ -121,19 +121,23 @@
       <!-- Basilica of Mary Queen of the Universe Spotlight -->
       <div id="basilica-spotlight-container"></div>
 
-      <!-- Mass & Parish Finder -->
+      <!-- Mass & Parish Finder with Liturgical Traditions -->
       <div style="margin: 50px 0 30px;">
         <h3 style="font-size: 1.8rem; margin-bottom: 6px; color: var(--text-primary);">
-          ⛪ Catholic Parishes Near Disney World
+          ⛪ Catholic Parishes & Liturgical Traditions Near Disney World
         </h3>
         <p style="color: var(--text-secondary); margin-bottom: 24px;">
-          Find Sunday morning, evening, or daily Mass within 15 minutes of Disney gates.
+          Find Sunday morning, evening, or daily Mass within 15 minutes of Disney gates across the Roman Rite, Traditional Latin Mass (TLM), Anglican Use Ordinariate, and Byzantine Eastern Catholic Rites.
         </p>
 
         <!-- Filter Bar -->
         <div class="filter-bar">
           <div class="filter-chips" id="parish-filter-chips">
-            <button class="filter-chip active" data-filter="all">All Parishes</button>
+            <button class="filter-chip active" data-filter="all">All Traditions (10)</button>
+            <button class="filter-chip" data-filter="tlm" style="border-color: #c4b5fd;">☩ Traditional Latin Mass (TLM)</button>
+            <button class="filter-chip" data-filter="ordinariate" style="border-color: #fecdd3;">👑 Anglican Ordinariate</button>
+            <button class="filter-chip" data-filter="byzantine" style="border-color: #fde68a;">☦ Byzantine & Eastern Rites</button>
+            <button class="filter-chip" data-filter="roman">☀️ Roman Rite</button>
             <button class="filter-chip" data-filter="sunday-am">Sunday Morning</button>
             <button class="filter-chip" data-filter="sunday-pm">Sunday Evening</button>
             <button class="filter-chip" data-filter="daily">Daily Mass</button>
@@ -143,7 +147,7 @@
 
           <div class="search-input-wrapper">
             <span class="search-icon">🔍</span>
-            <input type="text" id="parish-search-input" class="search-input" placeholder="Search parish, town, address...">
+            <input type="text" id="parish-search-input" class="search-input" placeholder="Search rite, parish, town, address...">
           </div>
         </div>
 
