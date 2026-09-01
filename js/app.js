@@ -6,7 +6,6 @@ import { initItineraryPlanner } from './components/itinerary-planner.js';
 import { initCreatorsHub } from './components/creators-hub.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  initStarlightParticles();
   initTabNavigation();
   initPilgrimageHub();
   initVirtueHub();
@@ -14,37 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initItineraryPlanner();
   initCreatorsHub();
   initModalListeners();
+  initLightbox();
 });
-
-// Subtle Twinkling Starlight Background Generator
-function initStarlightParticles() {
-  const container = document.getElementById('starlight-container');
-  if (!container) return;
-
-  const starCount = 60;
-  const fragment = document.createDocumentFragment();
-
-  for (let i = 0; i < starCount; i++) {
-    const star = document.createElement('div');
-    star.className = 'star';
-    const top = Math.random() * 100;
-    const left = Math.random() * 100;
-    const size = Math.random() * 2.5 + 1;
-    const duration = Math.random() * 3 + 2.5;
-    const delay = Math.random() * 5;
-
-    star.style.top = `${top}%`;
-    star.style.left = `${left}%`;
-    star.style.width = `${size}px`;
-    star.style.height = `${size}px`;
-    star.style.setProperty('--duration', `${duration}s`);
-    star.style.setProperty('--delay', `${delay}s`);
-
-    fragment.appendChild(star);
-  }
-
-  container.appendChild(fragment);
-}
 
 // Tab Switching & Deep Linking
 function initTabNavigation() {
@@ -63,7 +33,6 @@ function initTabNavigation() {
       content.classList.toggle('active', isTarget);
     });
 
-    // Update URL hash without jumping
     if (history.replaceState) {
       history.replaceState(null, null, `#${targetTabId}`);
     }
@@ -76,13 +45,11 @@ function initTabNavigation() {
     });
   });
 
-  // Check URL hash on load
   const hash = window.location.hash.replace('#', '');
   if (hash && document.getElementById(hash)) {
     switchTab(hash);
   }
 
-  // Global helper for CTA buttons
   window.navigateToTab = (tabId) => {
     switchTab(tabId);
     const element = document.getElementById(tabId);
@@ -108,4 +75,25 @@ function initModalListeners() {
       modals.forEach(m => m.classList.remove('open'));
     }
   });
+}
+
+// Lightbox for viewing artwork in full resolution
+function initLightbox() {
+  window.openImageLightbox = (src, title) => {
+    const modalBackdrop = document.getElementById('virtue-modal');
+    const modalContent = document.getElementById('virtue-modal-content');
+    if (!modalBackdrop || !modalContent) return;
+
+    modalContent.innerHTML = `
+      <div class="lightbox-img-wrapper">
+        <h3 style="color: var(--text-primary); margin-bottom: 14px;">${title}</h3>
+        <img src="${src}" alt="${title}" class="lightbox-img">
+        <div style="margin-top: 18px; text-align: center;">
+          <button class="btn btn-primary" onclick="window.closeVirtueModal()">Close Image</button>
+        </div>
+      </div>
+    `;
+
+    modalBackdrop.classList.add('open');
+  };
 }
