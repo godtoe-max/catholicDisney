@@ -222,27 +222,23 @@ function renderPrayerNooks() {
   const container = document.getElementById('prayer-nooks-container');
   if (!container) return;
 
-  container.innerHTML = `
-    <div class="cards-grid-2">
-      ${prayerNooksData.map(group => `
-        <div class="parish-card">
-          <h4 style="color: var(--blue-primary); font-size: 1.3rem; margin-bottom: 16px; border-bottom: 2px solid var(--blue-light); padding-bottom: 8px;">
-            🏰 ${group.park}
-          </h4>
-          <div style="display: grid; gap: 16px;">
-            ${group.nooks.map(nook => `
-              <div style="background: var(--bg-surface-soft); padding: 14px; border-radius: var(--radius-sm); border-left: 3px solid var(--sun-gold);">
-                <div style="font-weight: 800; color: var(--text-primary); font-size: 1.05rem; margin-bottom: 4px;">${nook.name}</div>
-                <div style="font-size: 0.82rem; color: var(--blue-primary); margin-bottom: 6px;">📍 ${nook.location}</div>
-                <div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 6px;">${nook.ambiance}</div>
-                <div style="font-size: 0.85rem; color: #b45309;"><strong>Ideal for:</strong> ${nook.bestFor}</div>
-              </div>
-            `).join('')}
+  container.innerHTML = prayerNooksData.map(group => `
+    <div class="parish-card nook-park-card">
+      <h4 style="color: var(--blue-primary); font-size: 1.3rem; margin-bottom: 16px; border-bottom: 2px solid var(--blue-light); padding-bottom: 8px;">
+        🏰 ${group.park}
+      </h4>
+      <div style="display: grid; gap: 14px;">
+        ${group.nooks.map(nook => `
+          <div style="background: var(--bg-surface-soft); padding: 14px; border-radius: var(--radius-sm); border-left: 3px solid var(--sun-gold);">
+            <div style="font-weight: 800; color: var(--text-primary); font-size: 1.05rem; margin-bottom: 4px;">${nook.name}</div>
+            <div style="font-size: 0.82rem; color: var(--blue-primary); margin-bottom: 6px;">📍 ${nook.location}</div>
+            <div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 6px;">${nook.ambiance}</div>
+            <div style="font-size: 0.85rem; color: #b45309;"><strong>Ideal for:</strong> ${nook.bestFor}</div>
           </div>
-        </div>
-      `).join('')}
+        `).join('')}
+      </div>
     </div>
-  `;
+  `).join('');
 }
 
 function setupPilgrimageFilters() {
@@ -296,6 +292,22 @@ function setupPilgrimageFilters() {
   if (secretsNextBtn && parkSecretsGrid) {
     secretsNextBtn.addEventListener('click', () => {
       parkSecretsGrid.scrollBy({ left: 380, behavior: 'smooth' });
+    });
+  }
+
+  const nooksContainer = document.getElementById('prayer-nooks-container');
+  const nooksPrevBtn = document.getElementById('nooks-scroll-prev');
+  const nooksNextBtn = document.getElementById('nooks-scroll-next');
+
+  if (nooksPrevBtn && nooksContainer) {
+    nooksPrevBtn.addEventListener('click', () => {
+      nooksContainer.scrollBy({ left: -380, behavior: 'smooth' });
+    });
+  }
+
+  if (nooksNextBtn && nooksContainer) {
+    nooksNextBtn.addEventListener('click', () => {
+      nooksContainer.scrollBy({ left: 380, behavior: 'smooth' });
     });
   }
 

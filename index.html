@@ -207,9 +207,19 @@
           <p class="section-description">
             Tested, shaded, serene locations inside each park for praying a family Rosary, reading the Liturgy of the Hours, or helping overstimulated little ones recharge.
           </p>
+          <div style="margin-top: 8px;">
+            <span style="font-size: 0.85rem; color: var(--blue-primary); font-weight: 700;">
+              ↔ Swipe horizontally to browse parks
+            </span>
+          </div>
         </div>
 
-        <div id="prayer-nooks-container"></div>
+        <!-- Horizontal Scroll Carousel for Quiet Prayer Nooks -->
+        <div class="carousel-wrapper">
+          <button class="carousel-arrow prev" id="nooks-scroll-prev" aria-label="Previous Prayer Nooks">‹</button>
+          <div id="prayer-nooks-container" class="horizontal-scroll-carousel"></div>
+          <button class="carousel-arrow next" id="nooks-scroll-next" aria-label="Next Prayer Nooks">›</button>
+        </div>
       </div>
 
       <!-- Catholic Park Tips & Travel Prayers -->
