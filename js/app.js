@@ -4,6 +4,7 @@ import { initVirtueHub } from './components/virtue-hub.js';
 import { initLiturgicalHub } from './components/liturgical-hub.js';
 import { initItineraryPlanner } from './components/itinerary-planner.js';
 import { initCreatorsHub } from './components/creators-hub.js';
+import { initWallpapersHub } from './components/wallpapers-hub.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   initTabNavigation();
@@ -12,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initLiturgicalHub();
   initItineraryPlanner();
   initCreatorsHub();
+  initWallpapersHub();
   initModalListeners();
   initLightbox();
 });
@@ -77,7 +79,7 @@ function initModalListeners() {
   });
 }
 
-// Lightbox for viewing artwork in full resolution
+// Lightbox for viewing artwork & wallpapers in full resolution
 function initLightbox() {
   window.openImageLightbox = (src, title) => {
     const modalBackdrop = document.getElementById('virtue-modal');
@@ -86,10 +88,15 @@ function initLightbox() {
 
     modalContent.innerHTML = `
       <div class="lightbox-img-wrapper">
-        <h3 style="color: var(--text-primary); margin-bottom: 14px;">${title}</h3>
+        <h3 style="color: var(--text-primary); margin-bottom: 12px; font-size: 1.35rem;">${title}</h3>
         <img src="${src}" alt="${title}" class="lightbox-img">
-        <div style="margin-top: 18px; text-align: center;">
-          <button class="btn btn-primary" onclick="window.closeVirtueModal()">Close Image</button>
+        <div style="margin-top: 16px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+          <a href="${src}" download class="btn btn-sun" style="font-size: 0.9rem;">
+            📥 Download Wallpaper
+          </a>
+          <button class="btn btn-outline" onclick="window.closeVirtueModal()" style="font-size: 0.9rem;">
+            Close
+          </button>
         </div>
       </div>
     `;

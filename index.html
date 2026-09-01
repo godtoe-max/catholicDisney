@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <title>Catholic Disney | Where Faith & Wonder Walk Hand-in-Hand</title>
-  <meta name="description" content="Your cheerful Catholic guide to Walt Disney World pilgrimages, Sunday Mass near the parks, virtue-filled movie nights, and family liturgical living.">
+  <meta name="description" content="Your cheerful Catholic guide to Walt Disney World pilgrimages, Sunday Mass near the parks, virtue-filled movie nights, liturgical living, and free high-resolution Catholic Disney wallpapers.">
   
   <!-- Design System & Stylesheets -->
   <link rel="stylesheet" href="css/design-system.css">
@@ -39,6 +39,9 @@
         </button>
         <button class="nav-tab-btn" data-tab="planner-tab" role="tab" aria-selected="false">
           <span>🗺️</span> Pilgrimage Planner
+        </button>
+        <button class="nav-tab-btn" data-tab="wallpapers-tab" role="tab" aria-selected="false">
+          <span>📱</span> Wallpapers
         </button>
         <button class="nav-tab-btn" data-tab="creators-tab" role="tab" aria-selected="false">
           <span>🎨</span> Animation & Arts
@@ -76,8 +79,11 @@
         <button class="btn btn-primary" onclick="window.navigateToTab('virtue-tab')">
           📖 Family Movie Night Guides
         </button>
+        <button class="btn btn-outline" onclick="window.navigateToTab('wallpapers-tab')">
+          📱 Download Free Wallpapers
+        </button>
         <button class="btn btn-outline" onclick="window.navigateToTab('planner-tab')">
-          🗺️ Plan a Catholic Disney Trip
+          🗺️ Plan Your Pilgrimage
         </button>
       </div>
 
@@ -85,15 +91,15 @@
       <div class="hero-stats-ribbon">
         <div class="stat-item">
           <span class="stat-number">10+</span>
-          <span class="stat-label">Parishes & Rites Tracked</span>
+          <span class="stat-label">Parishes & Traditions</span>
         </div>
         <div class="stat-item">
           <span class="stat-number">8+</span>
           <span class="stat-label">Catholic Park Secrets</span>
         </div>
         <div class="stat-item">
-          <span class="stat-number">100%</span>
-          <span class="stat-label">Virtue-Filled Fun</span>
+          <span class="stat-number">6+</span>
+          <span class="stat-label">Free HD Wallpapers</span>
         </div>
         <div class="stat-item">
           <span class="stat-number">10+</span>
@@ -355,7 +361,33 @@
     </section>
 
     <!-- ========================================================
-         TAB 5: CATHOLIC ANIMATION & CREATIVE SHOWCASE
+         TAB 5: CATHOLIC DISNEY WALLPAPERS HUB (NEW!)
+         ======================================================== -->
+    <section id="wallpapers-tab" class="tab-content" role="tabpanel">
+      <div class="section-header">
+        <span class="section-tag">Free High-Res Downloads</span>
+        <h2 class="section-title">Catholic Disney <span class="text-gradient-sun">Wallpapers</span></h2>
+        <p class="section-description">
+          Beautify your devices with joyful, sunlit Catholic Disney wallpapers formatted for phones (iPhone & Android), 4K desktops, and iPads/tablets. Free to download!
+        </p>
+      </div>
+
+      <!-- Device Filters -->
+      <div class="filter-bar">
+        <div class="filter-chips" id="wallpaper-filter-chips">
+          <button class="filter-chip active" data-device="all">All Wallpapers</button>
+          <button class="filter-chip" data-device="phone">📱 Phones (9:16)</button>
+          <button class="filter-chip" data-device="desktop">💻 Desktops (16:9 4K)</button>
+          <button class="filter-chip" data-device="tablet">📟 Tablets & iPads (4:3)</button>
+        </div>
+      </div>
+
+      <!-- Wallpapers Cards Grid -->
+      <div id="wallpapers-grid" class="cards-grid-3"></div>
+    </section>
+
+    <!-- ========================================================
+         TAB 6: CATHOLIC ANIMATION & CREATIVE SHOWCASE
          ======================================================== -->
     <section id="creators-tab" class="tab-content" role="tabpanel">
       <div class="section-header">
@@ -413,6 +445,7 @@
             <li><a href="#pilgrimage-tab" onclick="window.navigateToTab('pilgrimage-tab')">Mary Queen of the Universe Basilica</a></li>
             <li><a href="#pilgrimage-tab" onclick="window.navigateToTab('pilgrimage-tab')">Mass Finder Near WDW</a></li>
             <li><a href="#virtue-tab" onclick="window.navigateToTab('virtue-tab')">Virtue in the Vault</a></li>
+            <li><a href="#wallpapers-tab" onclick="window.navigateToTab('wallpapers-tab')">Free HD Wallpapers</a></li>
             <li><a href="#planner-tab" onclick="window.navigateToTab('planner-tab')">Vacation Itinerary Generator</a></li>
           </ul>
         </div>
