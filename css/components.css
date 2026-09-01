@@ -619,6 +619,7 @@
 
 .horizontal-scroll-carousel {
   display: flex;
+  align-items: stretch;
   gap: 20px;
   overflow-x: auto;
   overflow-y: hidden;
@@ -630,42 +631,89 @@
   box-sizing: border-box;
 }
 
-.horizontal-scroll-carousel::-webkit-scrollbar {
-  height: 8px;
-}
-
-.horizontal-scroll-carousel::-webkit-scrollbar-track {
-  background: #f1f5f9;
-  border-radius: var(--radius-full);
-}
-
-.horizontal-scroll-carousel::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: var(--radius-full);
-}
-
-.horizontal-scroll-carousel::-webkit-scrollbar-thumb:hover {
-  background: var(--blue-primary);
-}
-
 .horizontal-scroll-carousel .parish-card,
 .horizontal-scroll-carousel .secret-card,
+.horizontal-scroll-carousel .nook-card,
 .horizontal-scroll-carousel .nook-park-card {
   flex: 0 0 380px;
   max-width: 380px;
   min-width: 300px;
   scroll-snap-align: start;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 @media (max-width: 480px) {
   .horizontal-scroll-carousel .parish-card,
   .horizontal-scroll-carousel .secret-card,
+  .horizontal-scroll-carousel .nook-card,
   .horizontal-scroll-carousel .nook-park-card {
     flex: 0 0 calc(100vw - 56px);
     max-width: calc(100vw - 56px);
     min-width: 260px;
   }
+}
+
+/* Prayer Nook Individual Cards (Clean Top-Aligned) */
+.nook-card {
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start !important;
+  align-items: stretch;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-normal);
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.nook-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.nook-name {
+  font-size: 1.25rem;
+  color: var(--text-primary);
+  margin-top: 8px;
+  margin-bottom: 4px;
+}
+
+.nook-location {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.nook-ambiance {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+
+.nook-best-for {
+  background: #fffbeb;
+  border-left: 3px solid var(--sun-gold);
+  padding: 10px 14px;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  margin-bottom: 12px;
+  font-size: 0.88rem;
+  color: #78350f;
+  line-height: 1.45;
+}
+
+.nook-amenities {
+  font-size: 0.84rem;
+  color: #475569;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid #f1f5f9;
 }
 
 .carousel-arrow {

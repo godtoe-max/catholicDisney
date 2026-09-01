@@ -218,24 +218,42 @@ export function renderParkSecrets(parkFilter = 'all') {
   `).join('');
 }
 
-function renderPrayerNooks() {
+export function renderPrayerNooks(parkFilter = 'all') {
   const container = document.getElementById('prayer-nooks-container');
   if (!container) return;
 
-  container.innerHTML = prayerNooksData.map(group => `
-    <div class="parish-card nook-park-card">
-      <h4 style="color: var(--blue-primary); font-size: 1.3rem; margin-bottom: 16px; border-bottom: 2px solid var(--blue-light); padding-bottom: 8px;">
-        🏰 ${group.park}
-      </h4>
-      <div style="display: grid; gap: 14px;">
-        ${group.nooks.map(nook => `
-          <div style="background: var(--bg-surface-soft); padding: 14px; border-radius: var(--radius-sm); border-left: 3px solid var(--sun-gold);">
-            <div style="font-weight: 800; color: var(--text-primary); font-size: 1.05rem; margin-bottom: 4px;">${nook.name}</div>
-            <div style="font-size: 0.82rem; color: var(--blue-primary); margin-bottom: 6px;">📍 ${nook.location}</div>
-            <div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 6px;">${nook.ambiance}</div>
-            <div style="font-size: 0.85rem; color: #b45309;"><strong>Ideal for:</strong> ${nook.bestFor}</div>
-          </div>
-        `).join('')}
+  // Flatten all nooks with park context
+  const allNooks = [];
+  prayerNooksData.forEach(group => {
+    group.nooks.forEach(nook => {
+      allNooks.push({
+        ...nook,
+        park: group.park
+      });
+    });
+  });
+
+  const filtered = parkFilter === 'all'
+    ? allNooks
+    : allNooks.filter(n => n.park.toLowerCase().includes(parkFilter.toLowerCase()));
+
+  container.innerHTML = filtered.map(nook => `
+    <div class="nook-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+        <span class="park-pill">${nook.park}</span>
+        <span style="font-size: 0.8rem; color: #b45309; font-weight: 700;">🕊️ Sanctuary</span>
+      </div>
+      <h4 class="nook-name">${nook.name}</h4>
+      <div class="nook-location">📍 ${nook.location}</div>
+      <p class="nook-ambiance">${nook.ambiance}</p>
+      
+      <div class="nook-best-for">
+        <strong style="display: block; font-size: 0.8rem; text-transform: uppercase; color: #92400e; margin-bottom: 2px;">Spiritual Recommendation:</strong>
+        ${nook.bestFor}
+      </div>
+
+      <div class="nook-amenities">
+        <strong>🌿 Spot Details:</strong> ${nook.amenities}
       </div>
     </div>
   `).join('');
@@ -319,6 +337,17 @@ function setupPilgrimageFilters() {
       const park = chip.getAttribute('data-park') || 'all';
       renderParkSecrets(park);
       if (parkSecretsGrid) parkSecretsGrid.scrollTo({ left: 0, behavior: 'smooth' });
+    });
+  });
+
+  const nookChips = document.querySelectorAll('#nook-filter-chips .filter-chip');
+  nookChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      nookChips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      const park = chip.getAttribute('data-park') || 'all';
+      renderPrayerNooks(park);
+      if (nooksContainer) nooksContainer.scrollTo({ left: 0, behavior: 'smooth' });
     });
   });
 
