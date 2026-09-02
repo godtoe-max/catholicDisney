@@ -46,6 +46,19 @@ window.switchWaitMode = (mode) => {
   }
 };
 
+// Hero Icon Artwork Switcher
+window.switchHeroIcon = (type) => {
+  const img = document.getElementById('hero-icon-display');
+  if (!img) return;
+  if (type === 'queen') {
+    img.src = 'assets/images/queen_of_universe_icon.jpg';
+    img.alt = 'Mary Queen of the Universe Altarpiece with Saint Michael and Saint Gabriel';
+  } else {
+    img.src = 'assets/images/holy_family_icon.jpg';
+    img.alt = 'The Holy Family in Byzantine Gold Leaf Iconography with Fairytale Castle';
+  }
+};
+
 // Tab Switching & Deep Linking
 function initTabNavigation() {
   const navLinks = document.querySelectorAll('.desktop-nav-link, .drawer-nav-item');
