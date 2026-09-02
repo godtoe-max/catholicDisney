@@ -3,6 +3,7 @@
 // Matches attractions with tier classifications, 0.72 deflated real waits, and Catholic prayer nooks
 
 import { RIDE_TIERS } from '../data/ride-tiers.js';
+import { getCompanionForRide } from '../data/queue-companions-data.js';
 
 const PARKS = [
   { id: 6, name: "Magic Kingdom", icon: "🏰" },
@@ -178,6 +179,8 @@ export function renderLiveWaitTimes(containerId = 'live-wait-times-container') {
             const tierMeta = Object.values(RIDE_TIERS).find(t => t.name.toLowerCase() === r.name.toLowerCase() || r.name.toLowerCase().includes(t.name.toLowerCase()));
             const prayerNook = tierMeta ? tierMeta.nearbyPrayerNook : null;
 
+            const companion = getCompanionForRide(r.name);
+
             return `
               <div style="background: #ffffff; border: 1.5px solid ${!r.is_open ? '#f1f5f9' : (isLongWait ? '#fde68a' : '#e2e8f0')}; border-radius: 16px; padding: 16px 18px; box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03); opacity: ${r.is_open ? '1' : '0.65'};">
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 8px;">
@@ -213,9 +216,21 @@ export function renderLiveWaitTimes(containerId = 'live-wait-times-container') {
                   </div>
                 </div>
 
+                <!-- Queue Companion Saint Link -->
+                ${companion ? `
+                  <div style="margin-top: 8px; display: flex; justify-content: space-between; align-items: center; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 6px 10px; font-size: 0.78rem;">
+                    <span style="color: #166534; font-weight: 700;">
+                      ✨ <strong>Saint Story:</strong> ${companion.saint.split(' (')[0]}
+                    </span>
+                    <button class="btn btn-sm btn-outline" onclick="window.openCompanionModal('${companion.id}')" style="font-size: 0.72rem; padding: 2px 8px; border-radius: 6px; white-space: nowrap; background: #ffffff;">
+                      Read in Line 📖
+                    </button>
+                  </div>
+                ` : ''}
+
                 <!-- Catholic Queue Rosary Opportunity & Nearby Nook -->
                 ${r.is_open && isLongWait ? `
-                  <div style="background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 6px 10px; margin-top: 10px; font-size: 0.78rem; color: #92400e; display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+                  <div style="background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 6px 10px; margin-top: 8px; font-size: 0.78rem; color: #92400e; display: flex; justify-content: space-between; align-items: center; gap: 8px;">
                     <span>
                       📿 <strong>${r.wait_time >= 50 ? 'Full Rosary Line' : '1-2 Decades Window'}</strong> (${deflatedWait}m actual)
                     </span>

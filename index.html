@@ -33,6 +33,9 @@
           <button class="desktop-nav-link active" data-tab="pilgrimage-tab">
             <span>🏰</span> Florida & Parks
           </button>
+          <button class="desktop-nav-link" data-tab="companions-tab">
+            <span>✨</span> Saints & Rides
+          </button>
           <button class="desktop-nav-link" data-tab="rosary-tab">
             <span>📿</span> Queue Rosary
           </button>
@@ -93,7 +96,10 @@
         <button class="btn btn-sun" onclick="window.navigateToTab('pilgrimage-tab')">
           🏰 Florida & Theme Park Guide
         </button>
-        <button class="btn btn-primary" onclick="window.navigateToTab('rosary-tab')">
+        <button class="btn btn-primary" onclick="window.navigateToTab('companions-tab')">
+          ✨ Saints & Rides (Queue Stories)
+        </button>
+        <button class="btn btn-outline" onclick="window.navigateToTab('rosary-tab')">
           📿 Interactive Queue Rosary
         </button>
         <button class="btn btn-outline" onclick="window.navigateToTab('wait-times-tab')">
@@ -102,9 +108,6 @@
         <button class="btn btn-outline" onclick="window.navigateToTab('virtue-tab')">
           📖 Family Movie Night Guides
         </button>
-        <button class="btn btn-outline" onclick="window.navigateToTab('wallpapers-tab')">
-          📱 Download Free Wallpapers
-        </button>
         <button class="btn btn-outline" onclick="window.navigateToTab('planner-tab')">
           🗺️ Plan Your Pilgrimage
         </button>
@@ -112,6 +115,10 @@
 
       <!-- Stats Ribbon -->
       <div class="hero-stats-ribbon">
+        <div class="stat-item">
+          <span class="stat-number">40+</span>
+          <span class="stat-label">Saints on Rides</span>
+        </div>
         <div class="stat-item">
           <span class="stat-number">10+</span>
           <span class="stat-label">Parishes & Traditions</span>
@@ -287,6 +294,13 @@
           </div>
         </div>
       </div>
+    </section>
+
+    <!-- ========================================================
+         TAB: QUEUE COMPANIONS (SAINTS, SCIENTISTS & RIDES)
+         ======================================================== -->
+    <section id="companions-tab" class="tab-content" role="tabpanel">
+      <div id="queue-companions-container"></div>
     </section>
 
     <!-- ========================================================
@@ -687,6 +701,14 @@
           </div>
         </button>
 
+        <button class="drawer-nav-item" data-tab="companions-tab">
+          <span class="drawer-nav-icon">✨</span>
+          <div class="drawer-nav-text">
+            <span class="drawer-nav-title">Saints &amp; Rides (Queue Stories)</span>
+            <span class="drawer-nav-subtext">Catholic Connections, Scientists &amp; Stories for Every Ride</span>
+          </div>
+        </button>
+
         <button class="drawer-nav-item" data-tab="rosary-tab">
           <span class="drawer-nav-icon">📿</span>
           <div class="drawer-nav-text">
@@ -808,6 +830,6 @@
   </footer>
 
   <!-- Application JS Entry Point with Cache-Buster -->
-  <script type="module" src="js/app.js?v=20260902b"></script>
+  <script type="module" src="js/app.js?v=20260902c"></script>
 </body>
 </html>

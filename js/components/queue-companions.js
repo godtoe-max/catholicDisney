@@ -1,0 +1,223 @@
+// Catholic Disney: Queue Companions Interactive Explorer
+// Browse and read saint connections, Christian scientist stories, and queue reflections for Disney attractions
+
+import { QUEUE_COMPANIONS } from '../data/queue-companions-data.js';
+
+let activeParkFilter = 'all';
+let searchQuery = '';
+let activeModalCompanion = null;
+
+export function initQueueCompanions() {
+  const container = document.getElementById('queue-companions-container');
+  if (!container) return;
+
+  renderQueueCompanions();
+}
+
+export function renderQueueCompanions() {
+  const container = document.getElementById('queue-companions-container');
+  if (!container) return;
+
+  // Filter items
+  const filtered = QUEUE_COMPANIONS.filter(item => {
+    const matchesPark = (activeParkFilter === 'all') || item.park.toLowerCase().includes(activeParkFilter.toLowerCase());
+    const matchesSearch = !searchQuery || 
+      item.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      item.saint.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.land.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.story.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesPark && matchesSearch;
+  });
+
+  container.innerHTML = `
+    <div class="queue-companions-hub">
+      <!-- Section Header -->
+      <div class="section-header" style="text-align: center; margin-bottom: 28px;">
+        <span class="section-tag">Faith in the Queue • Stories, Saints &amp; Miracles</span>
+        <h2 class="section-title">Queue Companions: <span class="text-gradient-sun">Catholic Saints at Disney Attractions</span></h2>
+        <p class="section-description" style="max-width: 780px; margin: 0 auto;">
+          Turn 40-minute line waits into captivating family storytelling moments. Tap any ride below to discover the Catholic saint, Christian scientist, sacred miracle, or virtue connected to that attraction!
+        </p>
+      </div>
+
+      <!-- Filter Controls Bar -->
+      <div style="background: #ffffff; border: 1.5px solid var(--border-subtle); border-radius: var(--radius-xl); padding: 18px 22px; margin-bottom: 24px; box-shadow: var(--shadow-sm);">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+          <!-- Park Filter Chips -->
+          <div class="filter-chips" style="gap: 6px; padding: 0;">
+            <button class="filter-chip ${activeParkFilter === 'all' ? 'active' : ''}" onclick="window.setCompanionPark('all')">
+              🌟 All Parks (${QUEUE_COMPANIONS.length})
+            </button>
+            <button class="filter-chip ${activeParkFilter === 'magic' ? 'active' : ''}" onclick="window.setCompanionPark('magic')">
+              🏰 Magic Kingdom
+            </button>
+            <button class="filter-chip ${activeParkFilter === 'epcot' ? 'active' : ''}" onclick="window.setCompanionPark('epcot')">
+              🌐 EPCOT
+            </button>
+            <button class="filter-chip ${activeParkFilter === 'hollywood' ? 'active' : ''}" onclick="window.setCompanionPark('hollywood')">
+              🎬 Hollywood Studios
+            </button>
+            <button class="filter-chip ${activeParkFilter === 'animal' ? 'active' : ''}" onclick="window.setCompanionPark('animal')">
+              🌳 Animal Kingdom
+            </button>
+          </div>
+
+          <!-- Search Input -->
+          <div style="flex: 1; min-width: 240px; max-width: 340px;">
+            <input type="text" class="form-input" placeholder="🔍 Search ride, saint, or theme..." value="${searchQuery}" oninput="window.handleCompanionSearch(this.value)" style="padding: 8px 14px; font-size: 0.88rem; border-radius: 999px; background: #f8fafc;">
+          </div>
+        </div>
+      </div>
+
+      <!-- Attraction Cards Grid -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 18px;">
+        ${filtered.map(item => `
+          <div class="companion-card" style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 20px; padding: 20px; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s, box-shadow 0.2s;" onmouseenter="this.style.transform='translateY(-2px)'" onmouseleave="this.style.transform='translateY(0)'">
+            <div>
+              <!-- Header Badges -->
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; gap: 8px;">
+                <span class="park-pill" style="font-size: 0.72rem; padding: 2px 8px; background: #f1f5f9; color: #475569;">
+                  ${item.park} • ${item.land}
+                </span>
+                <span style="font-size: 1.4rem;">${item.icon}</span>
+              </div>
+
+              <!-- Attraction Name -->
+              <h3 style="font-size: 1.25rem; color: #0f172a; margin: 0 0 6px; font-weight: 800; line-height: 1.3;">
+                ${item.name}
+              </h3>
+
+              <!-- Associated Saint Callout -->
+              <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 10px 12px; margin-bottom: 12px;">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span style="font-size: 1.1rem;">☩</span>
+                  <strong style="font-size: 0.95rem; color: #1e40af;">${item.saint}</strong>
+                </div>
+                <div style="font-size: 0.78rem; color: #3b82f6; font-weight: 700; margin-top: 2px;">
+                  ${item.saintTitle}
+                </div>
+              </div>
+
+              <!-- Brief Story Excerpt -->
+              <p style="font-size: 0.88rem; color: #475569; line-height: 1.5; margin: 0 0 16px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                ${item.story}
+              </p>
+            </div>
+
+            <!-- Read Story Button -->
+            <button class="btn btn-sun" onclick="window.openCompanionModal('${item.id}')" style="width: 100%; font-size: 0.9rem; padding: 10px 14px; border-radius: 12px; justify-content: center;">
+              📖 Read Story in Line
+            </button>
+          </div>
+        `).join('')}
+      </div>
+
+      ${filtered.length === 0 ? `
+        <div style="text-align: center; padding: 50px 20px; background: #ffffff; border-radius: 20px; border: 1px solid #e2e8f0; color: #64748b;">
+          No attractions found matching "${searchQuery}". Try a different keyword!
+        </div>
+      ` : ''}
+    </div>
+
+    <!-- Active Story Modal Container -->
+    <div id="companion-modal-wrapper" style="display: ${activeModalCompanion ? 'flex' : 'none'}; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(6px); z-index: 1000; align-items: center; justify-content: center; padding: 20px;">
+      ${activeModalCompanion ? `
+        <div style="background: #ffffff; border-radius: 24px; max-width: 680px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 28px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); position: relative; border: 2px solid #fbbf24;">
+          <!-- Close Button -->
+          <button onclick="window.closeCompanionModal()" style="position: absolute; top: 18px; right: 18px; background: #f1f5f9; border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #475569;">
+            ✕
+          </button>
+
+          <!-- Modal Header -->
+          <div style="margin-bottom: 18px; padding-right: 40px;">
+            <span class="park-pill" style="font-size: 0.78rem; background: #fef3c7; color: #92400e; font-weight: 800;">
+              ${activeModalCompanion.icon} ${activeModalCompanion.park} • ${activeModalCompanion.land}
+            </span>
+            <h2 style="font-size: 1.7rem; color: #0f172a; margin: 8px 0 4px; font-weight: 800;">
+              ${activeModalCompanion.name}
+            </h2>
+            <div style="font-size: 1.15rem; font-weight: 800; color: #1a73e8; display: flex; align-items: center; gap: 6px;">
+              <span>☩</span> ${activeModalCompanion.saint}
+            </div>
+            <div style="font-size: 0.85rem; color: #64748b; font-weight: 600;">
+              ${activeModalCompanion.saintTitle} ${activeModalCompanion.feastDay ? `• Feast: ${activeModalCompanion.feastDay}` : ''}
+            </div>
+          </div>
+
+          <!-- Scripture Banner -->
+          <div style="background: #f8fafc; border-left: 4px solid var(--sun-gold); padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; font-style: italic; font-size: 0.95rem; color: #334155;">
+            📖 ${activeModalCompanion.scripture}
+          </div>
+
+          <!-- The Inspiring Queue Story -->
+          <div style="font-size: 1rem; line-height: 1.65; color: #1e293b; margin-bottom: 20px;">
+            ${activeModalCompanion.story}
+          </div>
+
+          <!-- Did You Know? Callout Box -->
+          <div style="background: #fffbeb; border: 1.5px solid #fde68a; border-radius: 14px; padding: 16px; margin-bottom: 20px;">
+            <div style="font-weight: 800; color: #b45309; font-size: 0.95rem; margin-bottom: 4px;">
+              💡 Did You Know?
+            </div>
+            <p style="font-size: 0.92rem; color: #78350f; margin: 0; line-height: 1.5;">
+              ${activeModalCompanion.didYouKnow}
+            </p>
+          </div>
+
+          <!-- Queue Family Reflection -->
+          <div style="background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 14px; padding: 16px; margin-bottom: 24px;">
+            <div style="font-weight: 800; color: #166534; font-size: 0.95rem; margin-bottom: 4px;">
+              🏰 Family Queue Conversation:
+            </div>
+            <p style="font-size: 0.92rem; color: #14532d; margin: 0; line-height: 1.5; font-weight: 600;">
+              "${activeModalCompanion.queueReflection}"
+            </p>
+          </div>
+
+          <!-- Bottom Action Buttons -->
+          <div style="display: flex; gap: 10px; justify-content: space-between; flex-wrap: wrap;">
+            <button class="btn btn-outline" onclick="window.closeCompanionModal()" style="flex: 1; min-width: 140px;">
+              Back to Attractions
+            </button>
+            <button class="btn btn-sun" onclick="window.navigateToRosaryFromModal()" style="flex: 2; min-width: 200px;">
+              📿 Pray a Queue Decade Now
+            </button>
+          </div>
+        </div>
+      ` : ''}
+    </div>
+  `;
+}
+
+// Window Controller Functions
+window.setCompanionPark = (parkKey) => {
+  activeParkFilter = parkKey;
+  renderQueueCompanions();
+};
+
+window.handleCompanionSearch = (query) => {
+  searchQuery = query;
+  renderQueueCompanions();
+};
+
+window.openCompanionModal = (companionId) => {
+  const comp = QUEUE_COMPANIONS.find(c => c.id === companionId);
+  if (comp) {
+    activeModalCompanion = comp;
+    renderQueueCompanions();
+    document.body.style.overflow = 'hidden';
+  }
+};
+
+window.closeCompanionModal = () => {
+  activeModalCompanion = null;
+  document.body.style.overflow = '';
+  renderQueueCompanions();
+};
+
+window.navigateToRosaryFromModal = () => {
+  window.closeCompanionModal();
+  if (window.navigateToTab) {
+    window.navigateToTab('rosary-tab');
+  }
+};
