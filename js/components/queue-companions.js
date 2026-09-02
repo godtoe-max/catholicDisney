@@ -1,11 +1,10 @@
 // Catholic Disney: Queue Companions Interactive Explorer
 // Browse and read saint connections, Christian scientist stories, and queue reflections for Disney attractions
 
-import { QUEUE_COMPANIONS } from '../data/queue-companions-data.js';
+import { QUEUE_COMPANIONS, getCompanionForRide } from '../data/queue-companions-data.js';
 
 let activeParkFilter = 'all';
 let searchQuery = '';
-let activeModalCompanion = null;
 
 export function initQueueCompanions() {
   const container = document.getElementById('queue-companions-container');
@@ -105,7 +104,7 @@ export function renderQueueCompanions() {
             </div>
 
             <!-- Read Story Button -->
-            <button class="btn btn-sun" onclick="window.openCompanionModal('${item.id}')" style="width: 100%; font-size: 0.9rem; padding: 10px 14px; border-radius: 12px; justify-content: center;">
+            <button class="btn btn-sun" onclick="window.openCompanionModal('${item.id}')" style="width: 100%; font-size: 0.9rem; padding: 10px 14px; border-radius: 12px; justify-content: center; font-weight: 800; cursor: pointer;">
               📖 Read Story in Line
             </button>
           </div>
@@ -115,74 +114,6 @@ export function renderQueueCompanions() {
       ${filtered.length === 0 ? `
         <div style="text-align: center; padding: 50px 20px; background: #ffffff; border-radius: 20px; border: 1px solid #e2e8f0; color: #64748b;">
           No attractions found matching "${searchQuery}". Try a different keyword!
-        </div>
-      ` : ''}
-    </div>
-
-    <!-- Active Story Modal Container -->
-    <div id="companion-modal-wrapper" style="display: ${activeModalCompanion ? 'flex' : 'none'}; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(6px); z-index: 1000; align-items: center; justify-content: center; padding: 20px;">
-      ${activeModalCompanion ? `
-        <div style="background: #ffffff; border-radius: 24px; max-width: 680px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 28px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); position: relative; border: 2px solid #fbbf24;">
-          <!-- Close Button -->
-          <button onclick="window.closeCompanionModal()" style="position: absolute; top: 18px; right: 18px; background: #f1f5f9; border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #475569;">
-            ✕
-          </button>
-
-          <!-- Modal Header -->
-          <div style="margin-bottom: 18px; padding-right: 40px;">
-            <span class="park-pill" style="font-size: 0.78rem; background: #fef3c7; color: #92400e; font-weight: 800;">
-              ${activeModalCompanion.icon} ${activeModalCompanion.park} • ${activeModalCompanion.land}
-            </span>
-            <h2 style="font-size: 1.7rem; color: #0f172a; margin: 8px 0 4px; font-weight: 800;">
-              ${activeModalCompanion.name}
-            </h2>
-            <div style="font-size: 1.15rem; font-weight: 800; color: #1a73e8; display: flex; align-items: center; gap: 6px;">
-              <span>☩</span> ${activeModalCompanion.saint}
-            </div>
-            <div style="font-size: 0.85rem; color: #64748b; font-weight: 600;">
-              ${activeModalCompanion.saintTitle} ${activeModalCompanion.feastDay ? `• Feast: ${activeModalCompanion.feastDay}` : ''}
-            </div>
-          </div>
-
-          <!-- Scripture Banner -->
-          <div style="background: #f8fafc; border-left: 4px solid var(--sun-gold); padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; font-style: italic; font-size: 0.95rem; color: #334155;">
-            📖 ${activeModalCompanion.scripture}
-          </div>
-
-          <!-- The Inspiring Queue Story -->
-          <div style="font-size: 1rem; line-height: 1.65; color: #1e293b; margin-bottom: 20px;">
-            ${activeModalCompanion.story}
-          </div>
-
-          <!-- Did You Know? Callout Box -->
-          <div style="background: #fffbeb; border: 1.5px solid #fde68a; border-radius: 14px; padding: 16px; margin-bottom: 20px;">
-            <div style="font-weight: 800; color: #b45309; font-size: 0.95rem; margin-bottom: 4px;">
-              💡 Did You Know?
-            </div>
-            <p style="font-size: 0.92rem; color: #78350f; margin: 0; line-height: 1.5;">
-              ${activeModalCompanion.didYouKnow}
-            </p>
-          </div>
-
-          <!-- Queue Family Reflection -->
-          <div style="background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 14px; padding: 16px; margin-bottom: 24px;">
-            <div style="font-weight: 800; color: #166534; font-size: 0.95rem; margin-bottom: 4px;">
-              🏰 Family Queue Conversation:
-            </div>
-            <p style="font-size: 0.92rem; color: #14532d; margin: 0; line-height: 1.5; font-weight: 600;">
-              "${activeModalCompanion.queueReflection}"
-            </p>
-          </div>
-
-          <!-- Bottom Action Buttons -->
-          <div style="display: flex; gap: 10px; justify-content: space-between; flex-wrap: wrap;">
-            <button class="btn btn-outline" onclick="window.closeCompanionModal()" style="flex: 1; min-width: 140px;">
-              Back to Attractions
-            </button>
-            <button class="btn btn-sun" onclick="window.navigateToRosaryFromModal()" style="flex: 2; min-width: 200px;">
-              📿 Pray a Queue Decade Now
-            </button>
-          </div>
         </div>
       ` : ''}
     </div>
@@ -201,18 +132,93 @@ window.handleCompanionSearch = (query) => {
 };
 
 window.openCompanionModal = (companionId) => {
-  const comp = QUEUE_COMPANIONS.find(c => c.id === companionId);
-  if (comp) {
-    activeModalCompanion = comp;
-    renderQueueCompanions();
-    document.body.style.overflow = 'hidden';
+  const comp = QUEUE_COMPANIONS.find(c => c.id === companionId) || getCompanionForRide(companionId);
+  if (!comp) return;
+
+  let modalWrapper = document.getElementById('companion-modal-wrapper');
+  if (!modalWrapper) {
+    modalWrapper = document.createElement('div');
+    modalWrapper.id = 'companion-modal-wrapper';
+    document.body.appendChild(modalWrapper);
   }
+
+  modalWrapper.innerHTML = `
+    <div style="position: fixed; inset: 0; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(6px); z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box;" onclick="if(event.target === this) window.closeCompanionModal()">
+      <div style="background: #ffffff; border-radius: 24px; max-width: 680px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 28px 24px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.4); position: relative; border: 2.5px solid #fbbf24; box-sizing: border-box;">
+        <!-- Close Button -->
+        <button onclick="window.closeCompanionModal()" aria-label="Close" style="position: absolute; top: 18px; right: 18px; background: #f1f5f9; border: none; width: 38px; height: 38px; border-radius: 50%; font-size: 1.3rem; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #475569; z-index: 10; font-weight: 800;">
+          ✕
+        </button>
+
+        <!-- Header -->
+        <div style="margin-bottom: 18px; padding-right: 40px;">
+          <span class="park-pill" style="font-size: 0.78rem; background: #fef3c7; color: #92400e; font-weight: 800;">
+            ${comp.icon} ${comp.park} • ${comp.land}
+          </span>
+          <h2 style="font-size: 1.65rem; color: #0f172a; margin: 8px 0 4px; font-weight: 800; line-height: 1.25;">
+            ${comp.name}
+          </h2>
+          <div style="font-size: 1.15rem; font-weight: 800; color: #1a73e8; display: flex; align-items: center; gap: 6px;">
+            <span>☩</span> ${comp.saint}
+          </div>
+          <div style="font-size: 0.85rem; color: #64748b; font-weight: 600; margin-top: 2px;">
+            ${comp.saintTitle} ${comp.feastDay ? `• Feast Day: ${comp.feastDay}` : ''}
+          </div>
+        </div>
+
+        <!-- Scripture Banner -->
+        <div style="background: #f8fafc; border-left: 4px solid var(--sun-gold); padding: 12px 16px; border-radius: 8px; margin-bottom: 18px; font-style: italic; font-size: 0.95rem; color: #334155; line-height: 1.45;">
+          📖 ${comp.scripture}
+        </div>
+
+        <!-- The Inspiring Queue Story -->
+        <div style="font-size: 1rem; line-height: 1.65; color: #1e293b; margin-bottom: 20px;">
+          ${comp.story}
+        </div>
+
+        <!-- Did You Know? Callout Box -->
+        <div style="background: #fffbeb; border: 1.5px solid #fde68a; border-radius: 14px; padding: 16px; margin-bottom: 18px;">
+          <div style="font-weight: 800; color: #b45309; font-size: 0.95rem; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+            <span>💡</span> Did You Know?
+          </div>
+          <p style="font-size: 0.92rem; color: #78350f; margin: 0; line-height: 1.5;">
+            ${comp.didYouKnow}
+          </p>
+        </div>
+
+        <!-- Queue Family Reflection -->
+        <div style="background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 14px; padding: 16px; margin-bottom: 24px;">
+          <div style="font-weight: 800; color: #166534; font-size: 0.95rem; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+            <span>🏰</span> Family Queue Conversation:
+          </div>
+          <p style="font-size: 0.92rem; color: #14532d; margin: 0; line-height: 1.5; font-weight: 600;">
+            "${comp.queueReflection}"
+          </p>
+        </div>
+
+        <!-- Bottom Action Buttons -->
+        <div style="display: flex; gap: 10px; justify-content: space-between; flex-wrap: wrap;">
+          <button class="btn btn-outline" onclick="window.closeCompanionModal()" style="flex: 1; min-width: 140px; justify-content: center;">
+            Back to Attractions
+          </button>
+          <button class="btn btn-sun" onclick="window.navigateToRosaryFromModal()" style="flex: 2; min-width: 200px; justify-content: center; font-weight: 800;">
+            📿 Pray a Queue Decade Now
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+  modalWrapper.style.display = 'block';
+  document.body.style.overflow = 'hidden';
 };
 
 window.closeCompanionModal = () => {
-  activeModalCompanion = null;
+  const modalWrapper = document.getElementById('companion-modal-wrapper');
+  if (modalWrapper) {
+    modalWrapper.style.display = 'none';
+    modalWrapper.innerHTML = '';
+  }
   document.body.style.overflow = '';
-  renderQueueCompanions();
 };
 
 window.navigateToRosaryFromModal = () => {
