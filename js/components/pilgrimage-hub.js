@@ -37,19 +37,19 @@ function renderBasilicaSpotlight() {
         
         <div class="mass-times-box">
           <div class="mass-grid-row">
-            <span class="mass-day">Sunday Masses:</span>
+            <span class="mass-day">📅 Sunday Masses</span>
             <span class="mass-times">${basilica.massSchedule.sunday.join(' • ')}</span>
           </div>
           <div class="mass-grid-row">
-            <span class="mass-day">Saturday Vigil:</span>
+            <span class="mass-day">🕯️ Saturday Vigil</span>
             <span class="mass-times">${basilica.massSchedule.saturdayVigil.join(', ')}</span>
           </div>
           <div class="mass-grid-row">
-            <span class="mass-day">Daily Mass:</span>
+            <span class="mass-day">☀️ Daily Mass</span>
             <span class="mass-times">${basilica.massSchedule.weekday.join(' • ')}</span>
           </div>
           <div class="mass-grid-row">
-            <span class="mass-day">Confessions:</span>
+            <span class="mass-day">🕊️ Confessions</span>
             <span class="mass-times">${basilica.confessions}</span>
           </div>
         </div>
