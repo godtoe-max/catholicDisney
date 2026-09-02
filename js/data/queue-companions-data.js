@@ -53,13 +53,13 @@ export const QUEUE_COMPANIONS = [
     park: "Magic Kingdom",
     land: "Liberty Square",
     icon: "👻",
-    saint: "St. Gertrude the Great & St. Michael the Archangel",
-    saintTitle: "Advocate for Holy Souls & Supreme Defender in Spiritual Battle",
-    feastDay: "November 16 (St. Gertrude) • Sept 29 (St. Michael)",
-    scripture: "Death is swallowed up in victory. O death, where is your victory? O death, where is your sting? (1 Corinthians 15:54-55)",
-    story: "While the 999 'Happy Haunts' of the Haunted Mansion make for playful spooky fun, Catholic Christians have never needed to fear ghosts or spirits. Through His Cross and Resurrection, Jesus Christ has conquered the grave! Saint Gertrude the Great was a 13th-century Benedictine nun to whom Jesus promised that devout prayer would release countless holy souls from Purgatory into heavenly peace. Standing in this queue is the perfect time to pray for our beloved deceased grandparents and relatives.",
-    didYouKnow: "The famous 'Prayer of St. Gertrude' is traditionally recited on rosary beads to offer comfort and suffrages for the souls in Purgatory awaiting heaven!",
-    queueReflection: "Who in our family or ancestry has passed away that we can offer a quick decade or Hail Mary for right now in line?"
+    saint: "St. Benedict of Nursia",
+    saintTitle: "Father of Western Monasticism • Protector Against the Demonic & Evil Spirits",
+    feastDay: "July 11",
+    scripture: "Crux Sacra Sit Mihi Lux! Non Draco Sit Mihi Dux! (May the Holy Cross be my light! May the dragon never be my guide!)",
+    story: "As you step into the eerie gloom of the Haunted Mansion and hear the ghost host welcome you to the 999 'Happy Haunts,' remember the greatest spiritual defender in Church history: Saint Benedict of Nursia. In the 6th century, corrupt men tried to murder Benedict by offering him a glass of poisoned wine. When Benedict simply made the Sign of the Cross over the cup, the glass miraculously shattered into pieces as if struck by a stone! When devils attempted to terrify his monks with phantoms and dark illusions, Benedict taught them that Christ's Cross immediately scatters all demonic deceptions.",
+    didYouKnow: "The famous 'Jubilee Medal of Saint Benedict' is the Catholic Church's official sacramental of protection and minor exorcism! The letters on the medal stand for Latin prayers: 'CSSML' (May the Holy Cross be my light) and 'VRS' (Begone, Satan, never tempt me with vain things!). Wearing it reminds us that evil spirits are completely powerless against Christ.",
+    queueReflection: "If you ever feel scared of the dark or spooky illusions, remember the prayer of St. Benedict: 'May the Holy Cross be my light!' How can making the Sign of the Cross bring our family immediate peace?"
   },
   {
     id: "pirates",
@@ -345,13 +345,13 @@ export const QUEUE_COMPANIONS = [
     park: "Disney's Animal Kingdom",
     land: "Pueblo Esperanza",
     icon: "🤠",
-    saint: "St. Helena (Empress of Constantinople)",
-    saintTitle: "Patron Saint of Archaeologists & Finder of the True Cross",
-    feastDay: "August 18",
-    scripture: "Ask, and it will be given to you; seek, and you will find; knock, and it will be opened to you. (Matthew 7:7)",
-    story: "As you venture deep into the ancient temple ruins of the Tropical Americas with Indiana Jones in search of hidden relics, meet the real-life patron saint of archaeology: Saint Helena! In 326 AD, in her late 70s, Empress Helena (the mother of Emperor Constantine) led history's most famous archaeological expedition to Jerusalem. Excavating beneath the pagan temples built over Mount Calvary and the Holy Sepulchre, her expedition uncovered the rock of Golgotha, the tomb of the Resurrection, and the authentic True Cross of Christ!",
-    didYouKnow: "Indiana Jones spent his legendary career searching for the Ark of the Covenant and the Holy Grail. In Catholic theology, the Virgin Mary is venerated as the 'Ark of the New Covenant' (carrying the Living Word of God), and the sacred chalice of the Last Supper is celebrated at every Catholic Holy Mass!",
-    queueReflection: "Archaeologists search the earth for ancient treasures. What spiritual treasures—like kindness, faith, and patience—can our family seek and uncover today?"
+    saint: "St. Boniface & St. Martin of Tours",
+    saintTitle: "Tearers-Down of Pagan Idols & Protectors Against False Gods",
+    feastDay: "June 5 (St. Boniface) • November 11 (St. Martin)",
+    scripture: "For all the gods of the nations are idols, but the Lord made the heavens! Splendor and majesty are before Him. (Psalm 96:5-6)",
+    story: "Venturing into an ancient Maya/Aztec temple ruin with Indiana Jones can feel thrilling—and a little eerie with all the menacing pagan carvings, serpents, and mythological idols staring from the shadows. If you feel scared, call upon Saint Boniface and Saint Martin of Tours! In 723 AD, Saint Boniface bravely walked into a pagan sanctuary in Germany, took up an axe, and chopped down the sacred 'Donar's Oak' (the tree of Thor). When the pagan god failed to strike him down, the crowd realized the idol was completely powerless and turned to Christ. Centuries earlier, when pagans tried to crush Saint Martin by cutting down a sacred pine tree directly onto him, Martin simply made the Sign of the Cross, and the falling giant tree miraculously spun backward in mid-air!",
+    didYouKnow: "Catholic missionaries across the Americas, like the Franciscans and Dominicans, frequently carved the Sign of the Cross over former pagan temple stones to declare that Christ, the Prince of Peace, is the true Lord of all peoples and lands!",
+    queueReflection: "Ancient idols were just carvings of wood and stone with zero power over God's children. When we see spooky mythical monsters or ancient statues, who can we remember is the true King of the universe?"
   },
   {
     id: "lion_king",
