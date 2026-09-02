@@ -1,37 +1,152 @@
-// Catholic Rosary Data: Mysteries, Fruits, Scripture, and Theme Park Queue Family Reflections
+// Catholic Rosary Data: Multi-Tradition Prayers & Mysteries (Roman English, Latin TLM, Byzantine Catholic, Anglican Ordinariate)
 
-export const ROSARY_PRAYERS = {
-  signOfCross: {
-    title: "Sign of the Cross",
-    latin: "In nómine Patris, et Fílii, et Spíritus Sancti. Amen.",
-    english: "In the name of the Father, and of the Son, and of the Holy Spirit. Amen."
+export const TRADITIONS = {
+  roman: {
+    id: "roman",
+    name: "Roman Rite (English)",
+    badge: "🇻🇦 Roman Rite",
+    lang: "en"
   },
-  apostlesCreed: {
-    title: "The Apostles' Creed",
-    english: "I believe in God, the Father Almighty, Creator of heaven and earth; and in Jesus Christ, His only Son, our Lord: Who was conceived by the Holy Spirit, born of the Virgin Mary; suffered under Pontius Pilate, was crucified, died and was buried. He descended into hell; on the third day He rose again from the dead; He ascended into heaven, and is seated at the right hand of God the Father Almighty; from thence He will come to judge the living and the dead. I believe in the Holy Spirit, the Holy Catholic Church, the communion of Saints, the forgiveness of sins, the resurrection of the body, and life everlasting. Amen."
+  latin: {
+    id: "latin",
+    name: "Traditional Latin (TLM)",
+    badge: "☩ Latin (TLM)",
+    lang: "la"
   },
-  ourFather: {
-    title: "The Lord's Prayer (Our Father)",
-    latin: "Pater noster, qui es in caelis: sanctificetur nomen tuum...",
-    english: "Our Father, Who art in heaven, hallowed be Thy name; Thy kingdom come; Thy will be done on earth as it is in heaven. Give us this day our daily bread; and forgive us our trespasses as we forgive those who trespass against us; and lead us not into temptation, but deliver us from evil. Amen."
+  byzantine: {
+    id: "byzantine",
+    name: "Byzantine Catholic (Rule of Theotokos)",
+    badge: "☦️ Byzantine",
+    lang: "byz"
   },
-  hailMary: {
-    title: "Hail Mary (Ave Maria)",
-    latin: "Ave Maria, gratia plena, Dominus tecum...",
-    english: "Hail Mary, full of grace, the Lord is with thee; blessed art thou among women, and blessed is the fruit of thy womb, Jesus. Holy Mary, Mother of God, pray for us sinners, now and at the hour of our death. Amen."
+  anglican: {
+    id: "anglican",
+    name: "Anglican Ordinariate (Sacral English)",
+    badge: "🇬🇧 Ordinariate",
+    lang: "ang"
+  }
+};
+
+export const TRADITION_PRAYERS = {
+  roman: {
+    signOfCross: {
+      title: "Sign of the Cross",
+      text: "In the name of the Father, and of the Son, and of the Holy Spirit. Amen."
+    },
+    creed: {
+      title: "The Apostles' Creed",
+      text: "I believe in God, the Father Almighty, Creator of heaven and earth; and in Jesus Christ, His only Son, our Lord: Who was conceived by the Holy Spirit, born of the Virgin Mary; suffered under Pontius Pilate, was crucified, died and was buried. He descended into hell; on the third day He rose again from the dead; He ascended into heaven, and is seated at the right hand of God the Father Almighty; from thence He will come to judge the living and the dead. I believe in the Holy Spirit, the Holy Catholic Church, the communion of Saints, the forgiveness of sins, the resurrection of the body, and life everlasting. Amen."
+    },
+    ourFather: {
+      title: "The Lord's Prayer (Our Father)",
+      text: "Our Father, Who art in heaven, hallowed be Thy name; Thy kingdom come; Thy will be done on earth as it is in heaven. Give us this day our daily bread; and forgive us our trespasses as we forgive those who trespass against us; and lead us not into temptation, but deliver us from evil. Amen."
+    },
+    hailMary: {
+      title: "Hail Mary (Ave Maria)",
+      text: "Hail Mary, full of grace, the Lord is with thee; blessed art thou among women, and blessed is the fruit of thy womb, Jesus. Holy Mary, Mother of God, pray for us sinners, now and at the hour of our death. Amen."
+    },
+    gloryBe: {
+      title: "Glory Be (Gloria Patri)",
+      text: "Glory be to the Father, and to the Son, and to the Holy Spirit, as it was in the beginning, is now, and ever shall be, world without end. Amen."
+    },
+    fatima: {
+      title: "The Fatima Prayer",
+      text: "O My Jesus, forgive us our sins, save us from the fires of hell, lead all souls to Heaven, especially those most in need of Thy mercy. Amen."
+    },
+    hailHolyQueen: {
+      title: "Hail, Holy Queen (Salve Regina)",
+      text: "Hail, Holy Queen, Mother of Mercy, our life, our sweetness, and our hope. To thee do we cry, poor banished children of Eve. To thee do we send up our sighs, mourning and weeping in this valley of tears. Turn then, most gracious advocate, thine eyes of mercy toward us, and after this our exile, show unto us the blessed fruit of thy womb, Jesus. O clement, O loving, O sweet Virgin Mary.\n\nV. Pray for us, O Holy Mother of God.\nR. That we may be made worthy of the promises of Christ."
+    }
   },
-  gloryBe: {
-    title: "Glory Be (Gloria Patri)",
-    latin: "Gloria Patri, et Filio, et Spiritui Sancto...",
-    english: "Glory be to the Father, and to the Son, and to the Holy Spirit, as it was in the beginning, is now, and ever shall be, world without end. Amen."
+  latin: {
+    signOfCross: {
+      title: "Signum Crucis",
+      text: "In nómine Patris, et Fílii, et Spíritus Sancti. Amen."
+    },
+    creed: {
+      title: "Symbolum Apostolorum (Credo)",
+      text: "Credo in Deum Patrem omnipoténtem, Creatórem cæli et terræ. Et in Iesum Christum, Fílium eius únicum, Dóminum nostrum, qui concéptus est de Spíritu Sancto, natus ex María Vírgine, passus sub Póntio Piláto, crucifíxus, mórtuus, et sepúltus: descéndit ad ínferos; tértia die resurréxit a mórtuis; ascéndit ad cælos; sedet ad déxteram Dei Patris omnipoténtis: inde ventúrus est iudicáre vivos et mórtuos. Credo in Spíritum Sanctum, sanctam Ecclésiam cathólicam, sanctórum communiónem, remissiónem peccatórum, carnis resurrectiónem, vitam ætérnam. Amen."
+    },
+    ourFather: {
+      title: "Pater Noster",
+      text: "Pater noster, qui es in cælis, sanctificétur nomen tuum. Advéniat regnum tuum. Fiat volúntas tua, sicut in cælo et in terra. Panem nostrum quotidiánum da nobis hódie, et dimítte nobis débita nostra, sicut et nos dimíttimus debitóribus nostris. Et ne nos indúcas in tentatiónem: sed líbera nos a malo. Amen."
+    },
+    hailMary: {
+      title: "Ave Maria",
+      text: "Ave María, grátia plena, Dóminus tecum; benedícta tu in muliéribus, et benedíctus fructus ventris tui, Iesus. Sancta María, Mater Dei, ora pro nobis peccatóribus, nunc et in hora mortis nostræ. Amen."
+    },
+    gloryBe: {
+      title: "Gloria Patri",
+      text: "Glória Patri, et Fílio, et Spíritui Sancto. Sicut erat in princípio, et nunc, et semper, et in sǽcula sæculórum. Amen."
+    },
+    fatima: {
+      title: "Oratio Fatimae",
+      text: "O mi Iesu, dimítte nobis débita nostra, líbera nos ab igne inferni, perduc in cælum omnes ánimas, præsértim eas, quæ máxime índigent misericórdia tua. Amen."
+    },
+    hailHolyQueen: {
+      title: "Salve Regina",
+      text: "Salve, Regína, Mater misericórdiæ; vita, dulcédo, et spes nostra, salve. Ad te clamámus, éxsules fílii Hevæ. Ad te suspirámus, geméntes et flentes in hac lacrimárum valle. Eia ergo, advocáta nostra, illos tuos misericórdes óculos ad nos convórte. Et Iesum, benedíctum fructum ventris tui, nobis post hoc exsílium osténde. O clemens, o pia, o dulcis Virgo María.\n\nV. Ora pro nobis, Sancta Dei Génetrix.\nR. Ut digni efficiámur promissiónibus Christi."
+    }
   },
-  fatimaPrayer: {
-    title: "The Fatima Prayer",
-    english: "O My Jesus, forgive us our sins, save us from the fires of hell, lead all souls to Heaven, especially those most in need of Thy mercy. Amen."
+  byzantine: {
+    signOfCross: {
+      title: "Sign of the Cross (Eastern Rite)",
+      text: "In the name of the Father, and of the Son, and of the Holy Spirit. Amen."
+    },
+    creed: {
+      title: "The Nicene-Constantinopolitan Creed",
+      text: "I believe in one God, Father Almighty, Maker of heaven and earth, and of all things visible and invisible. And in one Lord Jesus Christ, the only-begotten Son of God, begotten of the Father before all ages; Light of Light, true God of true God, begotten, not made, of one essence with the Father, by whom all things were made; Who for us men and for our salvation came down from heaven, and was incarnate of the Holy Spirit and the Virgin Mary, and became man. And was crucified also for us under Pontius Pilate, and suffered and was buried; And the third day He rose again, according to the Scriptures; And ascended into heaven, and sitteth at the right hand of the Father; And He shall come again with glory to judge the living and the dead, Whose Kingdom shall have no end. And in the Holy Spirit, the Lord, the Giver of Life, Who proceedeth from the Father, Who with the Father and the Son together is worshipped and glorified, Who spoke by the prophets. In One, Holy, Catholic, and Apostolic Church. I acknowledge one baptism for the remission of sins. I look for the resurrection of the dead, and the life of the world to come. Amen."
+    },
+    ourFather: {
+      title: "Our Father (Eastern Doxology)",
+      text: "Our Father, Who art in heaven, hallowed be Thy name. Thy Kingdom come. Thy will be done, on earth as it is in heaven. Give us this day our daily bread; and forgive us our trespasses, as we forgive those who trespass against us; and lead us not into temptation, but deliver us from evil. For Thine is the kingdom, and the power, and the glory, of the Father, and of the Son, and of the Holy Spirit, now and ever, and unto ages of ages. Amen."
+    },
+    hailMary: {
+      title: "Theotokos Virgin Rejoice (Bogoroditse Devo)",
+      text: "Rejoice, O Virgin Theotokos, Mary full of grace, the Lord is with thee! Blessed art thou among women, and blessed is the fruit of thy womb, for thou hast borne the Savior of our souls."
+    },
+    gloryBe: {
+      title: "Doxology (Glory to the Father)",
+      text: "Glory to the Father, and to the Son, and to the Holy Spirit, now and ever, and unto ages of ages. Amen."
+    },
+    fatima: {
+      title: "The Jesus Prayer & Troparion",
+      text: "Lord Jesus Christ, Son of God, have mercy on me, a sinner! Most Holy Theotokos, save us!"
+    },
+    hailHolyQueen: {
+      title: "Axion Estin (It is Truly Meet)",
+      text: "It is truly meet to bless thee, O Theotokos, ever-blessed and most pure, and the Mother of our God. More honorable than the Cherubim, and beyond compare more glorious than the Seraphim, without corruption thou gavest birth to God the Word. True Theotokos, thee do we magnify!"
+    }
   },
-  hailHolyQueen: {
-    title: "Hail, Holy Queen (Salve Regina)",
-    english: "Hail, Holy Queen, Mother of Mercy, our life, our sweetness, and our hope. To thee do we cry, poor banished children of Eve. To thee do we send up our sighs, mourning and weeping in this valley of tears. Turn then, most gracious advocate, thine eyes of mercy toward us, and after this our exile, show unto us the blessed fruit of thy womb, Jesus. O clement, O loving, O sweet Virgin Mary. Pray for us, O Holy Mother of God, that we may be made worthy of the promises of Christ. Amen."
+  anglican: {
+    signOfCross: {
+      title: "Sign of the Cross (Coverdale)",
+      text: "In the Name of the Father, and of the Son, and of the Holy Ghost. Amen."
+    },
+    creed: {
+      title: "The Apostles' Creed (Book of Divine Worship)",
+      text: "I believe in God the Father Almighty, Maker of heaven and earth: And in Jesus Christ his only Son our Lord, Who was conceived by the Holy Ghost, Born of the Virgin Mary, Suffered under Pontius Pilate, Was crucified, dead, and buried: He descended into hell; The third day he rose again from the dead; He ascended into heaven, And sitteth on the right hand of God the Father Almighty; From thence he shall come to judge the quick and the dead. I believe in the Holy Ghost; The holy Catholic Church; The Communion of Saints; The Forgiveness of sins; The Resurrection of the body, And the Life everlasting. Amen."
+    },
+    ourFather: {
+      title: "The Lord's Prayer (Sacral English)",
+      text: "Our Father, which art in heaven, Hallowed be thy Name. Thy kingdom come. Thy will be done, in earth as it is in heaven. Give us this day our daily bread. And forgive us our trespasses, As we forgive them that trespass against us. And lead us not into temptation; But deliver us from evil. For thine is the kingdom, The power, and the glory, For ever and ever. Amen."
+    },
+    hailMary: {
+      title: "Hail Mary (Traditional English)",
+      text: "Hail Mary, full of grace, the Lord is with thee: blessed art thou among women, and blessed is the fruit of thy womb, Jesus. Holy Mary, Mother of God, pray for us sinners, now and at the hour of our death. Amen."
+    },
+    gloryBe: {
+      title: "Gloria Patri (Sacral English)",
+      text: "Glory be to the Father, and to the Son: and to the Holy Ghost; As it was in the beginning, is now, and ever shall be: world without end. Amen."
+    },
+    fatima: {
+      title: "The Fatima Prayer",
+      text: "O my Jesus, forgive us our sins, save us from the fires of hell, lead all souls to heaven, especially those in most need of thy mercy. Amen."
+    },
+    hailHolyQueen: {
+      title: "Hail, Holy Queen (Traditional Salve)",
+      text: "Hail, Holy Queen, Mother of Mercy, our life, our sweetness, and our hope. To thee do we cry, poor banished children of Eve. To thee do we send up our sighs, mourning and weeping in this vale of tears. Turn then, most gracious advocate, thine eyes of mercy toward us, and after this our exile, show unto us the blessed fruit of thy womb, Jesus. O clement, O loving, O sweet Virgin Mary.\n\nV. Pray for us, O Holy Mother of God.\nR. That we may be made worthy of the promises of Christ."
+    }
   }
 };
 
@@ -205,6 +320,119 @@ export const ROSARY_MYSTERIES = {
         fruit: "Trust in Mary's Intercession & Perseverance",
         scripture: "On her head was a crown of twelve stars. (Revelation 12:1)",
         queueReflection: "We remember that Christ is the true King and Mary our loving Queen. May our vacation bring honor to Their Holy Names."
+      }
+    ]
+  },
+  byzantine_rule: {
+    name: "Byzantine Rule of the Theotokos (15 Steps)",
+    traditionalDays: ["Daily (Eastern Catholic Rule)"],
+    color: "#8b5cf6",
+    tagline: "The 15 Steps of the Mother of God (Bogoroditse)",
+    decades: [
+      {
+        decadeNumber: 1,
+        title: "Nativity of the Most Holy Theotokos",
+        fruit: "Joy of Salvation",
+        scripture: "Thy Nativity, O Virgin Theotokos, hath proclaimed joy to the whole world! (Troparion)",
+        queueReflection: "We rejoice in the birth of the Blessed Virgin Mary, thanking God for the gift of mothers, grandmothers, and daughters in our family."
+      },
+      {
+        decadeNumber: 2,
+        title: "Entry of the Theotokos into the Temple",
+        fruit: "Consecration to God",
+        scripture: "The young maiden Mary is led into the Holy of Holies to dwell in the presence of the Lord. (Protoevangelium)",
+        queueReflection: "We dedicate our children's minds and hearts to God, praying they remain pure and consecrated amidst worldly noise."
+      },
+      {
+        decadeNumber: 3,
+        title: "The Annunciation to the Virgin Mary",
+        fruit: "Obedience & Humility",
+        scripture: "Rejoice, O highly favored one, the Lord is with thee! (Luke 1:28)",
+        queueReflection: "We ask the Holy Theotokos to teach us how to say 'Let it be done unto me according to Thy Word' in every circumstance."
+      },
+      {
+        decadeNumber: 4,
+        title: "The Meeting of Mary & Elizabeth",
+        fruit: "Brotherly Love & Kindness",
+        scripture: "When Elizabeth heard the greeting of Mary, the baby leaped in her womb. (Luke 1:41)",
+        queueReflection: "We pray for family unity, generosity, and peace between siblings while traveling and exploring the parks."
+      },
+      {
+        decadeNumber: 5,
+        title: "The Nativity of Christ Our Savior",
+        fruit: "Peace on Earth & Humility",
+        scripture: "Glory to God in the highest, and on earth peace, goodwill toward men! (Luke 2:14)",
+        queueReflection: "We worship Christ the newborn King, finding peace in God's presence even in the midst of bustling crowds."
+      },
+      {
+        decadeNumber: 6,
+        title: "The Meeting of the Lord (Hypapante)",
+        fruit: "Patience & Fulfillment",
+        scripture: "Lord, now lettest Thou Thy servant depart in peace, according to Thy word. (Luke 2:29)",
+        queueReflection: "Like holy Simeon, we wait with patient hearts, recognizing Christ as the true Light of the nations."
+      },
+      {
+        decadeNumber: 7,
+        title: "The Flight into Egypt",
+        fruit: "Trust in Divine Protection",
+        scripture: "Take the child and His mother, and flee to Egypt, and remain there until I tell you. (Matthew 2:13)",
+        queueReflection: "We pray for all travelers, refugees, and families far from home, placing our travels under St. Joseph's watchful care."
+      },
+      {
+        decadeNumber: 8,
+        title: "Finding Jesus in the Temple",
+        fruit: "Seeking Christ Daily",
+        scripture: "Did you not know that I must be about My Father's business? (Luke 2:49)",
+        queueReflection: "We ask for the grace to seek Jesus first each day—through morning prayers, the Rosary, and Sunday Mass."
+      },
+      {
+        decadeNumber: 9,
+        title: "The Miracle at Cana of Galilee",
+        fruit: "Intercession of Mary",
+        scripture: "Do whatever He tells you. (John 2:5)",
+        queueReflection: "We ask Our Lady to turn our ordinary family moments, line waits, and meals into fountains of grace and sweet memory."
+      },
+      {
+        decadeNumber: 10,
+        title: "The Theotokos at the Foot of the Cross",
+        fruit: "Compassion & Steadfastness",
+        scripture: "Standing by the cross of Jesus were His mother and His mother's sister. (John 19:25)",
+        queueReflection: "We stand with Mary in compassion for the sick, the lonely, and all who suffer in body or spirit today."
+      },
+      {
+        decadeNumber: 11,
+        title: "The Glorious Resurrection (Pascha)",
+        fruit: "Victory over Sin & Death",
+        scripture: "Christ is risen from the dead, trampling down death by death! (Paschal Troparion)",
+        queueReflection: "We proclaim the joyful victory of Christ over sin and death, singing Paschal praise in our hearts."
+      },
+      {
+        decadeNumber: 12,
+        title: "The Ascension of Our Lord",
+        fruit: "Heavenly Mindedness",
+        scripture: "I am with you always, even unto the end of the world. (Matthew 28:20)",
+        queueReflection: "We fix our gaze on the eternal Kingdom above, remembering that our ultimate citizenship is in Heaven."
+      },
+      {
+        decadeNumber: 13,
+        title: "Descent of the Holy Spirit at Pentecost",
+        fruit: "Gifts of the Holy Spirit",
+        scripture: "Heavenly King, Comforter, the Spirit of Truth, come and abide in us! (Eastern Hymn)",
+        queueReflection: "We ask the Holy Spirit to fill our family with the fruits of love, joy, peace, patience, kindness, and self-control."
+      },
+      {
+        decadeNumber: 14,
+        title: "The Dormition of the Most Holy Theotokos",
+        fruit: "Grace of a Peaceful Rest",
+        scripture: "In giving birth you preserved your virginity; in falling asleep you did not forsake the world, O Theotokos! (Troparion)",
+        queueReflection: "We honor the peaceful falling asleep of Mary, trusting in her ceaseless motherly prayers before the throne of God."
+      },
+      {
+        decadeNumber: 15,
+        title: "The Crowning & Protection of the Theotokos",
+        fruit: "Maternal Protection (Pokrov)",
+        scripture: "Today the Virgin stands in the midst of the Church, invisibly praying to God for us with the choirs of saints. (Kondakion)",
+        queueReflection: "We take shelter beneath the holy veil of the Mother of God, asking her protection over our home, church, and loved ones."
       }
     ]
   }
