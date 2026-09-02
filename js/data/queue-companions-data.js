@@ -359,13 +359,13 @@ export const QUEUE_COMPANIONS = [
     park: "Disney's Animal Kingdom",
     land: "Africa",
     icon: "👑",
-    saint: "St. Mark the Evangelist",
-    saintTitle: "Author of the Gospel • The Winged Lion of Scripture",
-    feastDay: "April 25",
-    scripture: "Behold, the Lion of the tribe of Judah, the Root of David, has conquered. (Revelation 5:5)",
-    story: "The thrilling celebration of the Lion King calls to mind the greatest Lion in Christian history: Christ, the 'Lion of Judah!' In the New Testament, Saint Mark's Gospel begins with Saint John the Baptist crying out in the desert like a roaring lion. For two thousand years in Catholic sacred art, Saint Mark has been symbolized by the majestic Winged Lion, whose image is carved into cathedrals across Europe—including the famous St. Mark's Campanile in Venice (and its replica in EPCOT Italy!).",
-    didYouKnow: "C.S. Lewis, the great Christian author and friend of J.R.R. Tolkien, created Aslan the Great Lion in *The Chronicles of Narnia* to symbolize the majesty, power, and sacrificial love of Jesus Christ!",
-    queueReflection: "How is Jesus both a gentle Lamb who forgives us and a mighty Lion who protects our family from harm?"
+    saint: "The Prophet Daniel & St. Ignatius of Antioch",
+    saintTitle: "Champion of the Lions' Den & Fearless Apostolic Martyr",
+    feastDay: "December 17 (Prophet Daniel) • October 17 (St. Ignatius)",
+    scripture: "My God sent His angel and shut the lions' mouths, and they have not hurt me, because I was found blameless before Him. (Daniel 6:22)",
+    story: "As you take your seat for the acrobatics and music of the Festival of the Lion King, discover the greatest lion miracle in the Holy Bible: the Prophet Daniel! In ancient Babylon, corrupt rulers plotted against Daniel and threw him into a pit of ravenous, starving lions because he refused to stop praying to the one true God. King Darius spent the night fasting in grief, running to the den at sunrise to cry, 'Daniel, was your God able to deliver you?' From the shadows, Daniel called back: 'My God sent His angel and shut the lions' mouths!' The starving beasts sat around Daniel like gentle kittens all night because God shielded His faithful servant.",
+    didYouKnow: "In 107 AD, Saint Ignatius of Antioch walked fearlessly into the Roman arena facing real lions, declaring: 'I am the wheat of God, ground by the teeth of wild beasts to become pure bread for Christ!' And in Catholic sacred art, Saint Mark the Evangelist is also depicted as the Winged Lion, whose statue crowns St. Mark's Campanile in Venice and EPCOT Italy!",
+    queueReflection: "Daniel was thrown to the lions because he refused to stop kneeling in prayer. What daily prayer habit can our family commit to, knowing God's angels surround us with protection?"
   }
 ];
 
