@@ -1,14 +1,14 @@
 // CatholicDisney.com Application Controller
-import { initPilgrimageHub } from './components/pilgrimage-hub.js?v=20260902k';
-import { initQueueRosary } from './components/queue-rosary.js?v=20260902k';
-import { initQueueCompanions } from './components/queue-companions.js?v=20260902k';
-import { initWaitTimesHub } from './components/wait-times-hub.js?v=20260902k';
-import { initLiveWaitTimes } from './components/live-wait-times.js?v=20260902k';
-import { initVirtueHub } from './components/virtue-hub.js?v=20260902k';
-import { initLiturgicalHub } from './components/liturgical-hub.js?v=20260902k';
-import { initItineraryPlanner } from './components/itinerary-planner.js?v=20260902k';
-import { initCreatorsHub } from './components/creators-hub.js?v=20260902k';
-import { initWallpapersHub } from './components/wallpapers-hub.js?v=20260902k';
+import { initPilgrimageHub } from './components/pilgrimage-hub.js?v=20260902L';
+import { initQueueRosary } from './components/queue-rosary.js?v=20260902L';
+import { initQueueCompanions } from './components/queue-companions.js?v=20260902L';
+import { initWaitTimesHub } from './components/wait-times-hub.js?v=20260902L';
+import { initLiveWaitTimes } from './components/live-wait-times.js?v=20260902L';
+import { initVirtueHub } from './components/virtue-hub.js?v=20260902L';
+import { initLiturgicalHub } from './components/liturgical-hub.js?v=20260902L';
+import { initItineraryPlanner } from './components/itinerary-planner.js?v=20260902L';
+import { initCreatorsHub } from './components/creators-hub.js?v=20260902L';
+import { initWallpapersHub } from './components/wallpapers-hub.js?v=20260902L';
 
 document.addEventListener('DOMContentLoaded', () => {
   initTabNavigation();
