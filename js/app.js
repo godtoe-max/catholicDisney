@@ -1,6 +1,7 @@
 // CatholicDisney.com Application Controller
 import { initPilgrimageHub } from './components/pilgrimage-hub.js';
 import { initQueueRosary } from './components/queue-rosary.js';
+import { initWaitTimesHub } from './components/wait-times-hub.js';
 import { initVirtueHub } from './components/virtue-hub.js';
 import { initLiturgicalHub } from './components/liturgical-hub.js';
 import { initItineraryPlanner } from './components/itinerary-planner.js';
@@ -12,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initHamburgerMenu();
   initPilgrimageHub();
   initQueueRosary();
+  initWaitTimesHub();
   initVirtueHub();
   initLiturgicalHub();
   initItineraryPlanner();

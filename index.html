@@ -36,6 +36,9 @@
           <button class="desktop-nav-link" data-tab="rosary-tab">
             <span>📿</span> Queue Rosary
           </button>
+          <button class="desktop-nav-link" data-tab="wait-times-tab">
+            <span>⏱️</span> Wait Times & Crowds
+          </button>
           <button class="desktop-nav-link" data-tab="virtue-tab">
             <span>📖</span> Movie Guides
           </button>
@@ -82,6 +85,9 @@
         </button>
         <button class="btn btn-primary" onclick="window.navigateToTab('rosary-tab')">
           📿 Interactive Queue Rosary
+        </button>
+        <button class="btn btn-outline" onclick="window.navigateToTab('wait-times-tab')">
+          ⏱️ Wait Times & Crowds
         </button>
         <button class="btn btn-outline" onclick="window.navigateToTab('virtue-tab')">
           📖 Family Movie Night Guides
@@ -291,7 +297,22 @@
     </section>
 
     <!-- ========================================================
-         TAB 3: VIRTUE IN THE VAULT (THEOLOGICAL HUB)
+         TAB 3: DISNEY WAIT TIMES & CROWD INTELLIGENCE
+         ======================================================== -->
+    <section id="wait-times-tab" class="tab-content" role="tabpanel">
+      <div class="section-header">
+        <span class="section-tag">Crowd Analytics & Queue Sanctification</span>
+        <h2 class="section-title">Disney Wait Times & <span class="text-gradient-sun">Crowd Intelligence</span></h2>
+        <p class="section-description">
+          Plan your theme park days using historical crowd observations from 891,000+ queue updates. Target low-crowd rope drop windows, discover the best time to ride, pair long lines with the Queue Rosary, and retreat to nearby Catholic prayer sanctuaries when crowds peak.
+        </p>
+      </div>
+
+      <div id="wait-times-container"></div>
+    </section>
+
+    <!-- ========================================================
+         TAB 4: VIRTUE IN THE VAULT (THEOLOGICAL HUB)
          ======================================================== -->
     <section id="virtue-tab" class="tab-content" role="tabpanel">
       <div class="section-header">
@@ -389,6 +410,21 @@
         <p class="section-description">
           Generate a custom, balanced family itinerary integrating Sunday Mass, peaceful prayer nooks, park highlights, and nightly family faith reflections.
         </p>
+      </div>
+
+      <!-- Crowd & Wait Times Intelligence Callout -->
+      <div style="background: #ffffff; border: 1.5px solid var(--border-subtle); border-radius: var(--radius-xl); padding: 22px 26px; margin: 24px 0; display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; box-shadow: var(--shadow-sm);">
+        <div style="max-width: 680px;">
+          <h4 style="color: var(--blue-primary); font-size: 1.2rem; margin-bottom: 4px;">
+            ⏱️ Strategic Crowd Planning & Queue Rosaries
+          </h4>
+          <p style="font-size: 0.92rem; color: var(--text-secondary); margin-bottom: 0;">
+            Check our 891,000-observation crowd curves to time your park rope drop with Sunday Mass, avoid 2:00 PM peak lines, and pair waits with the Queue Rosary.
+          </p>
+        </div>
+        <button class="btn btn-outline" onclick="window.navigateToTab('wait-times-tab')">
+          View Wait Times & Crowd Curves ⏱️
+        </button>
       </div>
 
       <div class="planner-builder-card">
@@ -585,6 +621,14 @@
           <div class="drawer-nav-text">
             <span class="drawer-nav-title">Queue Rosary (In-Line)</span>
             <span class="drawer-nav-subtext">Interactive 1-Decade & 5-Decade Bead Tracker</span>
+          </div>
+        </button>
+
+        <button class="drawer-nav-item" data-tab="wait-times-tab">
+          <span class="drawer-nav-icon">⏱️</span>
+          <div class="drawer-nav-text">
+            <span class="drawer-nav-title">Wait Times & Crowd Guide</span>
+            <span class="drawer-nav-subtext">891k+ Observations, Hourly Curves & Rosary Matches</span>
           </div>
         </button>
 
