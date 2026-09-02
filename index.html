@@ -416,38 +416,73 @@
       </div>
 
       <div class="planner-builder-card">
-        <div class="planner-form-grid">
+        <div style="margin-bottom: 20px;">
+          <span class="park-pill" style="background: #fef3c7; color: #92400e; font-weight: 800; font-size: 0.82rem;">
+            👨‍👩‍👧‍👦 Large Families Welcome • Unlimited Children Input
+          </span>
+          <h3 style="font-size: 1.45rem; color: #0f172a; margin: 8px 0 4px; font-weight: 800;">
+            Customize Your Family's Catholic Pilgrimage Itinerary
+          </h3>
+          <p style="font-size: 0.92rem; color: #475569; margin-bottom: 0;">
+            Enter your travel dates, adults, and any number of children. Our planning engine will check for <strong>Holy Days of Obligation</strong>, flag <strong>meat abstinence days</strong> with park fish dining, calculate Sunday Mass transit buffers, and compute Lightning Lane stewardship savings for your family.
+          </p>
+        </div>
+
+        <div class="planner-form-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
+          <!-- Start Date -->
           <div class="form-group">
-            <label class="form-label" for="planner-duration">Trip Duration</label>
-            <select id="planner-duration" class="form-select">
-              <option value="3">3 Days (Long Weekend Pilgrimage)</option>
-              <option value="5" selected>5 Days (Standard Family Vacation)</option>
-              <option value="7">7 Days (Complete Central Florida Tour)</option>
+            <label class="form-label" for="planner-start-date">📅 Trip Start Date</label>
+            <input type="date" id="planner-start-date" class="form-input" required>
+          </div>
+
+          <!-- End Date -->
+          <div class="form-group">
+            <label class="form-label" for="planner-end-date">📅 Trip End Date</label>
+            <input type="date" id="planner-end-date" class="form-input" required>
+          </div>
+
+          <!-- Number of Adults -->
+          <div class="form-group">
+            <label class="form-label" for="planner-adults">🧑 Adults (18+)</label>
+            <input type="number" id="planner-adults" class="form-input" min="1" value="2" placeholder="2" required>
+          </div>
+
+          <!-- Number of Kids (Unrestricted integer input) -->
+          <div class="form-group">
+            <label class="form-label" for="planner-kids">
+              👶 Kids / Children <span style="color: #16a34a; font-weight: 700; font-size: 0.78rem;">(No limit!)</span>
+            </label>
+            <input type="number" id="planner-kids" class="form-input" min="0" value="4" placeholder="e.g. 4, 6, 8..." required>
+            <span style="font-size: 0.75rem; color: #64748b; margin-top: 4px; display: block;">
+              Type any number of children. Large families are a blessing!
+            </span>
+          </div>
+
+          <!-- Liturgical Tradition -->
+          <div class="form-group">
+            <label class="form-label" for="planner-tradition">⛪ Liturgical Tradition</label>
+            <select id="planner-tradition" class="form-select">
+              <option value="roman" selected>🇻🇦 Roman Rite (USCCB / Orlando)</option>
+              <option value="tlm">☩ Traditional Latin Mass (1962)</option>
+              <option value="byzantine">☦️ Byzantine Catholic Rite</option>
+              <option value="ordinariate">🇬🇧 Anglican Ordinariate</option>
             </select>
           </div>
 
+          <!-- Trip Focus -->
           <div class="form-group">
-            <label class="form-label" for="planner-group">Travel Party</label>
-            <select id="planner-group" class="form-select">
-              <option value="young-kids" selected>Family with Young Children (Gentle Pace)</option>
-              <option value="teens">Youth & Teens (High Energy & Fellowship)</option>
-              <option value="adults">Adults & Couples (Spiritual Retreat & Dining)</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="planner-focus">Trip Focus</label>
+            <label class="form-label" for="planner-focus">🌟 Pilgrimage Focus</label>
             <select id="planner-focus" class="form-select">
-              <option value="park-touring" selected>Balanced Magic & Daily Liturgy</option>
-              <option value="sacred-art">Sacred Art, Epcot Heritage & Cathedrals</option>
-              <option value="retreat">Relaxed Retreat & Restful Prayer</option>
+              <option value="park-touring" selected>Balanced Park Magic &amp; Sunday Mass</option>
+              <option value="sacred-art">Sacred Art, Epcot Heritage &amp; Cathedrals</option>
+              <option value="retreat">Gentle Stroller Pace &amp; Restful Retreat</option>
             </select>
           </div>
         </div>
 
-        <div style="text-align: center;">
+        <div style="text-align: center; margin-top: 24px;">
           <button id="generate-itinerary-btn" class="btn btn-sun" style="font-size: 1.05rem; padding: 14px 34px;">
-            ✨ Generate My Catholic Pilgrimage Itinerary
+            ✨ Generate Large Family Pilgrimage Itinerary
           </button>
         </div>
       </div>
