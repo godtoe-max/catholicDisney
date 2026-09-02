@@ -11,13 +11,6 @@ export function initQueueRosary() {
   const container = document.getElementById('queue-rosary-hub');
   if (!container) return;
 
-  // Auto-detect traditional mystery by day of the week
-  const dayIndex = new Date().getDay(); // 0: Sun, 1: Mon, 2: Tue, 3: Wed, 4: Thu, 5: Fri, 6: Sat
-  if (dayIndex === 1 || dayIndex === 6) currentMysteryKey = 'joyful'; // Mon, Sat
-  else if (dayIndex === 4) currentMysteryKey = 'luminous'; // Thu
-  else if (dayIndex === 2 || dayIndex === 5) currentMysteryKey = 'sorrowful'; // Tue, Fri
-  else currentMysteryKey = 'glorious'; // Sun, Wed
-
   renderRosary();
 }
 
@@ -82,17 +75,21 @@ function renderRosary() {
       </div>
     </div>
 
-    <!-- Top Mystery Selector & Daily Guide -->
+    <!-- Top Mystery Selector (Free choice anytime during the day) -->
     <div class="rosary-card-header">
       <div class="mystery-day-badge">
         <span>☀️ ${mysteryData.name}</span>
-        <span style="font-size: 0.8rem; opacity: 0.85;">(${mysteryData.traditionalDays.join(' & ')})</span>
+        <span style="font-size: 0.82rem; opacity: 0.9;">• ${mysteryData.tagline}</span>
       </div>
 
       <!-- Mystery Selector Tabs -->
       <div class="filter-chips" style="justify-content: center; margin: 16px 0 12px; gap: 6px;">
-        <button class="filter-chip ${currentMysteryKey === 'joyful' ? 'active' : ''}" onclick="window.selectMysterySet('joyful')">Joyful (Mon/Sat)</button>
-        <button class="filter-chip ${currentMysteryKey === 'luminous' ? 'active' : ''}" onclick="window.selectMysterySet('luminous')">Luminous (Thu)</button>
+        <button class="filter-chip ${currentMysteryKey === 'joyful' ? 'active' : ''}" onclick="window.selectMysterySet('joyful')">☀️ Joyful</button>
+        <button class="filter-chip ${currentMysteryKey === 'luminous' ? 'active' : ''}" onclick="window.selectMysterySet('luminous')">💡 Luminous</button>
+        <button class="filter-chip ${currentMysteryKey === 'sorrowful' ? 'active' : ''}" onclick="window.selectMysterySet('sorrowful')">✝️ Sorrowful</button>
+        <button class="filter-chip ${currentMysteryKey === 'glorious' ? 'active' : ''}" onclick="window.selectMysterySet('glorious')">👑 Glorious</button>
+        <button class="filter-chip ${currentMysteryKey === 'byzantine_rule' ? 'active' : ''}" onclick="window.selectMysterySet('byzantine_rule')">☦️ Byzantine (15 Steps)</button>
+      </div>
         <button class="filter-chip ${currentMysteryKey === 'sorrowful' ? 'active' : ''}" onclick="window.selectMysterySet('sorrowful')">Sorrowful (Tue/Fri)</button>
         <button class="filter-chip ${currentMysteryKey === 'glorious' ? 'active' : ''}" onclick="window.selectMysterySet('glorious')">Glorious (Wed/Sun)</button>
         <button class="filter-chip ${currentMysteryKey === 'byzantine_rule' ? 'active' : ''}" onclick="window.selectMysterySet('byzantine_rule')">☦️ Byzantine Rule (15 Steps)</button>

@@ -153,9 +153,8 @@ export const TRADITION_PRAYERS = {
 export const ROSARY_MYSTERIES = {
   joyful: {
     name: "Joyful Mysteries",
-    traditionalDays: ["Monday", "Saturday"],
     color: "#f59e0b",
-    tagline: "The Incarnation & Hidden Life of Jesus",
+    tagline: "The Incarnation & Early Life of Jesus (5 Decades)",
     decades: [
       {
         decadeNumber: 1,
@@ -195,10 +194,9 @@ export const ROSARY_MYSTERIES = {
     ]
   },
   luminous: {
-    name: "Luminous Mysteries (Mysteries of Light)",
-    traditionalDays: ["Thursday"],
+    name: "Luminous Mysteries",
     color: "#3b82f6",
-    tagline: "The Public Ministry & Light of Christ",
+    tagline: "The Public Ministry & Light of Christ (5 Decades)",
     decades: [
       {
         decadeNumber: 1,
@@ -239,9 +237,8 @@ export const ROSARY_MYSTERIES = {
   },
   sorrowful: {
     name: "Sorrowful Mysteries",
-    traditionalDays: ["Tuesday", "Friday"],
     color: "#ef4444",
-    tagline: "The Passion & Redeeming Sacrifice of Jesus",
+    tagline: "The Passion & Redeeming Sacrifice of Jesus (5 Decades)",
     decades: [
       {
         decadeNumber: 1,
@@ -282,9 +279,8 @@ export const ROSARY_MYSTERIES = {
   },
   glorious: {
     name: "Glorious Mysteries",
-    traditionalDays: ["Wednesday", "Sunday"],
     color: "#10b981",
-    tagline: "The Resurrection & Eternal Kingdom of Christ",
+    tagline: "The Resurrection & Eternal Kingdom of Christ (5 Decades)",
     decades: [
       {
         decadeNumber: 1,
@@ -324,10 +320,9 @@ export const ROSARY_MYSTERIES = {
     ]
   },
   byzantine_rule: {
-    name: "Byzantine Rule of the Theotokos (15 Steps)",
-    traditionalDays: ["Daily (Eastern Catholic Rule)"],
+    name: "Byzantine Rule of the Theotokos",
     color: "#8b5cf6",
-    tagline: "The 15 Steps of the Mother of God (Bogoroditse)",
+    tagline: "The 15 Steps of the Mother of God (Eastern Tradition)",
     decades: [
       {
         decadeNumber: 1,
