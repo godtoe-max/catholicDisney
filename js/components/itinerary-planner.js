@@ -182,22 +182,25 @@ export function generateCustomItinerary() {
   const startInput = document.getElementById('planner-start-date');
   const endInput = document.getElementById('planner-end-date');
   const adultsInput = document.getElementById('planner-adults');
+  const teensInput = document.getElementById('planner-teens');
   const kidsInput = document.getElementById('planner-kids');
+  const infantsInput = document.getElementById('planner-infants');
   const traditionSelect = document.getElementById('planner-tradition');
   const focusSelect = document.getElementById('planner-focus');
   const outputContainer = document.getElementById('itinerary-output');
 
   if (!outputContainer) return;
 
-  const adultsInput = document.getElementById('planner-adults');
-  const kidsInput = document.getElementById('planner-kids');
-  const infantsInput = document.getElementById('planner-infants');
-
   const adults = Math.max(1, parseInt(adultsInput ? adultsInput.value : '2', 10) || 2);
-  const kids = Math.max(0, parseInt(kidsInput ? kidsInput.value : '3', 10) || 0);
+  const teens = Math.max(0, parseInt(teensInput ? teensInput.value : '1', 10) || 0);
+  const kids = Math.max(0, parseInt(kidsInput ? kidsInput.value : '2', 10) || 0);
   const infants = Math.max(0, parseInt(infantsInput ? infantsInput.value : '0', 10) || 0);
-  const totalParty = adults + kids + infants;
-  const ticketedParty = adults + kids; // Infants 0-2 enter Disney theme parks free!
+
+  const totalParty = adults + teens + kids + infants;
+  const adultTickets = adults + teens; // Ages 10+ pay adult ticket
+  const childTickets = kids;           // Ages 3-9 pay child ticket
+  const freeTickets = infants;         // Ages 0-2 enter Disney theme parks free!
+  const ticketedParty = adultTickets + childTickets; // Total guests 3+
 
   const traditionId = traditionSelect ? traditionSelect.value : 'roman';
   const focus = focusSelect ? focusSelect.value : 'park-touring';
@@ -220,8 +223,12 @@ export function generateCustomItinerary() {
     startDate,
     duration,
     adults,
+    teens,
     kids,
     infants,
+    adultTickets,
+    childTickets,
+    freeTickets,
     ticketedParty,
     totalParty,
     tradition,
@@ -240,8 +247,12 @@ export function generateCustomItinerary() {
     startDate: startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
     endDate: endDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
     adults,
+    teens,
     kids,
     infants,
+    adultTickets,
+    childTickets,
+    freeTickets,
     ticketedParty,
     totalParty,
     traditionName: tradition.name,
@@ -266,7 +277,7 @@ export function generateCustomItinerary() {
           </h3>
           <div style="color: #475569; font-size: 0.95rem; line-height: 1.5;">
             <strong>Travel Dates:</strong> ${startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} – ${endDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} (${duration} Days)<br>
-            <strong>Pilgrimage Party:</strong> 🧑 ${adults} Adult${adults > 1 ? 's' : ''} (10+) &nbsp;•&nbsp; 🧒 ${kids} Child${kids === 1 ? '' : 'ren'} (3–9)${infants > 0 ? ` &nbsp;•&nbsp; 👶 ${infants} Infant${infants > 1 ? 's' : ''} (0–2, Free Admission)` : ''} — <strong>${totalParty} Total Pilgrims</strong> (${ticketedParty} Ticketed Guests)<br>
+            <strong>Pilgrimage Party:</strong> 🧑 ${adults} Adult${adults > 1 ? 's' : ''} (18+)${teens > 0 ? ` &nbsp;•&nbsp; 🧒 ${teens} Teen${teens > 1 ? 's' : ''} (10–17)` : ''} &nbsp;•&nbsp; 👧 ${kids} Child${kids === 1 ? '' : 'ren'} (3–9)${infants > 0 ? ` &nbsp;•&nbsp; 👶 ${infants} Infant${infants > 1 ? 's' : ''} (0–2, Free)` : ''} — <strong>${totalParty} Total Pilgrims</strong> (${adultTickets} Adult Tickets, ${childTickets} Child Tickets, ${freeTickets} Free Under 3)<br>
             <strong>Liturgical Tradition:</strong> ${tradition.name}<br>
             <strong>Designated Orlando Church:</strong> <span style="color: #1a73e8; font-weight: 700;">${church.parishName}</span> (${church.address})
           </div>
@@ -306,13 +317,13 @@ export function generateCustomItinerary() {
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
           <div>
             <span style="background: #dcfce7; color: #166534; font-weight: 800; font-size: 0.78rem; padding: 3px 10px; border-radius: 999px; text-transform: uppercase;">
-              ${(kids + infants) >= 3 ? '🌟 Large Family Blessing' : '💡 Financial Stewardship'}
+              ${(teens + kids + infants) >= 3 ? '🌟 Large Family Blessing' : '💡 Financial Stewardship'}
             </span>
             <h4 style="font-size: 1.25rem; color: #14532d; margin: 6px 0 2px; font-weight: 800;">
               Lightning Lane Stewardship Verdict: Save $${totalTripLLSavings.toLocaleString()}+
             </h4>
             <p style="font-size: 0.92rem; color: #166534; margin: 0; line-height: 1.45;">
-              For your <strong>${ticketedParty} ticketed pilgrims</strong> (ages 3+), purchasing Disney Lightning Lane Multi Pass would cost <strong>$${dailyLLCost}/day</strong>, totaling <strong>$${totalTripLLSavings.toLocaleString()}</strong> for your trip!${infants > 0 ? ` <em>(Infants 0–2 enter the parks and rides 100% free!)</em>` : ''} By utilizing our early rope-drop strategies, afternoon quiet prayer nook breaks, and Queue Rosaries, you can skip Lightning Lane and direct those funds to a special celebratory dinner or family blessing.
+              For your <strong>${ticketedParty} ticketed pilgrims</strong> (${adultTickets} adults/teens 10+ and ${childTickets} children 3–9), purchasing Disney Lightning Lane Multi Pass would cost <strong>$${dailyLLCost}/day</strong>, totaling <strong>$${totalTripLLSavings.toLocaleString()}</strong> for your trip!${infants > 0 ? ` <em>(Infants 0–2 enter the parks and rides 100% free!)</em>` : ''} By utilizing our early rope-drop strategies, afternoon quiet prayer nook breaks, and Queue Rosaries, you can skip Lightning Lane and direct those funds to a special celebratory dinner or family blessing.
             </p>
           </div>
         </div>
@@ -755,7 +766,7 @@ window.printCustomItinerary = () => {
       ${plan ? `
         <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 8px 12px; margin-bottom: 12px; font-size: 9.5pt; line-height: 1.4;">
           <strong>Dates:</strong> ${plan.startDate} – ${plan.endDate} (${plan.duration} Days) &nbsp;•&nbsp; 
-          <strong>Party:</strong> ${plan.adults} Adults (10+), ${plan.kids} Children (3–9)${plan.infants > 0 ? `, ${plan.infants} Infants (0–2, Free)` : ''} — <strong>${plan.totalParty} Total Pilgrims</strong> (${plan.ticketedParty} Ticketed) &nbsp;•&nbsp; 
+          <strong>Party:</strong> ${plan.adults} Adults (18+)${plan.teens > 0 ? `, ${plan.teens} Teens (10–17)` : ''}, ${plan.kids} Children (3–9)${plan.infants > 0 ? `, ${plan.infants} Infants (0–2, Free)` : ''} — <strong>${plan.totalParty} Total Pilgrims</strong> (${plan.adultTickets} Adult Tickets, ${plan.childTickets} Child Tickets, ${plan.freeTickets} Free Under 3) &nbsp;•&nbsp; 
           <strong>Tradition:</strong> ${plan.traditionName} &nbsp;•&nbsp; 
           <strong>Parish:</strong> ${plan.churchName} (${plan.churchAddress})
         </div>
@@ -785,8 +796,11 @@ window.openTravelAgentModal = () => {
 
   const durationStr = plan ? `${plan.duration} Days (${plan.startDate} – ${plan.endDate})` : 'Custom Dates';
   const partyStr = plan 
-    ? `${plan.adults} Adults (10+), ${plan.kids} Kids (3–9)${plan.infants > 0 ? `, ${plan.infants} Infants (0–2, Free)` : ''} — ${plan.totalParty} Total Pilgrims (${plan.ticketedParty} Ticketed)`
+    ? `${plan.adults} Adults (18+)${plan.teens > 0 ? `, ${plan.teens} Teens (10–17)` : ''}, ${plan.kids} Kids (3–9)${plan.infants > 0 ? `, ${plan.infants} Infants (0–2, Free)` : ''} — ${plan.totalParty} Total Pilgrims`
     : 'Family Pilgrims';
+  const ticketStr = plan
+    ? `${plan.adultTickets} Adult Tickets (10+), ${plan.childTickets} Child Tickets (3–9), ${plan.freeTickets} Free Infants (0–2)`
+    : 'Theme Park Tickets';
   const churchStr = plan ? `${plan.churchName} (${plan.traditionName})` : 'Catholic Parish in Orlando';
 
   modalWrapper.innerHTML = `
@@ -822,11 +836,12 @@ window.openTravelAgentModal = () => {
         <!-- Pre-populated Trip Summary -->
         <div style="background: #eff6ff; border: 1.5px solid #bfdbfe; border-radius: 14px; padding: 12px 16px; margin-bottom: 18px;">
           <div style="font-size: 0.8rem; font-weight: 800; color: #1e40af; text-transform: uppercase; margin-bottom: 3px;">
-            📋 Attached Pilgrimage Itinerary &amp; Ticket Breakdown
+            📋 Attached Pilgrimage Itinerary &amp; Ticket/Hotel Breakdown
           </div>
           <div style="font-size: 0.88rem; color: #1e3a8a; line-height: 1.45;">
             <strong>Dates:</strong> ${durationStr}<br>
             <strong>Party:</strong> ${partyStr}<br>
+            <strong>Tickets:</strong> ${ticketStr}<br>
             <strong>Church:</strong> ${churchStr}
           </div>
         </div>
@@ -923,13 +938,15 @@ Email: ${email}
 Phone: ${phone}
 Lodging Preference: ${lodging}
 
-PILGRIMAGE & TICKET BREAKDOWN:
+PILGRIMAGE & LODGING/TICKETING BREAKDOWN:
 Dates: ${plan ? `${plan.startDate} to ${plan.endDate} (${plan.duration} Days)` : 'Custom'}
 Party Breakdown:
-- Adults & Youths (Ages 10+): ${plan ? plan.adults : '2'}
-- Children (Ages 3–9): ${plan ? plan.kids : '0'}
-- Infants (Ages 0–2, Free Admission): ${plan ? plan.infants : '0'}
-- Total Pilgrims: ${plan ? plan.totalParty : '0'} (${plan ? plan.ticketedParty : '0'} Ticketed Guests)
+- Adults (Ages 18+): ${plan ? plan.adults : '2'} (Hotel room pricing base; standard room includes up to 2 adults)
+- Teens & Youths (Ages 10–17): ${plan ? plan.teens : '0'} (Adult park ticket, but child hotel rate - no room surcharge!)
+- Children (Ages 3–9): ${plan ? plan.kids : '0'} (Child park ticket & child hotel rate)
+- Infants (Ages 0–2): ${plan ? plan.infants : '0'} (100% Free park admission & free crib in room)
+- Total Pilgrims: ${plan ? plan.totalParty : '0'}
+- Theme Park Tickets: ${plan ? `${plan.adultTickets} Adult Tickets (10+), ${plan.childTickets} Child Tickets (3–9), ${plan.freeTickets} Free Under 3` : ''}
 Liturgical Tradition: ${plan ? plan.traditionName : 'Roman Rite'}
 Designated Church: ${plan ? `${plan.churchName} (${plan.churchAddress})` : 'Orlando Parish'}
 Estimated Lightning Lane Savings: $${plan ? plan.totalTripLLSavings.toLocaleString() : '0'}
@@ -951,9 +968,10 @@ ${notes}
     formData.append('lodging', lodging);
     formData.append('trip-dates', plan ? `${plan.startDate} - ${plan.endDate}` : '');
     formData.append('adults', plan ? plan.adults : '');
+    formData.append('teens', plan ? plan.teens : '');
     formData.append('kids', plan ? plan.kids : '');
     formData.append('infants', plan ? plan.infants : '');
-    formData.append('party-size', plan ? `${plan.totalParty} Total (${plan.adults} Adults 10+, ${plan.kids} Kids 3-9, ${plan.infants} Infants 0-2)` : '');
+    formData.append('party-size', plan ? `${plan.totalParty} Total (${plan.adults} Adults 18+, ${plan.teens} Teens 10-17, ${plan.kids} Kids 3-9, ${plan.infants} Infants 0-2)` : '');
     formData.append('liturgical-tradition', plan ? plan.traditionName : '');
     formData.append('itinerary-summary', dailyParksText);
     formData.append('notes', notes);

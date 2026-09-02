@@ -479,23 +479,34 @@
             <input type="date" id="planner-end-date" class="form-input" required>
           </div>
 
-          <!-- Number of Adults (10+) -->
+          <!-- Number of Adults (18+) -->
           <div class="form-group">
-            <label class="form-label" for="planner-adults">🧑 Adults &amp; Youths (Ages 10+)</label>
+            <label class="form-label" for="planner-adults">🧑 Adults (Ages 18+)</label>
             <input type="number" id="planner-adults" class="form-input" min="1" value="2" placeholder="2" required>
             <span style="font-size: 0.75rem; color: #64748b; margin-top: 4px; display: block;">
-              Disney adult ticket price applies to ages 10 and up.
+              Hotel lead guests (standard rooms cover up to 2 adults).
+            </span>
+          </div>
+
+          <!-- Number of Teens/Youths (10 - 17) -->
+          <div class="form-group">
+            <label class="form-label" for="planner-teens">
+              🧒 Teens &amp; Youths (Ages 10–17)
+            </label>
+            <input type="number" id="planner-teens" class="form-input" min="0" value="1" placeholder="0" required>
+            <span style="font-size: 0.75rem; color: #64748b; margin-top: 4px; display: block;">
+              Adult park ticket, but child hotel rate (no room surcharge!).
             </span>
           </div>
 
           <!-- Number of Kids (3 - 9) -->
           <div class="form-group">
             <label class="form-label" for="planner-kids">
-              🧒 Children (Ages 3–9) <span style="color: #16a34a; font-weight: 700; font-size: 0.78rem;">(No limit!)</span>
+              👧 Children (Ages 3–9) <span style="color: #16a34a; font-weight: 700; font-size: 0.78rem;">(No limit!)</span>
             </label>
-            <input type="number" id="planner-kids" class="form-input" min="0" value="3" placeholder="e.g. 3, 5..." required>
+            <input type="number" id="planner-kids" class="form-input" min="0" value="2" placeholder="e.g. 2, 4..." required>
             <span style="font-size: 0.75rem; color: #64748b; margin-top: 4px; display: block;">
-              Discounted Disney child ticket tier.
+              Discounted Disney child ticket &amp; child hotel rate.
             </span>
           </div>
 
@@ -506,7 +517,7 @@
             </label>
             <input type="number" id="planner-infants" class="form-input" min="0" value="1" placeholder="0" required>
             <span style="font-size: 0.75rem; color: #64748b; margin-top: 4px; display: block;">
-              Children under 3 enter Disney theme parks 100% FREE!
+              Under 3 enter theme parks 100% FREE (+ crib in room).
             </span>
           </div>
 
@@ -851,6 +862,7 @@
     <input type="text" name="lodging" />
     <input type="text" name="trip-dates" />
     <input type="text" name="adults" />
+    <input type="text" name="teens" />
     <input type="text" name="kids" />
     <input type="text" name="infants" />
     <input type="text" name="party-size" />
@@ -860,6 +872,6 @@
   </form>
 
   <!-- Application JS Entry Point with Cache-Buster -->
-  <script type="module" src="js/app.js?v=20260902L"></script>
+  <script type="module" src="js/app.js?v=20260902m"></script>
 </body>
 </html>
