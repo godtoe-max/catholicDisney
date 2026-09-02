@@ -2,6 +2,7 @@
 import { initPilgrimageHub } from './components/pilgrimage-hub.js';
 import { initQueueRosary } from './components/queue-rosary.js';
 import { initWaitTimesHub } from './components/wait-times-hub.js';
+import { initLiveWaitTimes } from './components/live-wait-times.js';
 import { initVirtueHub } from './components/virtue-hub.js';
 import { initLiturgicalHub } from './components/liturgical-hub.js';
 import { initItineraryPlanner } from './components/itinerary-planner.js';
@@ -14,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initPilgrimageHub();
   initQueueRosary();
   initWaitTimesHub();
+  initLiveWaitTimes();
   initVirtueHub();
   initLiturgicalHub();
   initItineraryPlanner();
@@ -23,6 +25,26 @@ document.addEventListener('DOMContentLoaded', () => {
   initModalListeners();
   initLightbox();
 });
+
+// Mode Switcher between Live Waits and Crowd Simulator
+window.switchWaitMode = (mode) => {
+  const liveContainer = document.getElementById('live-wait-times-container');
+  const simContainer = document.getElementById('wait-times-container');
+  const liveBtn = document.getElementById('mode-live-waits-btn');
+  const simBtn = document.getElementById('mode-simulator-btn');
+
+  if (mode === 'live') {
+    if (liveContainer) liveContainer.style.display = 'block';
+    if (simContainer) simContainer.style.display = 'none';
+    if (liveBtn) { liveBtn.className = 'btn btn-primary'; }
+    if (simBtn) { simBtn.className = 'btn btn-outline'; }
+  } else {
+    if (liveContainer) liveContainer.style.display = 'none';
+    if (simContainer) simContainer.style.display = 'block';
+    if (liveBtn) { liveBtn.className = 'btn btn-outline'; }
+    if (simBtn) { simBtn.className = 'btn btn-primary'; }
+  }
+};
 
 // Tab Switching & Deep Linking
 function initTabNavigation() {
