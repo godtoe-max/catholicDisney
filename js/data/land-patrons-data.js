@@ -88,6 +88,19 @@ export const LAND_PATRONS = [
   // EPCOT WORLD SHOWCASE PAVILIONS & NEIGHBORHOODS
   // ==========================================
   {
+    id: "epcot_world_showcase",
+    name: "World Showcase Promenade & Lagoon",
+    park: "EPCOT",
+    icon: "👑",
+    saint: "Mary, Queen of the Universe (Regina Universi)",
+    saintTitle: "Supreme Patroness of World Showcase & Mother of All Nations",
+    feastDay: "August 22 (The Queenship of Mary)",
+    scripture: "A great sign appeared in heaven: a woman clothed with the sun, with the moon under her feet, and on her head a crown of twelve stars. (Revelation 12:1)",
+    story: "Stretching around the 40-acre World Showcase Lagoon, the 11 national pavilions unite the cultures, languages, and heritages of the earth in peace. The supreme patroness of this global promenade is Mary, Queen of the Universe! Just minutes down the road from EPCOT stands the world-famous Basilica Shrine of Mary, Queen of the Universe—built specifically by the Catholic Church as a spiritual oasis for the millions of pilgrims and tourists traveling to Disney from every country on earth. As Queen Mother of Jesus Christ, Mary's mantle covers every race, language, and nation gathered around the lagoon.",
+    didYouKnow: "In Revelation 12:1, Mary is crowned with 'twelve stars,' traditionally symbolizing the twelve tribes of Israel and the universal Church. When you walk around the World Showcase Lagoon with its 11 national pavilions, you are walking under her maternal queenship!",
+    reflection: "Mary is the Queen of Peace who draws all nations into unity around her Son. As you stroll through the countries, pray a Hail Mary for international peace and goodwill among all peoples."
+  },
+  {
     id: "epcot_mexico",
     name: "Mexico Pavilion (World Showcase)",
     park: "EPCOT",
