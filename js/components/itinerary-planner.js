@@ -1,7 +1,17 @@
-// Catholic Disney: Large-Family Pilgrimage Itinerary Planner
-// Integrates calendar dates, Holy Days of Obligation, Abstinence days & unrestricted children counts
+// Catholic Disney: Large-Family Pilgrimage Itinerary Planner with Daily Park Selection
+// Integrates calendar dates, Holy Days of Obligation, Abstinence days, unrestricted children counts & custom park choice per day
 
 import { TRADITIONS_LITURGICAL, DISNEY_ABSTINENCE_DINING } from '../data/holy-days-data.js';
+
+export const PARK_OPTIONS = [
+  { id: "mk", name: "Magic Kingdom", icon: "🏰", food: "Columbia Harbour House (Liberty Square - Grilled Salmon & Lobster Roll)" },
+  { id: "epcot", name: "EPCOT", icon: "🌐", food: "Sunshine Seasons (The Land) or Yorkshire County Fish Shop (UK Fish & Chips)" },
+  { id: "hs", name: "Hollywood Studios", icon: "🎬", food: "ABC Commissary (Grilled Shrimp Tacos) or Docking Bay 7 (Tofu/Kefta)" },
+  { id: "ak", name: "Animal Kingdom", icon: "🌳", food: "Satu'li Canteen (Pandora - Chili-Garlic Tofu Bowl & Ocean Fish)" },
+  { id: "rest", name: "Basilica & Rest Day", icon: "⛪", food: "Cookes of Dublin / Raglan Road (Disney Springs - Atlantic Fish & Chips)" }
+];
+
+let selectedDailyParks = [];
 
 export function initItineraryPlanner() {
   const generateBtn = document.getElementById('generate-itinerary-btn');
@@ -9,8 +19,17 @@ export function initItineraryPlanner() {
     generateBtn.addEventListener('click', generateCustomItinerary);
   }
 
+  const startInput = document.getElementById('planner-start-date');
+  const endInput = document.getElementById('planner-end-date');
+  const traditionSelect = document.getElementById('planner-tradition');
+
+  if (startInput) startInput.addEventListener('change', refreshDailyParksUI);
+  if (endInput) endInput.addEventListener('change', refreshDailyParksUI);
+  if (traditionSelect) traditionSelect.addEventListener('change', refreshDailyParksUI);
+
   // Pre-fill default dates (e.g. upcoming Monday to Friday)
   prefillDefaultDates();
+  refreshDailyParksUI();
 }
 
 function prefillDefaultDates() {
@@ -38,6 +57,77 @@ function formatDateForInput(d) {
   return `${yyyy}-${mm}-${dd}`;
 }
 
+export function refreshDailyParksUI() {
+  const container = document.getElementById('daily-parks-container');
+  const startInput = document.getElementById('planner-start-date');
+  const endInput = document.getElementById('planner-end-date');
+  const traditionSelect = document.getElementById('planner-tradition');
+  if (!container || !startInput) return;
+
+  const traditionId = traditionSelect ? traditionSelect.value : 'roman';
+  const tradition = TRADITIONS_LITURGICAL[traditionId] || TRADITIONS_LITURGICAL.roman;
+
+  let startDate = startInput.value ? new Date(startInput.value + 'T00:00:00') : new Date();
+  let endDate = endInput && endInput.value ? new Date(endInput.value + 'T00:00:00') : new Date(startDate.getTime() + 4 * 86400000);
+
+  if (endDate < startDate) {
+    endDate = new Date(startDate.getTime() + 4 * 86400000);
+  }
+
+  const diffTime = Math.abs(endDate - startDate);
+  const duration = Math.max(1, Math.min(14, Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1));
+
+  // Initialize selectedDailyParks if needed
+  const defaultRotation = ["mk", "epcot", "hs", "ak", "mk", "epcot", "rest"];
+  if (selectedDailyParks.length !== duration) {
+    selectedDailyParks = [];
+    for (let i = 0; i < duration; i++) {
+      const curDate = new Date(startDate.getTime() + i * 86400000);
+      const isSunday = curDate.getDay() === 0;
+      // If Sunday, Magic Kingdom or EPCOT are great post-Mass
+      selectedDailyParks.push(isSunday ? "mk" : defaultRotation[i % defaultRotation.length]);
+    }
+  }
+
+  container.innerHTML = Array.from({ length: duration }).map((_, idx) => {
+    const curDate = new Date(startDate.getTime() + idx * 86400000);
+    const dayOfWeek = curDate.getDay();
+    const isSunday = (dayOfWeek === 0);
+    const isFriday = (dayOfWeek === 5);
+    const isWednesday = (dayOfWeek === 3 && tradition.id === "byzantine");
+    const month = curDate.getMonth() + 1;
+    const dayOfMonth = curDate.getDate();
+
+    const isHolyDay = tradition.holyDays && tradition.holyDays.some(hd => hd.month === month && hd.day === dayOfMonth);
+
+    const formattedDay = curDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+    const currentSelectedPark = selectedDailyParks[idx] || defaultRotation[idx % defaultRotation.length];
+
+    return `
+      <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 14px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <strong style="font-size: 0.88rem; color: #0f172a;">Day ${idx + 1}: ${formattedDay}</strong>
+          ${isHolyDay ? `<span style="font-size: 0.68rem; font-weight: 800; background: #fee2e2; color: #b91c1c; padding: 1px 6px; border-radius: 4px;">🔴 Holy Day</span>` : ''}
+          ${isSunday ? `<span style="font-size: 0.68rem; font-weight: 800; background: #fef3c7; color: #92400e; padding: 1px 6px; border-radius: 4px;">⛪ Mass</span>` : ''}
+          ${(isFriday || isWednesday) ? `<span style="font-size: 0.68rem; font-weight: 800; background: #dbeafe; color: #1e40af; padding: 1px 6px; border-radius: 4px;">🐟 Fast</span>` : ''}
+        </div>
+
+        <select class="form-select" onchange="window.updateDayPark(${idx}, this.value)" style="font-size: 0.85rem; padding: 6px 10px; border-radius: 8px; font-weight: 700;">
+          ${PARK_OPTIONS.map(opt => `
+            <option value="${opt.id}" ${opt.id === currentSelectedPark ? 'selected' : ''}>
+              ${opt.icon} ${opt.name}
+            </option>
+          `).join('')}
+        </select>
+      </div>
+    `;
+  }).join('');
+}
+
+window.updateDayPark = (dayIndex, parkId) => {
+  selectedDailyParks[dayIndex] = parkId;
+};
+
 export function generateCustomItinerary() {
   const startInput = document.getElementById('planner-start-date');
   const endInput = document.getElementById('planner-end-date');
@@ -57,7 +147,6 @@ export function generateCustomItinerary() {
 
   const tradition = TRADITIONS_LITURGICAL[traditionId] || TRADITIONS_LITURGICAL.roman;
 
-  // Calculate Dates
   let startDate = startInput && startInput.value ? new Date(startInput.value + 'T00:00:00') : new Date();
   let endDate = endInput && endInput.value ? new Date(endInput.value + 'T00:00:00') : new Date(startDate.getTime() + 4 * 86400000);
 
@@ -66,10 +155,9 @@ export function generateCustomItinerary() {
   }
 
   const diffTime = Math.abs(endDate - startDate);
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
-  const duration = Math.max(1, Math.min(14, diffDays));
+  const duration = Math.max(1, Math.min(14, Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1));
 
-  // Build calendar-aware days
+  // Build calendar-aware days with user's selected parks
   const itineraryDays = buildCalendarItineraryDays({
     startDate,
     duration,
@@ -77,11 +165,12 @@ export function generateCustomItinerary() {
     kids,
     totalParty,
     tradition,
-    focus
+    focus,
+    dailyParks: selectedDailyParks
   });
 
   // Financial stewardship math
-  const dailyLLCost = totalParty * 32; // ~$32 per person for Lightning Lane Multi Pass
+  const dailyLLCost = totalParty * 32;
   const totalTripLLSavings = dailyLLCost * duration;
 
   outputContainer.innerHTML = `
@@ -171,7 +260,7 @@ export function generateCustomItinerary() {
                 ` : ''}
                 ${day.isSunday ? `
                   <div style="margin-bottom: 6px; font-size: 0.88rem; color: #92400e;">
-                    <strong>⛪ Sunday Mass:</strong> 7:30 AM or 9:30 AM at the <em>Basilica of Mary Queen of the Universe</em>. With parking and TTC transit buffer, arrive at park gates at 9:10 AM or 11:15 AM.
+                    <strong>⛪ Sunday Mass:</strong> 7:30 AM or 9:30 AM at the <em>Basilica of Mary Queen of the Universe</em>. With parking and TTC transit buffer, arrive at ${day.parkName} at 9:15 AM or 11:15 AM.
                   </div>
                 ` : ''}
                 ${day.isAbstinenceDay ? `
@@ -213,7 +302,7 @@ export function generateCustomItinerary() {
       <!-- Traveler's Blessing Footer -->
       <div style="background: #eff6ff; border: 1.5px solid #bfdbfe; padding: 20px; border-radius: 18px; margin-top: 30px; text-align: center;">
         <h4 style="color: #1e40af; margin: 0 0 6px; font-size: 1.15rem; font-weight: 800;">
-          🙏 Traveler's Blessing for the ${adults + kids} of You
+          🙏 Traveler's Blessing for the ${totalParty} of You
         </h4>
         <p style="font-size: 0.92rem; margin-bottom: 0; color: #1e3a8a; font-style: italic;">
           "May the Lord direct your steps in peace, and may His holy angels accompany your family on your journey, bringing you safely home with joy. Saint Christopher, Saint Joseph, and Mary Queen of the Universe, pray for our family."
@@ -225,16 +314,56 @@ export function generateCustomItinerary() {
   outputContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-function buildCalendarItineraryDays({ startDate, duration, adults, kids, totalParty, tradition, focus }) {
+function buildCalendarItineraryDays({ startDate, duration, adults, kids, totalParty, tradition, focus, dailyParks = [] }) {
   const days = [];
 
-  const parkRoster = [
-    { park: "Magic Kingdom", icon: "🏰", food: "Columbia Harbour House (Liberty Square - Grilled Salmon & Lobster Roll)" },
-    { park: "EPCOT", icon: "🌐", food: "Sunshine Seasons (The Land) or Yorkshire County Fish Shop (UK Fish & Chips)" },
-    { park: "Disney's Hollywood Studios", icon: "🎬", food: "ABC Commissary (Grilled Shrimp Tacos) or Docking Bay 7" },
-    { park: "Disney's Animal Kingdom", icon: "🌳", food: "Satu'li Canteen (Pandora - Chili-Garlic Tofu & Ocean Fish)" },
-    { park: "Magic Kingdom & Basilica", icon: "🏰", food: "Columbia Harbour House or Cookes of Dublin at Disney Springs" }
-  ];
+  const parkConfigs = {
+    mk: {
+      parkName: "Magic Kingdom",
+      icon: "🏰",
+      food: "Columbia Harbour House (Liberty Square - Grilled Salmon & Lobster Roll)",
+      theme: "The Sacramental Imagination & The Victory of Good",
+      morningEvent: "Rope Drop at Magic Kingdom & Morning Offering walking toward Cinderella Castle.",
+      afternoonNook: "Cinderella Castle Mosaics & Liberty Square Quiet Courtyard by the Scripture Bell.",
+      eveningEvent: "Happily Ever After Fireworks & Nighttime Fantasyland walk-ons."
+    },
+    epcot: {
+      parkName: "EPCOT",
+      icon: "🌐",
+      food: "Sunshine Seasons (The Land) or Yorkshire County Fish Shop (UK Fish & Chips)",
+      theme: "The Catholic Heritage of the Nations (The Church Universal)",
+      morningEvent: "World Discovery / Nature rope-drop (Guardians of the Galaxy or Soarin').",
+      afternoonNook: "Stave Church in Norway (air-conditioned prayer) & St. George Fountain in Germany.",
+      eveningEvent: "World Showcase Promenade stroll & Luminous fireworks over the lagoon."
+    },
+    hs: {
+      parkName: "Disney's Hollywood Studios",
+      icon: "🎬",
+      food: "ABC Commissary (Grilled Shrimp Tacos) or Docking Bay 7 (Felucian Kefta Spread)",
+      theme: "Courage in the Battle of Faith & Moral Truth",
+      morningEvent: "Star Wars: Galaxy's Edge & Toy Story Land morning touring.",
+      afternoonNook: "Echo Lake Shaded Veranda & Grand Avenue peaceful alcoves.",
+      eveningEvent: "Fantasmic! (celebrating the triumph of imagination and good over darkness)."
+    },
+    ak: {
+      parkName: "Disney's Animal Kingdom",
+      icon: "🌳",
+      food: "Satu'li Canteen (Pandora - Chili-Garlic Tofu Bowl & Ocean Fish)",
+      theme: "St. Francis of Assisi & Christian Creation Stewardship",
+      morningEvent: "Kilimanjaro Safaris golden hour & Avatar Flight of Passage.",
+      afternoonNook: "Discovery Island Tree of Life Trails & Maharajah Jungle Trek peaceful ruins.",
+      eveningEvent: "Festival of the Lion King & sunset walk through Pandora's bioluminescent pathways."
+    },
+    rest: {
+      parkName: "Basilica Pilgrimage & Rest Day",
+      icon: "⛪",
+      food: "Cookes of Dublin / Raglan Road at Disney Springs (Atlantic Fish & Chips)",
+      theme: "Sabbath Rest, Marian Pilgrimage & Family Renewal",
+      morningEvent: "Pilgrimage to the Basilica of Mary Queen of the Universe (10-Station Rosary Garden & Museum).",
+      afternoonNook: "Sacrament of Reconciliation (Confession) at the Basilica, followed by poolside rest.",
+      eveningEvent: "Family stroll and dinner at Disney Springs with live Irish music."
+    }
+  };
 
   const largeFamilyTips = [
     "Rider Switch (Child Swap): Ask the Cast Member at the line entrance! One parent waits with young toddlers while the other rides with older kids, then parents swap without waiting twice.",
@@ -259,17 +388,11 @@ function buildCalendarItineraryDays({ startDate, duration, adults, kids, totalPa
 
     const isSunday = (dayOfWeek === 0);
     const isFriday = (dayOfWeek === 5);
-    const isWednesday = (dayOfWeek === 3);
+    const isWednesday = (dayOfWeek === 3 && tradition.id === "byzantine");
 
-    // Check tradition abstinence
-    let isAbstinenceDay = isFriday;
-    let abstinenceLabel = "Friday Meat Abstinence";
-    if (tradition.id === "byzantine" && (isFriday || isWednesday)) {
-      isAbstinenceDay = true;
-      abstinenceLabel = isWednesday ? "Wednesday Traditional Fast (Betrayal of Christ)" : "Friday Fast (Crucifixion)";
-    }
+    let isAbstinenceDay = isFriday || isWednesday;
 
-    // Check Holy Day of Obligation for this date
+    // Check Holy Day of Obligation
     let isHolyDay = false;
     let holyDayName = "";
     let holyDayGuidance = "";
@@ -283,10 +406,11 @@ function buildCalendarItineraryDays({ startDate, duration, adults, kids, totalPa
       }
     }
 
-    const parkChoice = parkRoster[i % parkRoster.length];
+    // Determine park from user choice or fallback
+    const chosenParkId = (dailyParks && dailyParks[i]) ? dailyParks[i] : (isSunday ? "mk" : ["mk", "epcot", "hs", "ak"][i % 4]);
+    const parkInfo = parkConfigs[chosenParkId] || parkConfigs.mk;
     const largeFamilyTip = largeFamilyTips[i % largeFamilyTips.length];
 
-    // Build timeline events
     const events = [];
 
     if (isSunday) {
@@ -297,8 +421,8 @@ function buildCalendarItineraryDays({ startDate, duration, adults, kids, totalPa
       });
       events.push({
         time: "9:15 AM",
-        title: "Transit Buffer & Gate Arrival (TTC Monorail / Ferry)",
-        description: "Arrive at park gates. Head directly to high-capacity classics while morning crowds congest Fantasyland."
+        title: `Transit Buffer & Gate Arrival at ${parkInfo.parkName}`,
+        description: "Arrive at park gates after Mass. Head directly to high-capacity classics while morning crowds congest headliners."
       });
     } else if (isHolyDay) {
       events.push({
@@ -308,58 +432,60 @@ function buildCalendarItineraryDays({ startDate, duration, adults, kids, totalPa
       });
       events.push({
         time: "10:15 AM",
-        title: `Enter ${parkChoice.park} with Holy Grace`,
-        description: "Begin park touring refreshed in spirit. Target mid-tier classics and walk-ons."
+        title: `Enter ${parkInfo.parkName} with Holy Grace`,
+        description: "Begin your day refreshed in spirit with your family."
       });
     } else {
       events.push({
         time: "8:00 AM",
-        title: `Rope Drop at ${parkChoice.park} & Morning Offering`,
+        title: parkInfo.morningEvent,
         description: "Walk down the main boulevard praying the morning offering and St. Michael the Archangel prayer."
       });
     }
 
-    events.push({
-      time: "11:00 AM",
-      title: "Queue Rosary Devotion in Line",
-      description: "During your first 35+ minute queue, gather the family to pray 1 to 2 decades of the Queue Rosary together."
-    });
+    if (chosenParkId !== "rest") {
+      events.push({
+        time: "11:00 AM",
+        title: "Queue Rosary Devotion in Line",
+        description: `During your first 35+ minute queue at ${parkInfo.parkName}, gather the family to pray 1 to 2 decades of the Queue Rosary together.`
+      });
+    }
 
     events.push({
       time: "1:30 PM",
-      title: isAbstinenceDay ? `Meatless Lunch at ${parkChoice.food.split(' (')[0]}` : `Family Lunch & Prayer at ${parkChoice.park}`,
+      title: isAbstinenceDay ? `Meatless Lunch at ${parkInfo.food.split(' (')[0]}` : `Family Lunch at ${parkInfo.parkName}`,
       description: isAbstinenceDay 
-        ? `Enjoy delicious seafood or plant-based meals at ${parkChoice.food}. Honor your Friday penance joyfully!`
-        : `Hydrate and rest during midday heat. Pray the Angelus together before dining.`
+        ? `Enjoy delicious seafood or plant-based meals at ${parkInfo.food}. Honor your Friday penance joyfully!`
+        : `Hydrate and rest during midday heat. Pray the family blessing before meals.`
     });
 
     events.push({
       time: "3:00 PM",
-      title: "Midday Sanctuary Retreat to Quiet Prayer Nook",
-      description: "Escape the 2:00 PM crowd surge. Rest in shaded peace at a nearby prayer nook (e.g. Liberty Square courtyard or Morocco pavilion)."
+      title: `Midday Retreat: ${parkInfo.afternoonNook.split(' & ')[0]}`,
+      description: `Escape the 2:00 PM crowd surge. ${parkInfo.afternoonNook}`
     });
 
     events.push({
       time: "8:30 PM",
-      title: "Evening Spectacular & Nighttime Walk-Ons",
-      description: "Enjoy evening fireworks and nighttime walk-on lines when crowds thin out."
+      title: parkInfo.eveningEvent,
+      description: "Enjoy peaceful nighttime touring when queues drop significantly."
     });
 
     days.push({
       formattedDate,
+      parkName: parkInfo.parkName,
       isSunday,
       isFriday,
       isAbstinenceDay,
-      abstinenceLabel,
       isHolyDay,
       holyDayName,
       holyDayGuidance,
-      title: `${parkChoice.park}: ${isHolyDay ? holyDayName : isSunday ? 'Sunday Liturgy & Wonder' : 'Family Adventure & Virtue'}`,
-      theme: isHolyDay ? `Honoring ${holyDayName}` : isSunday ? "The Lord's Day & Domestic Church Joy" : "Christian Courage, Wonder & Family Unity",
-      diningRecommendation: parkChoice.food,
+      title: `${parkInfo.icon} ${parkInfo.parkName}: ${isHolyDay ? holyDayName : isSunday ? 'Sunday Liturgy & Wonder' : 'Family Pilgrimage Adventure'}`,
+      theme: isHolyDay ? `Honoring ${holyDayName}` : parkInfo.theme,
+      diningRecommendation: parkInfo.food,
       largeFamilyTip,
       events,
-      nightlyReflection: `How did our family witness to Christ's love and patience today, especially when waiting in lines or caring for one another?`
+      nightlyReflection: `How did our family witness to Christ's love and patience today at ${parkInfo.parkName}, especially in lines and caring for one another?`
     });
   }
 

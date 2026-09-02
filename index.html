@@ -480,6 +480,27 @@
           </div>
         </div>
 
+        <!-- Daily Park Selection (Choose which park for each day) -->
+        <div id="daily-parks-section" style="margin-top: 24px; padding-top: 20px; border-top: 1.5px dashed #e2e8f0;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 14px;">
+            <div>
+              <span class="park-pill" style="background: #e0f2fe; color: #0369a1; font-weight: 800; font-size: 0.78rem;">
+                🏰 Daily Park Itinerary Selection
+              </span>
+              <h4 style="font-size: 1.18rem; color: #0f172a; margin: 4px 0 2px; font-weight: 800;">
+                Choose Which Park You Will Visit Each Day
+              </h4>
+            </div>
+            <span style="font-size: 0.82rem; color: #64748b;">
+              Customize parks based on your family's preferences or Holy Day schedules
+            </span>
+          </div>
+
+          <div id="daily-parks-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px;">
+            <!-- Injected dynamically based on start & end dates -->
+          </div>
+        </div>
+
         <div style="text-align: center; margin-top: 24px;">
           <button id="generate-itinerary-btn" class="btn btn-sun" style="font-size: 1.05rem; padding: 14px 34px;">
             ✨ Generate Large Family Pilgrimage Itinerary
