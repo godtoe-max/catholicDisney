@@ -4,10 +4,12 @@
 import { RIDE_TIERS, SUNDAY_MASS_PRESETS, CROWD_MULTIPLIERS } from '../data/ride-tiers.js';
 import { PARKS_METADATA, HOURLY_CROWD_CURVES } from '../data/wait-times-data.js';
 import { calculateItineraryProjections } from './wait-time-insights.js';
+import { getCrowdForDate } from '../data/calendar-crowds-data.js';
 
 let selectedMassId = "mary-queen-730";
 let selectedParkId = 6; // Magic Kingdom default
 let selectedCrowdKey = "moderate";
+let selectedDateStr = "2026-08-01"; // Default to August 1st to demonstrate exact calendar intelligence!
 let selectedRideIds = [129, 136, 140, 131]; // Default Magic Kingdom classics: Seven Dwarfs, Peter Pan, Haunted Mansion, Buzz Lightyear
 
 export function initWaitTimesHub() {
@@ -42,6 +44,10 @@ function renderWaitTimesHub() {
   const currentPark = PARKS_METADATA[selectedParkId] || PARKS_METADATA[6];
   const hourlyData = HOURLY_CROWD_CURVES[selectedParkId] || HOURLY_CROWD_CURVES[6] || {};
 
+  const curDateObj = selectedDateStr ? new Date(selectedDateStr + 'T00:00:00') : new Date();
+  const dateCrowd = getCrowdForDate(curDateObj);
+  const formattedSelectedDate = curDateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
   container.innerHTML = `
     <div class="crowd-planner-engine">
       <!-- Embedded Component Styles -->
@@ -62,71 +68,94 @@ function renderWaitTimesHub() {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
           gap: 20px;
-          margin: 22px 0 10px;
+          margin-top: 24px;
+          margin-bottom: 24px;
         }
         .config-block {
           background: #f8fafc;
-          border: 1.5px solid #e2e8f0;
+          border: 1px solid #e2e8f0;
           border-radius: 16px;
-          padding: 18px 20px;
+          padding: 18px;
         }
         .config-label {
-          font-size: 0.85rem;
           font-weight: 800;
-          color: #1e40af;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
+          font-size: 0.92rem;
+          color: #1e293b;
           margin-bottom: 10px;
           display: flex;
           align-items: center;
           gap: 6px;
         }
         .park-tab-pill {
-          padding: 8px 16px;
+          padding: 6px 12px;
           border-radius: 999px;
-          border: 1.5px solid #cbd5e1;
+          border: 1px solid #cbd5e1;
           background: #ffffff;
-          color: #475569;
+          font-size: 0.82rem;
           font-weight: 700;
-          font-size: 0.88rem;
           cursor: pointer;
           transition: all 0.2s;
         }
         .park-tab-pill.active {
           background: #1a73e8;
-          border-color: #1a73e8;
           color: #ffffff;
-          box-shadow: 0 4px 12px rgba(26, 115, 232, 0.25);
+          border-color: #1a73e8;
+          box-shadow: 0 2px 8px rgba(26, 115, 232, 0.3);
         }
         .rides-checkbox-container {
-          max-height: 240px;
+          max-height: 180px;
           overflow-y: auto;
+          background: #ffffff;
+          border: 1px solid #e2e8f0;
+          border-radius: 10px;
+          padding: 8px;
           display: flex;
           flex-direction: column;
-          gap: 8px;
-          padding-right: 6px;
+          gap: 6px;
         }
         .ride-checkbox-item {
           display: flex;
           align-items: center;
-          gap: 10px;
-          background: #ffffff;
-          border: 1px solid #e2e8f0;
-          border-radius: 10px;
-          padding: 8px 12px;
-          font-size: 0.88rem;
+          gap: 8px;
+          font-size: 0.85rem;
           font-weight: 600;
+          color: #334155;
+          padding: 6px 8px;
+          border-radius: 6px;
           cursor: pointer;
-          transition: all 0.15s;
+          transition: background 0.15s;
         }
         .ride-checkbox-item:hover {
-          border-color: #93c5fd;
-          background: #f0fdf4;
+          background: #f1f5f9;
         }
         .ride-checkbox-item.checked {
           background: #eff6ff;
-          border-color: #3b82f6;
-          color: #1e3a8a;
+          color: #1a73e8;
+        }
+        .analytics-hero-banner {
+          background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+          color: #ffffff;
+          border-radius: 20px;
+          padding: 24px;
+          margin-bottom: 24px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 16px;
+        }
+        .stat-card-group {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          gap: 16px;
+          margin-bottom: 24px;
+        }
+        .stat-card {
+          background: #ffffff;
+          border: 1px solid #e2e8f0;
+          border-radius: 16px;
+          padding: 18px;
+          box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
         }
         .results-summary-grid {
           display: grid;
@@ -187,15 +216,15 @@ function renderWaitTimesHub() {
         }
       </style>
 
-      <!-- Top Interactive Calculator Frame -->
+      <!-- Control Card -->
       <div class="planner-hero-card">
-        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-bottom: 1px solid #e2e8f0; padding-bottom: 16px;">
           <div>
-            <span class="park-pill" style="background: #fef3c7; color: #92400e; font-weight: 800; font-size: 0.85rem;">
-              ⛪ Sunday Mass &amp; Crowd Strategy Engine
+            <span style="font-size: 0.8rem; font-weight: 800; text-transform: uppercase; color: #1a73e8; background: #e0f2fe; padding: 4px 10px; border-radius: 999px;">
+              📊 891k+ Historical Observations Engine
             </span>
-            <h3 style="font-size: 1.75rem; color: #0f172a; margin: 8px 0 4px; font-weight: 800;">
-              The Catholic Disney Wait Times &amp; Itinerary Calculator
+            <h3 style="font-size: 1.6rem; color: #0f172a; margin: 8px 0 2px; font-weight: 800;">
+              Catholic Disney Family Crowd &amp; Wait Time Calculator
             </h3>
             <p style="font-size: 0.95rem; color: #475569; margin-bottom: 0;">
               Harmonize Sunday Mass obligations, real-world queue deflation (0.72 factor), and financial stewardship for your family.
@@ -226,10 +255,10 @@ function renderWaitTimesHub() {
             </div>
           </div>
 
-          <!-- Step 2: Park & Crowd Multiplier -->
+          <!-- Step 2: Park & Calendar Date -->
           <div class="config-block">
             <div class="config-label">
-              <span>🏰 Step 2: Park &amp; Crowd Season</span>
+              <span>🏰 Step 2: Park &amp; Calendar Date</span>
             </div>
             <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px;">
               ${[
@@ -244,10 +273,33 @@ function renderWaitTimesHub() {
               `).join('')}
             </div>
 
+            <!-- Specific Calendar Date Input -->
+            <div style="margin-bottom: 8px;">
+              <label style="font-size: 0.78rem; font-weight: 700; color: #475569; display: block; margin-bottom: 3px;">
+                📅 Select Exact Calendar Date (366-Day History):
+              </label>
+              <input type="date" class="form-input" id="crowd-calendar-date" value="${selectedDateStr}" onchange="window.handleDateChange(this.value)" style="padding: 6px 10px; font-size: 0.88rem; font-weight: 700; background: #ffffff; border-radius: 8px; border: 1.5px solid #cbd5e1; width: 100%;">
+            </div>
+
+            <!-- Historical Date Intelligence Callout -->
+            <div style="background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 10px; padding: 10px 12px; margin-bottom: 10px; font-size: 0.79rem; color: #166534; line-height: 1.45;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                <strong>📅 ${formattedSelectedDate}:</strong>
+                <span style="background: #dcfce7; color: #15803d; font-weight: 800; font-size: 0.72rem; padding: 2px 7px; border-radius: 999px;">
+                  Level ${dateCrowd.crowdLevel}/10 (${dateCrowd.crowdTier})
+                </span>
+              </div>
+              <div>
+                ⏱️ Historical Average Wait: <strong>${dateCrowd.avgWaitMin} min</strong> (Peak: ${dateCrowd.peakWaitMin}m)<br>
+                ☀️ Historical Weather: High <strong>${dateCrowd.weatherHigh}°F</strong> / Low ${dateCrowd.weatherLow}°F<br>
+                ${dateCrowd.schoolOut ? '🏖️ <strong>Peak Vacation (Schools Out)</strong>' : '🎒 <strong>Normal School Session</strong>'} • Season: <em>${dateCrowd.season}</em>
+              </div>
+            </div>
+
             <select class="form-select" id="crowd-level-select" onchange="window.handleCrowdChange(this.value)" style="background: #ffffff; border-radius: 10px; font-weight: 600;">
               ${Object.values(CROWD_MULTIPLIERS).map(c => `
                 <option value="${c.id}" ${c.id === selectedCrowdKey ? 'selected' : ''}>
-                  ${c.label}
+                  Manual Override: ${c.label}
                 </option>
               `).join('')}
             </select>
@@ -497,6 +549,20 @@ window.handleRideToggle = (rideId) => {
     }
   } else {
     selectedRideIds.push(numId);
+  }
+  renderWaitTimesHub();
+};
+
+window.handleDateChange = (dateStr) => {
+  selectedDateStr = dateStr;
+  const d = new Date(dateStr + 'T00:00:00');
+  const c = getCrowdForDate(d);
+  if (c.crowdLevel >= 7) {
+    selectedCrowdKey = "peak";
+  } else if (c.crowdLevel <= 3) {
+    selectedCrowdKey = "low";
+  } else {
+    selectedCrowdKey = "moderate";
   }
   renderWaitTimesHub();
 };

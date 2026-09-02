@@ -1,7 +1,8 @@
-// Catholic Disney: Large-Family Pilgrimage Itinerary Planner with Tradition-Specific Churches & Daily Parks
-// Fully updates church recommendations (Roman, TLM, Byzantine, Ordinariate) and custom daily park selections
+// Catholic Disney: Large-Family Pilgrimage Itinerary Planner with Tradition-Specific Churches, Daily Parks & Date-Specific Crowd Intelligence
+// Integrates 366-day historical crowd database (891k+ observations), Holy Days of Obligation, Abstinence days & custom parks
 
 import { TRADITIONS_LITURGICAL, DISNEY_ABSTINENCE_DINING } from '../data/holy-days-data.js';
+import { getCrowdForDate } from '../data/calendar-crowds-data.js';
 
 export const PARK_OPTIONS = [
   { id: "mk", name: "Magic Kingdom", icon: "🏰", food: "Columbia Harbour House (Liberty Square - Grilled Salmon & Lobster Roll)" },
@@ -119,17 +120,22 @@ export function refreshDailyParksUI() {
     const dayOfMonth = curDate.getDate();
 
     const isHolyDay = tradition.holyDays && tradition.holyDays.some(hd => hd.month === month && hd.day === dayOfMonth);
+    const crowd = getCrowdForDate(curDate);
 
     const formattedDay = curDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
     const currentSelectedPark = selectedDailyParks[idx] || defaultRotation[idx % defaultRotation.length];
 
     return `
       <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 14px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
           <strong style="font-size: 0.88rem; color: #0f172a;">Day ${idx + 1}: ${formattedDay}</strong>
           ${isHolyDay ? `<span style="font-size: 0.68rem; font-weight: 800; background: #fee2e2; color: #b91c1c; padding: 1px 6px; border-radius: 4px;">🔴 Holy Day</span>` : ''}
           ${isSunday ? `<span style="font-size: 0.68rem; font-weight: 800; background: #fef3c7; color: #92400e; padding: 1px 6px; border-radius: 4px;">⛪ Mass</span>` : ''}
           ${(isFriday || isWednesday) ? `<span style="font-size: 0.68rem; font-weight: 800; background: #dbeafe; color: #1e40af; padding: 1px 6px; border-radius: 4px;">🐟 Fast</span>` : ''}
+        </div>
+
+        <div style="font-size: 0.74rem; color: #0369a1; margin-bottom: 8px; font-weight: 600;">
+          ⏱️ Historical Avg: <strong>${crowd.avgWaitMin}m</strong> (Lvl ${crowd.crowdLevel}/10 • ${crowd.season})
         </div>
 
         <select class="form-select" onchange="window.updateDayPark(${idx}, this.value)" style="font-size: 0.85rem; padding: 6px 10px; border-radius: 8px; font-weight: 700;">
@@ -178,7 +184,7 @@ export function generateCustomItinerary() {
   const diffTime = Math.abs(endDate - startDate);
   const duration = Math.max(1, Math.min(14, Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1));
 
-  // Build calendar-aware days with user's selected parks and tradition-specific church
+  // Build calendar-aware days with user's selected parks, church, and date-specific crowds
   const itineraryDays = buildCalendarItineraryDays({
     startDate,
     duration,
@@ -266,6 +272,22 @@ export function generateCustomItinerary() {
                     🐟 Meat Abstinence Day
                   </span>
                 ` : ''}
+              </div>
+            </div>
+
+            <!-- Historical Crowd Intelligence & Weather Card (From 891k records) -->
+            <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 12px 16px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+              <div>
+                <span style="font-size: 0.76rem; font-weight: 800; background: ${day.crowd.crowdLevel >= 7 ? '#fee2e2' : (day.crowd.crowdLevel <= 3 ? '#dcfce7' : '#fef3c7')}; color: ${day.crowd.crowdLevel >= 7 ? '#b91c1c' : (day.crowd.crowdLevel <= 3 ? '#15803d' : '#92400e')}; padding: 3px 8px; border-radius: 999px;">
+                  📊 Historical Crowd: Level ${day.crowd.crowdLevel}/10 (${day.crowd.crowdTier})
+                </span>
+                <div style="margin-top: 4px; font-size: 0.92rem; color: #0f172a; font-weight: 700;">
+                  Average Wait for ${day.formattedShortDate}: <span style="color: #1a73e8;">${day.crowd.avgWaitMin} min</span> <span style="font-size: 0.8rem; font-weight: 500; color: #64748b;">(Peak: ${day.crowd.peakWaitMin}m • Season: ${day.crowd.season})</span>
+                </div>
+              </div>
+              <div style="text-align: right; font-size: 0.82rem; color: #475569;">
+                ☀️ <strong>High:</strong> ${day.crowd.weatherHigh}°F (Low: ${day.crowd.weatherLow}°F)<br>
+                ${day.crowd.schoolOut ? '🏖️ <strong>Peak Break (Schools Out)</strong>' : '🎒 <strong>Normal School Session</strong>'}
               </div>
             </div>
 
@@ -410,6 +432,11 @@ function buildCalendarItineraryDays({ startDate, duration, adults, kids, totalPa
       year: 'numeric'
     });
 
+    const formattedShortDate = currentDate.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric'
+    });
+
     const isSunday = (dayOfWeek === 0);
     const isFriday = (dayOfWeek === 5);
     const isWednesday = (dayOfWeek === 3 && tradition.id === "byzantine");
@@ -429,6 +456,9 @@ function buildCalendarItineraryDays({ startDate, duration, adults, kids, totalPa
         holyDayGuidance = `${match.notes} Mass obligation is celebrated locally: ${match.massAtDisney}`;
       }
     }
+
+    // Determine exact historical crowd and weather from 891k observations
+    const crowd = getCrowdForDate(currentDate);
 
     // Determine park from user choice or fallback
     const chosenParkId = (dailyParks && dailyParks[i]) ? dailyParks[i] : (isSunday ? "mk" : ["mk", "epcot", "hs", "ak"][i % 4]);
@@ -497,6 +527,7 @@ function buildCalendarItineraryDays({ startDate, duration, adults, kids, totalPa
 
     days.push({
       formattedDate,
+      formattedShortDate,
       parkName: parkInfo.parkName,
       isSunday,
       isFriday,
@@ -504,6 +535,7 @@ function buildCalendarItineraryDays({ startDate, duration, adults, kids, totalPa
       isHolyDay,
       holyDayName,
       holyDayGuidance,
+      crowd,
       title: `${parkInfo.icon} ${parkInfo.parkName}: ${isHolyDay ? holyDayName : isSunday ? `${church.sundayMassTitle} & Wonder` : 'Family Pilgrimage Adventure'}`,
       theme: isHolyDay ? `Honoring ${holyDayName}` : parkInfo.theme,
       diningRecommendation: parkInfo.food,
