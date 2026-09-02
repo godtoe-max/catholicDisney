@@ -61,14 +61,14 @@ export const LAND_PATRONS = [
     id: "fantasyland",
     name: "Fantasyland",
     park: "Magic Kingdom",
-    icon: "🏰",
-    saint: "St. Thérèse of Lisieux (The Little Flower)",
-    saintTitle: "Doctor of the Church • Patroness of Spiritual Childhood & Fairytale Wonder",
-    feastDay: "October 1",
-    scripture: "Truly, I say to you, unless you turn and become like children, you will never enter the kingdom of heaven. (Matthew 18:3)",
-    story: "Fantasyland is the whimsical heart of the Magic Kingdom, where fairytales come alive and children reign supreme. Saint Thérèse of Lisieux taught the Church her revolutionary 'Little Way' of spiritual childhood. She loved castles, knights, and flowers, but discovered that the greatest fairytale is God's unconditional love for the small and humble. She proved that you don't need to do giant earthly deeds to reach heaven; doing small everyday things with immense love makes you a great saint.",
-    didYouKnow: "Pope Saint Pius X called 24-year-old Saint Thérèse 'the greatest saint of modern times' because her childlike spirituality is accessible to every child and parent!",
-    reflection: "What is one 'little way' act of love—like letting your sibling pick the first ride—that you can offer to Jesus right now?"
+    icon: "👑",
+    saint: "St. Elizabeth of Hungary (The Princess Saint)",
+    saintTitle: "Royal Princess of Hungary • Patroness of Royalty, Brides & the Miracle of the Roses",
+    feastDay: "November 17",
+    scripture: "The King will say to them, 'Truly I say to you, as you did it to one of the least of these my brethren, you did it to Me.' (Matthew 25:40)",
+    story: "Fantasyland is the royal heart of the Magic Kingdom, dominated by Cinderella Castle, Princess Fairytale Hall, and stories of princes, princesses, and enchanted kingdoms. Saint Elizabeth of Hungary was a real-life royal princess! Born the daughter of King Andrew II of Hungary in 1207, Elizabeth lived in the grand medieval hilltop castle of Wartburg. Surrounded by royal gold, silk gowns, and courtly luxury, she knew that the greatest crown in the kingdom of God is charity. She spent her royal fortune feeding the hungry, built a hospital at the foot of the castle, and cared for the sick with her own royal hands. When her husband asked what she was carrying down from the castle kitchens under her royal cloak, she opened her mantle, and the loaves of bread for the poor had miraculously transformed into a fragrant cascade of blooming red and white roses!",
+    didYouKnow: "Saint Elizabeth is the patron saint of bakers, brides, and Catholic charities. She gave away her royal jewels and joined the Third Order of Saint Francis, showing children that being a true princess means serving Christ with humble, joyful love!",
+    reflection: "Every child loves dressing up like a prince or princess in Fantasyland. How does Saint Elizabeth show us that real royalty isn't about vanity or bossing people around, but serving others with kindness?"
   },
   {
     id: "tomorrowland",
