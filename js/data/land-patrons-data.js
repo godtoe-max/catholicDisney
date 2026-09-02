@@ -157,13 +157,13 @@ export const LAND_PATRONS = [
     name: "Italy Pavilion (World Showcase)",
     park: "EPCOT",
     icon: "🇮🇹",
-    saint: "St. Francis of Assisi & St. Catherine of Siena",
-    saintTitle: "Primary Co-Patrons of Italy • Instruments of Divine Peace",
-    feastDay: "October 4 (St. Francis) • April 29 (St. Catherine)",
-    scripture: "Lord, make me an instrument of Your peace: where there is hatred, let me sow love. (Peace Prayer of St. Francis)",
-    story: "The Italy Pavilion is a breathtaking celebration of Catholic Venice and Florence, dominated by the replica of Saint Mark's Campanile and the Doge's Palace. Saint Francis of Assisi and Saint Catherine of Siena are the official national patrons of Italy. Francis embraced holy poverty, preached to birds, tamed wolves, and received the holy wounds of Christ (the Stigmata). Catherine was a brilliant Dominican mystic and Doctor of the Church who advised popes and reconciled warring Italian city-states through prayer and truth.",
-    didYouKnow: "Atop the tall campanile bell tower in EPCOT Italy stands a golden statue of the Archangel Gabriel looking out over the World Showcase lagoon!",
-    reflection: "Francis greeted everyone with 'Pax et Bonum' (Peace and Goodness). How can we bring peace and warmth to everyone around us in the parks today?"
+    saint: "St. Peter the Apostle (The Rock of Rome)",
+    saintTitle: "Prince of the Apostles • First Pope & Holder of the Keys of Heaven",
+    feastDay: "June 29 (Sts. Peter & Paul) • February 22 (Chair of Peter)",
+    scripture: "You are Peter, and on this rock I will build My Church, and the gates of hell shall not prevail against it. I will give you the keys of the kingdom of heaven! (Matthew 16:18-19)",
+    story: "The Italy Pavilion is a breathtaking celebration of the heart of the Roman Catholic Church! Italy is home to Rome, the Eternal City, and the sacred Chair of Saint Peter (Cathedra Petri). When Jesus looked at Simon the fisherman from Galilee, He gave him the new name 'Cephas'—Peter, the Rock—promising that the gates of hell would never prevail against the Church. Peter journeyed to Rome, led the early Christians through imperial persecutions, and was martyred on Vatican Hill by being crucified upside-down, deeming himself unworthy to die in the same manner as Jesus.",
+    didYouKnow: "Directly beneath the high altar of Saint Peter's Basilica in Rome lies the actual, archaeological tomb of Saint Peter, identified with 1st-century inscriptions reading 'Petros Eni' (Peter is here)! The Italy Pavilion at EPCOT celebrates 2,000 years of unbroken Catholic heritage and papal continuity.",
+    reflection: "Jesus gave the keys of the kingdom to Peter and his successors. How can our family pray a decade of the Rosary today for the Holy Father and the unity of all Christians?"
   },
   {
     id: "epcot_america",
