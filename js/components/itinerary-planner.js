@@ -277,7 +277,7 @@ export function generateCustomItinerary() {
           </h3>
           <div style="color: #475569; font-size: 0.95rem; line-height: 1.5;">
             <strong>Travel Dates:</strong> ${startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} – ${endDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} (${duration} Days)<br>
-            <strong>Pilgrimage Party:</strong> 🧑 ${adults} Adult${adults > 1 ? 's' : ''} (18+)${teens > 0 ? ` &nbsp;•&nbsp; 🧒 ${teens} Teen${teens > 1 ? 's' : ''} (10–17)` : ''} &nbsp;•&nbsp; 👧 ${kids} Child${kids === 1 ? '' : 'ren'} (3–9)${infants > 0 ? ` &nbsp;•&nbsp; 👶 ${infants} Infant${infants > 1 ? 's' : ''} (0–2, Free)` : ''} — <strong>${totalParty} Total Pilgrims</strong> (${adultTickets} Adult Tickets, ${childTickets} Child Tickets, ${freeTickets} Free Under 3)<br>
+            <strong>Pilgrimage Party:</strong> 🧑 ${adults} Adult${adults > 1 ? 's' : ''} (18+)${teens > 0 ? ` &nbsp;•&nbsp; 🧒 ${teens} Teen${teens > 1 ? 's' : ''} (10–17)` : ''} &nbsp;•&nbsp; 👧 ${kids} Child${kids === 1 ? '' : 'ren'} (3–9)${infants > 0 ? ` &nbsp;•&nbsp; 👶 ${infants} Toddler${infants > 1 ? 's' : ''} (0–2, Free)` : ''} — <strong>${totalParty} Total Pilgrims</strong> (${adultTickets} Adult Tickets, ${childTickets} Child Tickets, ${freeTickets} Free Under 3)<br>
             <strong>Liturgical Tradition:</strong> ${tradition.name}<br>
             <strong>Designated Orlando Church:</strong> <span style="color: #1a73e8; font-weight: 700;">${church.parishName}</span> (${church.address})
           </div>
@@ -766,7 +766,7 @@ window.printCustomItinerary = () => {
       ${plan ? `
         <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 8px 12px; margin-bottom: 12px; font-size: 9.5pt; line-height: 1.4;">
           <strong>Dates:</strong> ${plan.startDate} – ${plan.endDate} (${plan.duration} Days) &nbsp;•&nbsp; 
-          <strong>Party:</strong> ${plan.adults} Adults (18+)${plan.teens > 0 ? `, ${plan.teens} Teens (10–17)` : ''}, ${plan.kids} Children (3–9)${plan.infants > 0 ? `, ${plan.infants} Infants (0–2, Free)` : ''} — <strong>${plan.totalParty} Total Pilgrims</strong> (${plan.adultTickets} Adult Tickets, ${plan.childTickets} Child Tickets, ${plan.freeTickets} Free Under 3) &nbsp;•&nbsp; 
+          <strong>Party:</strong> ${plan.adults} Adults (18+)${plan.teens > 0 ? `, ${plan.teens} Teens (10–17)` : ''}, ${plan.kids} Children (3–9)${plan.infants > 0 ? `, ${plan.infants} Toddlers (0–2, Free)` : ''} — <strong>${plan.totalParty} Total Pilgrims</strong> (${plan.adultTickets} Adult Tickets, ${plan.childTickets} Child Tickets, ${plan.freeTickets} Free Under 3) &nbsp;•&nbsp; 
           <strong>Tradition:</strong> ${plan.traditionName} &nbsp;•&nbsp; 
           <strong>Parish:</strong> ${plan.churchName} (${plan.churchAddress})
         </div>
@@ -796,10 +796,10 @@ window.openTravelAgentModal = () => {
 
   const durationStr = plan ? `${plan.duration} Days (${plan.startDate} – ${plan.endDate})` : 'Custom Dates';
   const partyStr = plan 
-    ? `${plan.adults} Adults (18+)${plan.teens > 0 ? `, ${plan.teens} Teens (10–17)` : ''}, ${plan.kids} Kids (3–9)${plan.infants > 0 ? `, ${plan.infants} Infants (0–2, Free)` : ''} — ${plan.totalParty} Total Pilgrims`
+    ? `${plan.adults} Adults (18+)${plan.teens > 0 ? `, ${plan.teens} Teens (10–17)` : ''}, ${plan.kids} Kids (3–9)${plan.infants > 0 ? `, ${plan.infants} Toddlers (0–2, Free)` : ''} — ${plan.totalParty} Total Pilgrims`
     : 'Family Pilgrims';
   const ticketStr = plan
-    ? `${plan.adultTickets} Adult Tickets (10+), ${plan.childTickets} Child Tickets (3–9), ${plan.freeTickets} Free Infants (0–2)`
+    ? `${plan.adultTickets} Adult Tickets (10+), ${plan.childTickets} Child Tickets (3–9), ${plan.freeTickets} Free Toddlers (0–2)`
     : 'Theme Park Tickets';
   const churchStr = plan ? `${plan.churchName} (${plan.traditionName})` : 'Catholic Parish in Orlando';
 
@@ -944,7 +944,7 @@ Party Breakdown:
 - Adults (Ages 18+): ${plan ? plan.adults : '2'} (Hotel room pricing base; standard room includes up to 2 adults)
 - Teens & Youths (Ages 10–17): ${plan ? plan.teens : '0'} (Adult park ticket, but child hotel rate - no room surcharge!)
 - Children (Ages 3–9): ${plan ? plan.kids : '0'} (Child park ticket & child hotel rate)
-- Infants (Ages 0–2): ${plan ? plan.infants : '0'} (100% Free park admission & free crib in room)
+- Toddlers (Ages 0–2): ${plan ? plan.infants : '0'} (100% Free park admission & free crib in room)
 - Total Pilgrims: ${plan ? plan.totalParty : '0'}
 - Theme Park Tickets: ${plan ? `${plan.adultTickets} Adult Tickets (10+), ${plan.childTickets} Child Tickets (3–9), ${plan.freeTickets} Free Under 3` : ''}
 Liturgical Tradition: ${plan ? plan.traditionName : 'Roman Rite'}

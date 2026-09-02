@@ -466,62 +466,34 @@
           </p>
         </div>
 
-        <div class="planner-form-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
-          <!-- Start Date -->
+        <div class="planner-form-grid">
+          <!-- Row 1: Item 1 - Trip Start -->
           <div class="form-group">
-            <label class="form-label" for="planner-start-date">📅 Trip Start Date</label>
+            <label class="form-label" for="planner-start-date">📅 Trip Start</label>
             <input type="date" id="planner-start-date" class="form-input" required>
           </div>
 
-          <!-- End Date -->
+          <!-- Row 1: Item 2 - Trip End -->
           <div class="form-group">
-            <label class="form-label" for="planner-end-date">📅 Trip End Date</label>
+            <label class="form-label" for="planner-end-date">📅 Trip End</label>
             <input type="date" id="planner-end-date" class="form-input" required>
           </div>
 
-          <!-- Number of Adults (18+) -->
+          <!-- Row 1: Item 3 - Adults (18+) -->
           <div class="form-group">
-            <label class="form-label" for="planner-adults">🧑 Adults (Ages 18+)</label>
+            <label class="form-label" for="planner-adults">🧑 Adults (18+)</label>
             <input type="number" id="planner-adults" class="form-input" min="1" value="2" placeholder="2" required>
-            <span style="font-size: 0.75rem; color: #64748b; margin-top: 4px; display: block;">
-              Hotel lead guests (standard rooms cover up to 2 adults).
-            </span>
+            <span style="font-size: 0.72rem; color: #64748b; margin-top: 2px;">Hotel base rate (up to 2).</span>
           </div>
 
-          <!-- Number of Teens/Youths (10 - 17) -->
+          <!-- Row 1: Item 4 - Teens (10-17) -->
           <div class="form-group">
-            <label class="form-label" for="planner-teens">
-              🧒 Teens &amp; Youths (Ages 10–17)
-            </label>
+            <label class="form-label" for="planner-teens">🧒 Teens (10–17)</label>
             <input type="number" id="planner-teens" class="form-input" min="0" value="1" placeholder="0" required>
-            <span style="font-size: 0.75rem; color: #64748b; margin-top: 4px; display: block;">
-              Adult park ticket, but child hotel rate (no room surcharge!).
-            </span>
+            <span style="font-size: 0.72rem; color: #64748b; margin-top: 2px;">Adult ticket / Child hotel rate.</span>
           </div>
 
-          <!-- Number of Kids (3 - 9) -->
-          <div class="form-group">
-            <label class="form-label" for="planner-kids">
-              👧 Children (Ages 3–9) <span style="color: #16a34a; font-weight: 700; font-size: 0.78rem;">(No limit!)</span>
-            </label>
-            <input type="number" id="planner-kids" class="form-input" min="0" value="2" placeholder="e.g. 2, 4..." required>
-            <span style="font-size: 0.75rem; color: #64748b; margin-top: 4px; display: block;">
-              Discounted Disney child ticket &amp; child hotel rate.
-            </span>
-          </div>
-
-          <!-- Number of Infants (0 - 2) -->
-          <div class="form-group">
-            <label class="form-label" for="planner-infants">
-              👶 Infants &amp; Toddlers (Ages 0–2) <span style="background: #dcfce7; color: #166534; font-weight: 800; font-size: 0.74rem; padding: 2px 7px; border-radius: 999px;">FREE Admission</span>
-            </label>
-            <input type="number" id="planner-infants" class="form-input" min="0" value="1" placeholder="0" required>
-            <span style="font-size: 0.75rem; color: #64748b; margin-top: 4px; display: block;">
-              Under 3 enter theme parks 100% FREE (+ crib in room).
-            </span>
-          </div>
-
-          <!-- Liturgical Tradition -->
+          <!-- Row 2: Item 1 - Liturgical Tradition -->
           <div class="form-group">
             <label class="form-label" for="planner-tradition">⛪ Liturgical Tradition</label>
             <select id="planner-tradition" class="form-select">
@@ -530,12 +502,9 @@
               <option value="byzantine">☦️ Byzantine Catholic Rite</option>
               <option value="ordinariate">🇬🇧 Anglican Ordinariate</option>
             </select>
-            <div id="tradition-parish-preview" style="margin-top: 6px; font-size: 0.78rem; line-height: 1.35; color: #1e40af; background: #eff6ff; padding: 6px 10px; border-radius: 8px; border: 1px solid #bfdbfe;">
-              <!-- Dynamically populated based on chosen tradition -->
-            </div>
           </div>
 
-          <!-- Trip Focus -->
+          <!-- Row 2: Item 2 - Pilgrimage Focus -->
           <div class="form-group">
             <label class="form-label" for="planner-focus">🌟 Pilgrimage Focus</label>
             <select id="planner-focus" class="form-select">
@@ -544,6 +513,25 @@
               <option value="retreat">Gentle Stroller Pace &amp; Restful Retreat</option>
             </select>
           </div>
+
+          <!-- Row 2: Item 3 - Children (3-9) -->
+          <div class="form-group">
+            <label class="form-label" for="planner-kids">👧 Children (3–9)</label>
+            <input type="number" id="planner-kids" class="form-input" min="0" value="2" placeholder="2" required>
+            <span style="font-size: 0.72rem; color: #64748b; margin-top: 2px;">Discounted child ticket tier.</span>
+          </div>
+
+          <!-- Row 2: Item 4 - Toddlers (0-2) -->
+          <div class="form-group">
+            <label class="form-label" for="planner-infants">👶 Toddlers (0–2)</label>
+            <input type="number" id="planner-infants" class="form-input" min="0" value="1" placeholder="0" required>
+            <span style="font-size: 0.72rem; color: #166534; font-weight: 700; margin-top: 2px;">FREE admission &amp; crib.</span>
+          </div>
+        </div>
+
+        <!-- Designated Parish Banner (Full Width below the grid) -->
+        <div id="tradition-parish-preview" style="margin-bottom: 20px; font-size: 0.82rem; line-height: 1.4; color: #1e40af; background: #eff6ff; padding: 10px 14px; border-radius: 12px; border: 1px solid #bfdbfe;">
+          <!-- Dynamically populated based on chosen tradition -->
         </div>
 
         <!-- Daily Park Selection (Choose which park for each day) -->
@@ -872,6 +860,6 @@
   </form>
 
   <!-- Application JS Entry Point with Cache-Buster -->
-  <script type="module" src="js/app.js?v=20260902m"></script>
+  <script type="module" src="js/app.js?v=20260902n"></script>
 </body>
 </html>
