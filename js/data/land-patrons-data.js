@@ -49,13 +49,13 @@ export const LAND_PATRONS = [
     name: "Liberty Square",
     park: "Magic Kingdom",
     icon: "🔔",
-    saint: "St. Thomas More",
-    saintTitle: "Patron Saint of Statesmen, Religious Liberty & Civil Law",
-    feastDay: "June 22",
-    scripture: "You will know the truth, and the truth will set you free. (John 8:32)",
-    story: "Liberty Square houses the Liberty Bell replica, the Hall of Presidents, and the Liberty Tree, celebrating the birth of freedom. In Catholic tradition, true liberty is the freedom to do what is good and follow one's conscience before God. Saint Thomas More, the brilliant Lord Chancellor of England, was executed in 1535 for refusing to betray the Catholic Church. His famous dying declaration on the scaffold remains the gold standard of religious freedom: 'I die the King's good servant, but God's first!'",
-    didYouKnow: "The famous Catholic signer of the American Declaration of Independence was Charles Carroll of Carrollton, whose cousin John Carroll became the first Catholic Bishop in the United States!",
-    reflection: "Freedom is a gift from God. How can we use our freedom today to love and serve others, rather than just pleasing ourselves?"
+    saint: "St. John Neumann (Bishop of Philadelphia)",
+    saintTitle: "Bishop of the Liberty Bell City • First American Male Saint & Defender of Religious Freedom",
+    feastDay: "January 5",
+    scripture: "Proclaim liberty throughout all the land unto all the inhabitants thereof. (Leviticus 25:10 — Inscription on the Liberty Bell)",
+    story: "Liberty Square is modeled after colonial Philadelphia in 1776, featuring the Liberty Tree, the Hall of Presidents, and an authentic full-scale replica of the Philadelphia Liberty Bell cast from the original historic mold. The supreme American patron saint of the Liberty Bell city is Saint John Neumann! Arriving in America with just one suit of clothes, Neumann ministered to pioneers across wilderness settlements before becoming Bishop of Philadelphia in 1852. In the very cradle of American independence, Bishop Neumann courageously defended the constitutional religious liberty of Catholic citizens during nativist riots, founding the American parochial school system so children could grow in faith and civic virtue.",
+    didYouKnow: "The verse cast into the bronze rim of the Liberty Bell in Liberty Square is Leviticus 25:10: 'Proclaim liberty throughout all the land!' In 1977, Saint John Neumann became the very first American bishop and first American male canonized by the Catholic Church. Additionally, the only Catholic signer of the Declaration of Independence was Maryland patriot Charles Carroll of Carrollton!",
+    reflection: "American freedom protects our sacred right to worship God openly. How can our family give thanks today for our religious freedom in the United States, and pray for Christians around the world who face persecution?"
   },
   {
     id: "fantasyland",
