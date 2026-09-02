@@ -1482,8 +1482,229 @@
   align-items: center;
   gap: 24px;
   box-shadow: var(--shadow-md);
-  box-sizing: border-box;
+/* ==========================================================
+   Queue Rosary Interactive Styles
+   ========================================================== */
+.rosary-hub-wrapper {
+  max-width: 820px;
+  margin: 0 auto;
   width: 100%;
+  box-sizing: border-box;
+}
+
+.rosary-card-header {
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 20px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.mystery-day-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--sun-gradient);
+  color: #ffffff;
+  padding: 6px 18px;
+  border-radius: var(--radius-full);
+  font-weight: 800;
+  font-size: 0.95rem;
+  box-shadow: var(--shadow-gold);
+}
+
+.decade-selector-bar {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.decade-num-btn {
+  background: var(--bg-surface-soft);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.decade-num-btn:hover {
+  border-color: var(--blue-primary);
+  color: var(--blue-primary);
+}
+
+.decade-num-btn.active {
+  background: var(--blue-primary);
+  color: #ffffff;
+  border-color: var(--blue-primary);
+}
+
+.rosary-meditation-box {
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: 24px 28px;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 20px;
+  box-sizing: border-box;
+}
+
+.rosary-bead-track-wrapper {
+  background: #0f172a;
+  border-radius: var(--radius-xl);
+  padding: 22px 20px;
+  margin-bottom: 20px;
+  color: #ffffff;
+  box-shadow: var(--shadow-lg);
+  box-sizing: border-box;
+}
+
+.rosary-track-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.88rem;
+  margin-bottom: 16px;
+  color: #94a3b8;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.rosary-bead-chain {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 8px 4px;
+  scrollbar-width: none;
+}
+
+.rosary-bead-chain::-webkit-scrollbar {
+  display: none;
+}
+
+.decade-beads-group {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.rosary-bead {
+  border-radius: 50%;
+  border: 2px solid #334155;
+  background: #1e293b;
+  color: #94a3b8;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-family: var(--font-display);
+  transition: all 0.25s ease;
+  position: relative;
+  flex-shrink: 0;
+  padding: 0;
+}
+
+.rosary-bead.small-bead {
+  width: 36px;
+  height: 36px;
+  font-size: 0.85rem;
+}
+
+.rosary-bead.large-bead {
+  width: 44px;
+  height: 44px;
+  font-size: 1.1rem;
+  background: #334155;
+}
+
+.rosary-bead:hover {
+  transform: scale(1.12);
+  border-color: var(--sun-gold);
+}
+
+.rosary-bead.current {
+  background: var(--sun-gradient);
+  color: #ffffff;
+  border-color: #ffffff;
+  box-shadow: 0 0 15px rgba(245, 158, 11, 0.7);
+  transform: scale(1.18);
+}
+
+.rosary-bead.completed {
+  background: #10b981;
+  color: #ffffff;
+  border-color: #34d399;
+}
+
+.rosary-prayer-card {
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: 28px;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 20px;
+  box-sizing: border-box;
+}
+
+.prayer-text-display {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-md);
+  padding: 20px;
+  font-size: 1.1rem;
+  line-height: 1.65;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+  box-sizing: border-box;
+}
+
+.rosary-action-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.queue-intentions-box {
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: 20px 24px;
+  box-shadow: var(--shadow-sm);
+  box-sizing: border-box;
+}
+
+.intention-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.intention-chip {
+  background: var(--bg-surface-soft);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.intention-chip:hover,
+.intention-chip.active {
+  background: #fef3c7;
+  color: #92400e;
+  border-color: var(--sun-gold);
 }
 
 /* ==========================================================
