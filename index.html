@@ -63,11 +63,124 @@
   <!-- Hero Visual Showcase Section (Unobstructed & Crystal Clear) -->
   <section class="container hero-showcase-section">
     <!-- 100% Crisp, Full-Color Artwork Frame -->
-    <div class="hero-art-frame">
+    <div class="hero-art-frame" style="background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 35%, #0284c7 70%, #f59e0b 100%); min-height: 280px; max-height: 480px; display: flex; align-items: center; justify-content: center; position: relative;">
       <div class="hero-art-badge-tag">
         <span>☀️ Faith • Family • Holy Fun</span>
       </div>
-      <img src="assets/images/hero.jpg" alt="Catholic Disney Theme Park with Friars, Nuns, Priests, and Families" class="hero-art-img">
+      
+      <!-- Dignified Vector Stained-Glass & Castle Architecture Showcase (Zero AI Characters) -->
+      <svg viewBox="0 0 1200 480" width="100%" height="100%" style="max-height: 480px; display: block;" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="skyGold" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0284c7" stop-opacity="0.2"/>
+            <stop offset="60%" stop-color="#fbbf24" stop-opacity="0.4"/>
+            <stop offset="100%" stop-color="#f59e0b" stop-opacity="0.8"/>
+          </linearGradient>
+          <linearGradient id="castleGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="40%" stop-color="#e2e8f0"/>
+            <stop offset="100%" stop-color="#cbd5e1"/>
+          </linearGradient>
+          <linearGradient id="roofGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#38bdf8"/>
+            <stop offset="100%" stop-color="#1e3a8a"/>
+          </linearGradient>
+          <radialGradient id="sunburst" cx="50%" cy="35%" r="50%">
+            <stop offset="0%" stop-color="#fef08a" stop-opacity="0.9"/>
+            <stop offset="40%" stop-color="#f59e0b" stop-opacity="0.4"/>
+            <stop offset="100%" stop-color="#0284c7" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+
+        <!-- Radiant Sunburst -->
+        <circle cx="600" cy="180" r="280" fill="url(#sunburst)"/>
+
+        <!-- Cathedral Stained Glass Rose Window Geometry (Subtle Background) -->
+        <g opacity="0.25" stroke="#ffffff" stroke-width="1.5" fill="none">
+          <circle cx="600" cy="180" r="140"/>
+          <circle cx="600" cy="180" r="100"/>
+          <circle cx="600" cy="180" r="60"/>
+          <!-- 12 Petals of the Rose Window -->
+          <circle cx="600" cy="120" r="20"/>
+          <circle cx="600" cy="240" r="20"/>
+          <circle cx="540" cy="180" r="20"/>
+          <circle cx="660" cy="180" r="20"/>
+          <circle cx="558" cy="138" r="20"/>
+          <circle cx="642" cy="138" r="20"/>
+          <circle cx="558" cy="222" r="20"/>
+          <circle cx="642" cy="222" r="20"/>
+        </g>
+
+        <!-- Castle Spired Silhouette & Gothic Arches -->
+        <g transform="translate(0, 40)">
+          <!-- Distant Spires -->
+          <path d="M420 400 L420 220 L445 140 L470 220 L470 400 Z" fill="#1e293b" opacity="0.5"/>
+          <path d="M730 400 L730 220 L755 140 L780 220 L780 400 Z" fill="#1e293b" opacity="0.5"/>
+          
+          <!-- Outer Wings -->
+          <rect x="340" y="260" width="80" height="180" fill="url(#castleGrad)" rx="4"/>
+          <polygon points="340,260 380,180 420,260" fill="url(#roofGrad)"/>
+          <line x1="380" y1="180" x2="380" y2="162" stroke="#f59e0b" stroke-width="3"/>
+          <line x1="375" y1="168" x2="385" y2="168" stroke="#f59e0b" stroke-width="3"/>
+
+          <rect x="780" y="260" width="80" height="180" fill="url(#castleGrad)" rx="4"/>
+          <polygon points="780,260 820,180 860,260" fill="url(#roofGrad)"/>
+          <line x1="820" y1="180" x2="820" y2="162" stroke="#f59e0b" stroke-width="3"/>
+          <line x1="815" y1="168" x2="825" y2="168" stroke="#f59e0b" stroke-width="3"/>
+
+          <!-- Mid Towers -->
+          <rect x="440" y="220" width="70" height="220" fill="url(#castleGrad)" rx="4"/>
+          <polygon points="440,220 475,130 510,220" fill="url(#roofGrad)"/>
+          <line x1="475" y1="130" x2="475" y2="110" stroke="#f59e0b" stroke-width="3"/>
+          <line x1="469" y1="118" x2="481" y2="118" stroke="#f59e0b" stroke-width="3"/>
+
+          <rect x="690" y="220" width="70" height="220" fill="url(#castleGrad)" rx="4"/>
+          <polygon points="690,220 725,130 760,220" fill="url(#roofGrad)"/>
+          <line x1="725" y1="130" x2="725" y2="110" stroke="#f59e0b" stroke-width="3"/>
+          <line x1="719" y1="118" x2="731" y2="118" stroke="#f59e0b" stroke-width="3"/>
+
+          <!-- Main Keep & Central Tower -->
+          <rect x="520" y="190" width="160" height="250" fill="url(#castleGrad)" rx="6"/>
+          <!-- Central Spire -->
+          <polygon points="560,190 600,60 640,190" fill="url(#roofGrad)"/>
+          <!-- Golden Cross atop Central Spire -->
+          <line x1="600" y1="60" x2="600" y2="30" stroke="#f59e0b" stroke-width="4"/>
+          <line x1="592" y1="42" x2="608" y2="42" stroke="#f59e0b" stroke-width="4"/>
+          <circle cx="600" cy="42" r="3" fill="#fef08a"/>
+
+          <!-- Gothic Portal / Portal of Truth Archway -->
+          <path d="M570 440 L570 340 Q600 300 630 340 L630 440 Z" fill="#0f172a"/>
+          <!-- Stained Glass Portal Glow -->
+          <path d="M576 440 L576 346 Q600 312 624 346 L624 440 Z" fill="#f59e0b" opacity="0.85"/>
+          <!-- Arch Windows -->
+          <path d="M545 280 L545 230 Q555 215 565 230 L565 280 Z" fill="#1e3a8a"/>
+          <path d="M635 280 L635 230 Q645 215 655 230 L655 280 Z" fill="#1e3a8a"/>
+
+          <!-- Foreground Ramparts -->
+          <rect x="260" y="380" width="680" height="60" fill="#f8fafc" rx="4"/>
+          <!-- Crenellations -->
+          <rect x="280" y="365" width="25" height="15" fill="#f8fafc"/>
+          <rect x="330" y="365" width="25" height="15" fill="#f8fafc"/>
+          <rect x="380" y="365" width="25" height="15" fill="#f8fafc"/>
+          <rect x="430" y="365" width="25" height="15" fill="#f8fafc"/>
+          <rect x="480" y="365" width="25" height="15" fill="#f8fafc"/>
+          <rect x="530" y="365" width="25" height="15" fill="#f8fafc"/>
+          <rect x="645" y="365" width="25" height="15" fill="#f8fafc"/>
+          <rect x="695" y="365" width="25" height="15" fill="#f8fafc"/>
+          <rect x="745" y="365" width="25" height="15" fill="#f8fafc"/>
+          <rect x="795" y="365" width="25" height="15" fill="#f8fafc"/>
+          <rect x="845" y="365" width="25" height="15" fill="#f8fafc"/>
+          <rect x="895" y="365" width="25" height="15" fill="#f8fafc"/>
+        </g>
+
+        <!-- Floating Sacred Inscription Ribbon -->
+        <g transform="translate(600, 445)">
+          <rect x="-240" y="-18" width="480" height="34" rx="17" fill="rgba(15, 23, 42, 0.85)" stroke="#f59e0b" stroke-width="1.5"/>
+          <text x="0" y="4" text-anchor="middle" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="13" font-weight="800" fill="#fef08a" letter-spacing="0.5">
+            ✨ SANCTIFYING THE MAGIC • AD MAJOREM DEI GLORIAM ✨
+          </text>
+        </g>
+      </svg>
     </div>
 
     <!-- Clean Headline Banner (Unobstructed below the art) -->

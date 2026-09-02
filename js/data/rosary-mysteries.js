@@ -56,6 +56,14 @@ export const TRADITION_PRAYERS = {
     hailHolyQueen: {
       title: "Hail, Holy Queen (Salve Regina)",
       text: "Hail, Holy Queen, Mother of Mercy, our life, our sweetness, and our hope. To thee do we cry, poor banished children of Eve. To thee do we send up our sighs, mourning and weeping in this valley of tears. Turn then, most gracious advocate, thine eyes of mercy toward us, and after this our exile, show unto us the blessed fruit of thy womb, Jesus. O clement, O loving, O sweet Virgin Mary.\n\nV. Pray for us, O Holy Mother of God.\nR. That we may be made worthy of the promises of Christ."
+    },
+    rosaryClosing: {
+      title: "Rosary Concluding Collect",
+      text: "Let us pray:\nO God, whose only begotten Son, by His life, death, and resurrection, has purchased for us the rewards of eternal life, grant, we beseech Thee, that meditating upon these mysteries of the Most Holy Rosary of the Blessed Virgin Mary, we may imitate what they contain and obtain what they promise, through the same Christ our Lord. Amen."
+    },
+    stMichael: {
+      title: "Saint Michael the Archangel Prayer",
+      text: "Saint Michael the Archangel, defend us in battle. Be our protection against the wickedness and snares of the devil. May God rebuke him, we humbly pray; and do thou, O Prince of the Heavenly Host, by the power of God, cast into hell Satan and all the evil spirits who prowl about the world seeking the ruin of souls. Amen."
     }
   },
   latin: {
@@ -86,6 +94,14 @@ export const TRADITION_PRAYERS = {
     hailHolyQueen: {
       title: "Salve Regina",
       text: "Salve, Regína, Mater misericórdiæ; vita, dulcédo, et spes nostra, salve. Ad te clamámus, éxsules fílii Hevæ. Ad te suspirámus, geméntes et flentes in hac lacrimárum valle. Eia ergo, advocáta nostra, illos tuos misericórdes óculos ad nos convórte. Et Iesum, benedíctum fructum ventris tui, nobis post hoc exsílium osténde. O clemens, o pia, o dulcis Virgo María.\n\nV. Ora pro nobis, Sancta Dei Génetrix.\nR. Ut digni efficiámur promissiónibus Christi."
+    },
+    rosaryClosing: {
+      title: "Oratio Conclusiva",
+      text: "Orémus:\nDeus, cuius Unigénitus per vitam, mortem et resurrectiónem suam nobis salútis ætérnæ prǽmia comparávit: concéde, quǽsumus; ut hæc mystéria sacratíssimo beátæ Maríæ Vírginis Rosário recoléntes, et imitémur quod cóntinent, et quod promíttunt assequámur. Per eúndem Christum Dóminum nostrum. Amen."
+    },
+    stMichael: {
+      title: "Oratio ad Sanctum Michaelem Archangelum",
+      text: "Sancte Míchael Archángele, defénde nos in prǽlio; contra nequítiam et insídias diáboli esto præsídium. Imperet illi Deus, súpplices deprecámur: tuque, Princeps milítiæ cæléstis, Sátanam aliósque spíritus malígnos, qui ad perditiónem animárum pervagántur in mundo, divína virtúte, in inférnum detrúde. Amen."
     }
   },
   byzantine: {
@@ -116,6 +132,14 @@ export const TRADITION_PRAYERS = {
     hailHolyQueen: {
       title: "Axion Estin (It is Truly Meet)",
       text: "It is truly meet to bless thee, O Theotokos, ever-blessed and most pure, and the Mother of our God. More honorable than the Cherubim, and beyond compare more glorious than the Seraphim, without corruption thou gavest birth to God the Word. True Theotokos, thee do we magnify!"
+    },
+    rosaryClosing: {
+      title: "Eastern Troparion of Thanksgiving",
+      text: "O Lord, Who hast blessed those who bless Thee, and sanctified those who trust in Thee: save Thy people and bless Thine inheritance. Preserve the fullness of Thy Church; sanctify those who love the beauty of Thy house. Glorify them in return by Thy divine power, and forsake us not who put our trust in Thee. Amen."
+    },
+    stMichael: {
+      title: "Troparion to the Archangel Michael",
+      text: "Supreme Commander of the Heavenly Hosts, we unworthy ones beseech thee, by thy prayers encompass us beneath the wings of thine immaterial glory, preserving us who earnestly fall down and cry out: Deliver us from all danger, for thou art the leader of the heavenly powers. Amen."
     }
   },
   anglican: {
@@ -146,6 +170,14 @@ export const TRADITION_PRAYERS = {
     hailHolyQueen: {
       title: "Hail, Holy Queen (Traditional Salve)",
       text: "Hail, Holy Queen, Mother of Mercy, our life, our sweetness, and our hope. To thee do we cry, poor banished children of Eve. To thee do we send up our sighs, mourning and weeping in this vale of tears. Turn then, most gracious advocate, thine eyes of mercy toward us, and after this our exile, show unto us the blessed fruit of thy womb, Jesus. O clement, O loving, O sweet Virgin Mary.\n\nV. Pray for us, O Holy Mother of God.\nR. That we may be made worthy of the promises of Christ."
+    },
+    rosaryClosing: {
+      title: "The Rosary Collect (Book of Divine Worship)",
+      text: "Let us pray:\nO God, whose only-begotten Son, by his life, death, and resurrection, hath purchased for us the rewards of everlasting life: grant, we beseech thee; that meditating upon these mysteries of the Most Holy Rosary of the Blessed Virgin Mary, we may imitate what they contain, and obtain what they promise; through the same Christ our Lord. Amen."
+    },
+    stMichael: {
+      title: "Saint Michael the Archangel Prayer",
+      text: "Saint Michael the Archangel, defend us in battle; be our protection against the wickedness and snares of the devil. May God rebuke him, we humbly pray; and do thou, O Prince of the heavenly host, by the power of God, cast into hell Satan and all the evil spirits who prowl about the world seeking the ruin of souls. Amen."
     }
   }
 };

@@ -554,7 +554,10 @@
 .spotlight-image-side {
   position: relative;
   min-height: 360px;
-  background: url('../assets/images/basilica.jpg') center/cover no-repeat;
+  background: radial-gradient(circle at 50% 40%, rgba(245, 158, 11, 0.35) 0%, rgba(30, 58, 138, 0.95) 70%), linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0369a1 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @media (max-width: 768px) {
@@ -1517,6 +1520,13 @@
   box-sizing: border-box;
 }
 
+@media (max-width: 768px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+}
+
 .footer-disclaimer-box {
   background: #f8fafc;
   border: 1px solid var(--border-subtle);
@@ -1549,6 +1559,7 @@
   align-items: center;
   gap: 24px;
   box-shadow: var(--shadow-md);
+}
 /* ==========================================================
    Queue Rosary Interactive Styles
    ========================================================== */

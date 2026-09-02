@@ -221,7 +221,7 @@ function renderWaitTimesHub() {
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-bottom: 1px solid #e2e8f0; padding-bottom: 16px;">
           <div>
             <span style="font-size: 0.8rem; font-weight: 800; text-transform: uppercase; color: #1a73e8; background: #e0f2fe; padding: 4px 10px; border-radius: 999px;">
-              📊 891k+ Historical Observations Engine
+              📊 Modern 5-Year Data Engine (175k Observations)
             </span>
             <h3 style="font-size: 1.6rem; color: #0f172a; margin: 8px 0 2px; font-weight: 800;">
               Catholic Disney Family Crowd &amp; Wait Time Calculator
@@ -234,6 +234,17 @@ function renderWaitTimesHub() {
           <button class="btn btn-sun" onclick="window.navigateToTab('rosary-tab')" style="font-size: 0.92rem; padding: 10px 18px;">
             Open Queue Rosary 📿
           </button>
+        </div>
+
+        <!-- Clear 3-Step Quick Guide -->
+        <div style="background: #eff6ff; border: 1.5px solid #bfdbfe; border-radius: 14px; padding: 14px 18px; margin-top: 18px; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+          <span style="font-size: 1.6rem;">💡</span>
+          <div style="font-size: 0.88rem; color: #1e40af; line-height: 1.5;">
+            <strong>How to Use This in 3 Simple Steps:</strong><br>
+            <strong>Step 1:</strong> Select your Sunday Mass time (or choose "Skip Mass" for weekday touring) ➔ 
+            <strong>Step 2:</strong> Choose your Park and Date to load historical crowd levels ➔ 
+            <strong>Step 3:</strong> Check off the rides your family wants to do. The engine instantly reveals your post-Mass arrival time, true in-park wait times, and whether Lightning Lane is worth your money!
+          </div>
         </div>
 
         <!-- 3-Step Config Grid -->
