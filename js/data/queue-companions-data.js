@@ -340,18 +340,18 @@ export const QUEUE_COMPANIONS = [
     queueReflection: "Climbing mountains takes perseverance. When things get difficult in life or school, how can we keep our eyes fixed on Christ at the summit?"
   },
   {
-    id: "dinosaur",
-    name: "DINOSAUR",
+    id: "indiana_jones",
+    name: "Indiana Jones Adventure (Tropical Americas)",
     park: "Disney's Animal Kingdom",
-    land: "DinoLand U.S.A.",
-    icon: "🦖",
-    saint: "Blessed Nicolas Steno (Niels Stensen)",
-    saintTitle: "Father of Geology, Stratigraphy & Paleontology",
-    feastDay: "November 25",
-    scripture: "Great are the works of the Lord, studied by all who delight in them. (Psalm 111:2)",
-    story: "Before you board your Time Rover to race back 65 million years to the Cretaceous period, meet the Catholic bishop who proved that fossils were real ancient creatures! In 1669, Niels Stensen (Blessed Nicolas Steno), an anatomy professor who converted to the Catholic faith and later became a bishop, studied a fossilized shark's tooth. He formulated the fundamental principles of stratigraphy (how rock layers form over time) and proved that fossils were once-living organisms buried in sediment. He is universally recognized by scientists as the Father of Geology!",
-    didYouKnow: "Bishop Steno wrote in his scientific journal: 'Pulchra sunt quae videntur, pulchriora quae sciuntur, longe pulcherrima quae ignorantur' — 'Beautiful are the things we see, more beautiful are the things we understand, but by far the most beautiful are the things we do not yet know!'",
-    queueReflection: "True science and Catholic faith never contradict each other—both seek the truth of God's amazing reality!"
+    land: "Pueblo Esperanza",
+    icon: "🤠",
+    saint: "St. Helena (Empress of Constantinople)",
+    saintTitle: "Patron Saint of Archaeologists & Finder of the True Cross",
+    feastDay: "August 18",
+    scripture: "Ask, and it will be given to you; seek, and you will find; knock, and it will be opened to you. (Matthew 7:7)",
+    story: "As you venture deep into the ancient temple ruins of the Tropical Americas with Indiana Jones in search of hidden relics, meet the real-life patron saint of archaeology: Saint Helena! In 326 AD, in her late 70s, Empress Helena (the mother of Emperor Constantine) led history's most famous archaeological expedition to Jerusalem. Excavating beneath the pagan temples built over Mount Calvary and the Holy Sepulchre, her expedition uncovered the rock of Golgotha, the tomb of the Resurrection, and the authentic True Cross of Christ!",
+    didYouKnow: "Indiana Jones spent his legendary career searching for the Ark of the Covenant and the Holy Grail. In Catholic theology, the Virgin Mary is venerated as the 'Ark of the New Covenant' (carrying the Living Word of God), and the sacred chalice of the Last Supper is celebrated at every Catholic Holy Mass!",
+    queueReflection: "Archaeologists search the earth for ancient treasures. What spiritual treasures—like kindness, faith, and patience—can our family seek and uncover today?"
   },
   {
     id: "lion_king",
@@ -377,6 +377,7 @@ export function getCompanionForRide(rideIdOrName) {
     c.name.toLowerCase() === search || 
     c.name.toLowerCase().includes(search) || 
     search.includes(c.name.toLowerCase()) ||
-    c.saint.toLowerCase().includes(search)
+    c.saint.toLowerCase().includes(search) ||
+    (c.id === 'indiana_jones' && (search.includes('dinosaur') || search.includes('indy') || search.includes('jones')))
   ) || null;
 }
