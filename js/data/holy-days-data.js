@@ -8,6 +8,21 @@ export const TRADITIONS_LITURGICAL = {
     icon: "🇻🇦",
     subtitle: "Standard US Ordinary Form & Florida Province of Miami Rules",
     description: "Follows the United States Conference of Catholic Bishops (USCCB) canon law calendar and Province of Miami provincial decisions (such as the celebration of Ascension on Sunday).",
+    churchInfo: {
+      parishName: "Basilica of the National Shrine of Mary, Queen of the Universe",
+      shortName: "Basilica of Mary Queen of the Universe",
+      address: "8300 Vineland Ave, Orlando, FL 32821",
+      distance: "4.2 miles from Disney (approx. 10–12 min drive)",
+      liturgyType: "Solemn Mass (Ordinary Form)",
+      sundayMassTitle: "Sunday Mass",
+      sundayTimes: "7:30 AM, 9:30 AM, 11:30 AM, 6:00 PM (Sat Vigil: 6:00 PM)",
+      defaultTime: "7:30 AM or 9:30 AM",
+      confessions: "Mon–Sat: 3:00 PM – 4:00 PM, Sunday between Masses",
+      transitBufferMin: 45,
+      postMassGateArrival: "9:15 AM or 11:15 AM",
+      specialNotes: "10-station outdoor Rosary Garden, Eucharistic Adoration Chapel & Sacred Art Museum",
+      altParish: "Corpus Christi Catholic Church (Celebration, FL - 6.8 mi)"
+    },
     holyDays: [
       {
         feast: "Solemnity of Mary, Mother of God",
@@ -101,6 +116,21 @@ export const TRADITIONS_LITURGICAL = {
     icon: "☩",
     subtitle: "Traditional Roman Calendar & Classical Fasting Rules",
     description: "Follows the traditional liturgical calendar of the 1962 Missale Romanum and classic 1917/1962 Code of Canon Law fasting practices.",
+    churchInfo: {
+      parishName: "All Souls Historic Chapel / Central Florida Latin Mass",
+      shortName: "All Souls Historic Chapel (TLM)",
+      address: "800 S Oak Ave, Sanford, FL 32771 / Regional Central FL Apostolates",
+      distance: "Approx. 35–40 min drive from Walt Disney World",
+      liturgyType: "Traditional Latin Mass (1962 Missale Romanum)",
+      sundayMassTitle: "Traditional Latin Mass (TLM)",
+      sundayTimes: "8:00 AM (Low Mass) & 10:30 AM (Missa Cantata / High Mass)",
+      defaultTime: "8:00 AM Low Mass",
+      confessions: "Available 30 minutes before each Holy Mass",
+      transitBufferMin: 55,
+      postMassGateArrival: "10:00 AM",
+      specialNotes: "Reverent ad orientem liturgy, Gregorian chant, traditional Latin vestments & altar rail communion",
+      altParish: "Queen of Peace Catholic Church (Ocala, FL - Diocesan TLM)"
+    },
     holyDays: [
       {
         feast: "Circumcision of Our Lord & Octave of Nativity",
@@ -194,6 +224,21 @@ export const TRADITIONS_LITURGICAL = {
     icon: "☦️",
     subtitle: "Eastern Catholic Feasts of Precept & Great Fast",
     description: "Follows the Byzantine Ruthenian Metropolia and Eastern Catholic liturgical canons with Great Feasts and traditional seasonal fasts.",
+    churchInfo: {
+      parishName: "St. Nicholas of Myra Byzantine Catholic Church",
+      shortName: "St. Nicholas Byzantine Catholic Church",
+      address: "5135 Sand Lake Rd, Orlando, FL 32819",
+      distance: "12 miles from Disney (approx. 18–20 min drive)",
+      liturgyType: "Divine Liturgy of St. John Chrysostom",
+      sundayMassTitle: "Sunday Divine Liturgy",
+      sundayTimes: "10:00 AM (Chanted Divine Liturgy)",
+      defaultTime: "10:00 AM Divine Liturgy",
+      confessions: "9:15 AM before Divine Liturgy or upon request with Father",
+      transitBufferMin: 50,
+      postMassGateArrival: "12:15 PM",
+      specialNotes: "Traditional Byzantine iconostasis, incense, sung congregational chant, anointing on feast days",
+      altParish: "St. Mary's Ukrainian Catholic Church (Apopka, FL)"
+    },
     holyDays: [
       {
         feast: "Nativity of the Theotokos",
@@ -327,6 +372,21 @@ export const TRADITIONS_LITURGICAL = {
     icon: "🇬🇧",
     subtitle: "Divine Worship & English Catholic Patrimony",
     description: "Follows the Ordo of the Personal Ordinariate of the Chair of St. Peter, restoring traditional English Catholic liturgical customs.",
+    churchInfo: {
+      parishName: "Incarnation Catholic Church (Ordinariate Community)",
+      shortName: "Incarnation Catholic Church (Ordinariate)",
+      address: "1515 Edgewater Dr, Orlando, FL 32804",
+      distance: "18 miles from Disney (approx. 25 min drive)",
+      liturgyType: "Divine Worship: The Missal (Sacral English)",
+      sundayMassTitle: "Divine Worship Sunday Mass",
+      sundayTimes: "10:15 AM (Solemn Mass with English Choral Patrimony)",
+      defaultTime: "10:15 AM Divine Worship Mass",
+      confessions: "9:30 AM – 10:00 AM before Sunday Mass",
+      transitBufferMin: 50,
+      postMassGateArrival: "12:30 PM",
+      specialNotes: "Coverdale psalms, Cranmerian prayers of humble access, traditional choral music & ad orientem",
+      altParish: "Basilica of Mary Queen of the Universe (Alternative close to parks)"
+    },
     holyDays: [
       {
         feast: "Solemnity of Holy Mary, Mother of God",

@@ -1,5 +1,5 @@
-// Catholic Disney: Large-Family Pilgrimage Itinerary Planner with Daily Park Selection
-// Integrates calendar dates, Holy Days of Obligation, Abstinence days, unrestricted children counts & custom park choice per day
+// Catholic Disney: Large-Family Pilgrimage Itinerary Planner with Tradition-Specific Churches & Daily Parks
+// Fully updates church recommendations (Roman, TLM, Byzantine, Ordinariate) and custom daily park selections
 
 import { TRADITIONS_LITURGICAL, DISNEY_ABSTINENCE_DINING } from '../data/holy-days-data.js';
 
@@ -25,11 +25,32 @@ export function initItineraryPlanner() {
 
   if (startInput) startInput.addEventListener('change', refreshDailyParksUI);
   if (endInput) endInput.addEventListener('change', refreshDailyParksUI);
-  if (traditionSelect) traditionSelect.addEventListener('change', refreshDailyParksUI);
+  if (traditionSelect) {
+    traditionSelect.addEventListener('change', () => {
+      updateTraditionParishPreview();
+      refreshDailyParksUI();
+    });
+  }
 
   // Pre-fill default dates (e.g. upcoming Monday to Friday)
   prefillDefaultDates();
+  updateTraditionParishPreview();
   refreshDailyParksUI();
+}
+
+function updateTraditionParishPreview() {
+  const preview = document.getElementById('tradition-parish-preview');
+  const traditionSelect = document.getElementById('planner-tradition');
+  if (!preview) return;
+
+  const traditionId = traditionSelect ? traditionSelect.value : 'roman';
+  const tradition = TRADITIONS_LITURGICAL[traditionId] || TRADITIONS_LITURGICAL.roman;
+  const church = tradition.churchInfo || TRADITIONS_LITURGICAL.roman.churchInfo;
+
+  preview.innerHTML = `
+    <strong>📍 Designated Church:</strong> ${church.shortName}<br>
+    <span style="color: #475569;">⏰ Sunday Times: ${church.sundayTimes} • ${church.address}</span>
+  `;
 }
 
 function prefillDefaultDates() {
@@ -84,7 +105,6 @@ export function refreshDailyParksUI() {
     for (let i = 0; i < duration; i++) {
       const curDate = new Date(startDate.getTime() + i * 86400000);
       const isSunday = curDate.getDay() === 0;
-      // If Sunday, Magic Kingdom or EPCOT are great post-Mass
       selectedDailyParks.push(isSunday ? "mk" : defaultRotation[i % defaultRotation.length]);
     }
   }
@@ -146,6 +166,7 @@ export function generateCustomItinerary() {
   const focus = focusSelect ? focusSelect.value : 'park-touring';
 
   const tradition = TRADITIONS_LITURGICAL[traditionId] || TRADITIONS_LITURGICAL.roman;
+  const church = tradition.churchInfo || TRADITIONS_LITURGICAL.roman.churchInfo;
 
   let startDate = startInput && startInput.value ? new Date(startInput.value + 'T00:00:00') : new Date();
   let endDate = endInput && endInput.value ? new Date(endInput.value + 'T00:00:00') : new Date(startDate.getTime() + 4 * 86400000);
@@ -157,7 +178,7 @@ export function generateCustomItinerary() {
   const diffTime = Math.abs(endDate - startDate);
   const duration = Math.max(1, Math.min(14, Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1));
 
-  // Build calendar-aware days with user's selected parks
+  // Build calendar-aware days with user's selected parks and tradition-specific church
   const itineraryDays = buildCalendarItineraryDays({
     startDate,
     duration,
@@ -165,6 +186,7 @@ export function generateCustomItinerary() {
     kids,
     totalParty,
     tradition,
+    church,
     focus,
     dailyParks: selectedDailyParks
   });
@@ -184,8 +206,10 @@ export function generateCustomItinerary() {
           <h3 style="color: #0f172a; font-size: 1.85rem; margin: 8px 0 4px; font-weight: 800;">
             Your ${duration}-Day Catholic Disney Pilgrimage
           </h3>
-          <div style="color: #475569; font-size: 0.95rem;">
-            <strong>Travel Party:</strong> ${adults} Adults, ${kids} Children (${totalParty} Pilgrims) • <strong>Tradition:</strong> ${tradition.name}
+          <div style="color: #475569; font-size: 0.95rem; line-height: 1.5;">
+            <strong>Travel Party:</strong> ${adults} Adults, ${kids} Children (${totalParty} Pilgrims)<br>
+            <strong>Liturgical Tradition:</strong> ${tradition.name}<br>
+            <strong>Designated Orlando Church:</strong> <span style="color: #1a73e8; font-weight: 700;">${church.parishName}</span> (${church.address})
           </div>
         </div>
 
@@ -229,12 +253,12 @@ export function generateCustomItinerary() {
               <div style="display: flex; gap: 6px; flex-wrap: wrap;">
                 ${day.isHolyDay ? `
                   <span style="background: #fee2e2; color: #b91c1c; font-weight: 800; font-size: 0.78rem; padding: 4px 10px; border-radius: 999px;">
-                    🔴 Holy Day of Obligation: ${day.holyDayName}
+                    🔴 Holy Day: ${day.holyDayName}
                   </span>
                 ` : ''}
                 ${day.isSunday ? `
                   <span style="background: #fef3c7; color: #92400e; font-weight: 800; font-size: 0.78rem; padding: 4px 10px; border-radius: 999px;">
-                    ⛪ Sunday Mass Obligation
+                    ⛪ ${church.sundayMassTitle}
                   </span>
                 ` : ''}
                 ${day.isAbstinenceDay ? `
@@ -260,7 +284,7 @@ export function generateCustomItinerary() {
                 ` : ''}
                 ${day.isSunday ? `
                   <div style="margin-bottom: 6px; font-size: 0.88rem; color: #92400e;">
-                    <strong>⛪ Sunday Mass:</strong> 7:30 AM or 9:30 AM at the <em>Basilica of Mary Queen of the Universe</em>. With parking and TTC transit buffer, arrive at ${day.parkName} at 9:15 AM or 11:15 AM.
+                    <strong>⛪ Sunday Mass (${tradition.name}):</strong> ${church.sundayTimes} at <em>${church.parishName}</em> (${church.address}). Arrive at ${day.parkName} at approx. ${church.postMassGateArrival} (includes transit/parking buffer).
                   </div>
                 ` : ''}
                 ${day.isAbstinenceDay ? `
@@ -314,7 +338,7 @@ export function generateCustomItinerary() {
   outputContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-function buildCalendarItineraryDays({ startDate, duration, adults, kids, totalParty, tradition, focus, dailyParks = [] }) {
+function buildCalendarItineraryDays({ startDate, duration, adults, kids, totalParty, tradition, church, focus, dailyParks = [] }) {
   const days = [];
 
   const parkConfigs = {
@@ -355,12 +379,12 @@ function buildCalendarItineraryDays({ startDate, duration, adults, kids, totalPa
       eveningEvent: "Festival of the Lion King & sunset walk through Pandora's bioluminescent pathways."
     },
     rest: {
-      parkName: "Basilica Pilgrimage & Rest Day",
+      parkName: "Pilgrimage & Rest Day",
       icon: "⛪",
       food: "Cookes of Dublin / Raglan Road at Disney Springs (Atlantic Fish & Chips)",
       theme: "Sabbath Rest, Marian Pilgrimage & Family Renewal",
-      morningEvent: "Pilgrimage to the Basilica of Mary Queen of the Universe (10-Station Rosary Garden & Museum).",
-      afternoonNook: "Sacrament of Reconciliation (Confession) at the Basilica, followed by poolside rest.",
+      morningEvent: `Pilgrimage and Holy Mass at ${church.shortName} (${church.address}).`,
+      afternoonNook: `Sacrament of Confession at ${church.shortName}, followed by peaceful resort poolside rest.`,
       eveningEvent: "Family stroll and dinner at Disney Springs with live Irish music."
     }
   };
@@ -415,23 +439,23 @@ function buildCalendarItineraryDays({ startDate, duration, adults, kids, totalPa
 
     if (isSunday) {
       events.push({
-        time: "7:30 AM",
-        title: "Sunday Mass at Basilica of Mary Queen of the Universe",
-        description: "Attend solemn Sunday Mass together 4 miles from Disney. Pray the traveler's intention for your family."
+        time: church.defaultTime.split(' ')[0] || "8:00 AM",
+        title: `${church.sundayMassTitle} at ${church.shortName}`,
+        description: `Attend ${church.liturgyType} at ${church.address} (${church.distance}). ${church.specialNotes}`
       });
       events.push({
-        time: "9:15 AM",
+        time: church.postMassGateArrival || "10:15 AM",
         title: `Transit Buffer & Gate Arrival at ${parkInfo.parkName}`,
-        description: "Arrive at park gates after Mass. Head directly to high-capacity classics while morning crowds congest headliners."
+        description: `Arrive at park gates after Mass (includes ${church.transitBufferMin}m transit and parking buffer). Head directly to high-capacity classics.`
       });
     } else if (isHolyDay) {
       events.push({
         time: "8:30 AM",
-        title: `Holy Day Mass: ${holyDayName}`,
-        description: "Fulfill your Holy Day precept at the Basilica of Mary Queen of the Universe or local parish before park entry."
+        title: `Holy Day Liturgy: ${holyDayName}`,
+        description: `Fulfill your Holy Day precept at ${church.shortName} (${church.address}) before entering ${parkInfo.parkName}.`
       });
       events.push({
-        time: "10:15 AM",
+        time: "10:30 AM",
         title: `Enter ${parkInfo.parkName} with Holy Grace`,
         description: "Begin your day refreshed in spirit with your family."
       });
@@ -480,7 +504,7 @@ function buildCalendarItineraryDays({ startDate, duration, adults, kids, totalPa
       isHolyDay,
       holyDayName,
       holyDayGuidance,
-      title: `${parkInfo.icon} ${parkInfo.parkName}: ${isHolyDay ? holyDayName : isSunday ? 'Sunday Liturgy & Wonder' : 'Family Pilgrimage Adventure'}`,
+      title: `${parkInfo.icon} ${parkInfo.parkName}: ${isHolyDay ? holyDayName : isSunday ? `${church.sundayMassTitle} & Wonder` : 'Family Pilgrimage Adventure'}`,
       theme: isHolyDay ? `Honoring ${holyDayName}` : parkInfo.theme,
       diningRecommendation: parkInfo.food,
       largeFamilyTip,
