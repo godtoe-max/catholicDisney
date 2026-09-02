@@ -33,6 +33,26 @@ export function generateCustomItinerary() {
         </button>
       </div>
 
+      <!-- Crowd & Lightning Lane Stewardship Coaching Banner -->
+      <div style="background: #ffffff; border: 1.5px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 20px 24px; margin-bottom: 24px; color: var(--text-primary);">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 8px;">
+          <div>
+            <span class="park-pill" style="background: #fef3c7; color: #92400e; font-weight: 800; font-size: 0.78rem;">
+              ⏱️ 891k+ Crowd Data Integration
+            </span>
+            <h4 style="font-size: 1.15rem; color: #0f172a; margin: 4px 0 2px; font-weight: 800;">
+              Queue Strategy &amp; Lightning Lane Stewardship
+            </h4>
+          </div>
+          <button class="btn btn-sun" onclick="window.navigateToTab('wait-times-tab')" style="font-size: 0.85rem; padding: 8px 14px;">
+            Customize Mass &amp; Wishlist ⏱️
+          </button>
+        </div>
+        <p style="font-size: 0.9rem; color: #475569; line-height: 1.45; margin-bottom: 0;">
+          💡 <strong>Stewardship Recommendation:</strong> For your ${duration}-day trip, balance early morning rope-drop walk-ons with afternoon retreats to <strong>Quiet Prayer Nooks</strong>. By skipping Lightning Lane ($150–$250/day), your family can save over <strong>$750–$1,200+</strong> while sanctifying line waits with the <strong>Queue Rosary</strong>!
+        </p>
+      </div>
+
       <div style="display: grid; gap: 28px;">
         ${itineraryDays.map((day, idx) => `
           <div class="day-timeline-card">
