@@ -1,10 +1,11 @@
 // Catholic Disney: Wait Time Analytics & Itinerary Integration Hub
 // Implements CATHOLIC_DISNEY_WAIT_TIMES_SPEC.md
 
-import { RIDE_TIERS, SUNDAY_MASS_PRESETS, CROWD_MULTIPLIERS } from '../data/ride-tiers.js';
-import { PARKS_METADATA, HOURLY_CROWD_CURVES } from '../data/wait-times-data.js';
-import { calculateItineraryProjections } from './wait-time-insights.js';
-import { getCrowdForDate } from '../data/calendar-crowds-data.js';
+import { RIDE_TIERS, SUNDAY_MASS_PRESETS, DISNEYLAND_SUNDAY_MASS_PRESETS, CROWD_MULTIPLIERS } from '../data/ride-tiers.js?v=20260902_v2';
+import { PARKS_METADATA, HOURLY_CROWD_CURVES } from '../data/wait-times-data.js?v=20260902_v2';
+import { calculateItineraryProjections } from './wait-time-insights.js?v=20260902_v2';
+import { getCrowdForDate } from '../data/calendar-crowds-data.js?v=20260902_v2';
+import { getActiveResortId } from './resort-switcher.js?v=20260902_v2';
 
 let selectedMassId = "mary-queen-730";
 let selectedParkId = 6; // Magic Kingdom default
@@ -17,11 +18,53 @@ export function initWaitTimesHub() {
   if (!container) return;
 
   renderWaitTimesHub();
+
+  window.renderWaitTimesHub = renderWaitTimesHub;
+  window.__getWaitTimesState = () => ({ selectedParkId, selectedMassId, isDlr: getActiveResortId() === 'dlr' });
+
+  window.addEventListener('catholic-resort-changed', (e) => {
+    const resortId = (e && e.detail && (e.detail.resortId || (e.detail.resort && e.detail.resort.id))) || getActiveResortId();
+    console.log("WAIT-TIMES-HUB RECEIVED RESORT CHANGE:", resortId);
+    const isDlr = resortId === 'dlr';
+    if (isDlr) {
+      selectedParkId = 16;
+      selectedMassId = "boniface-630";
+    } else {
+      selectedParkId = 6;
+      selectedMassId = "mary-queen-730";
+    }
+    selectedRideIds = [];
+    renderWaitTimesHub();
+  });
 }
 
 function renderWaitTimesHub() {
   const container = document.getElementById('wait-times-container');
   if (!container) return;
+
+  const isDlr = (selectedParkId === 16 || selectedParkId === 17) || getActiveResortId() === 'dlr';
+  const activeMassPresets = isDlr ? DISNEYLAND_SUNDAY_MASS_PRESETS : SUNDAY_MASS_PRESETS;
+  const activeParks = isDlr 
+    ? [
+        { id: 16, icon: "🏰", name: "Disneyland Park" },
+        { id: 17, icon: "🎡", name: "Disney California Adv." }
+      ]
+    : [
+        { id: 6, icon: "🏰", name: "Magic Kingdom" },
+        { id: 5, icon: "🌐", name: "EPCOT" },
+        { id: 7, icon: "🎬", name: "Hollywood Studios" },
+        { id: 8, icon: "🌳", name: "Animal Kingdom" }
+      ];
+
+  if (isDlr && (selectedParkId !== 16 && selectedParkId !== 17)) {
+    selectedParkId = 16;
+  } else if (!isDlr && (selectedParkId === 16 || selectedParkId === 17)) {
+    selectedParkId = 6;
+  }
+
+  if (!activeMassPresets.some(m => m.id === selectedMassId)) {
+    selectedMassId = activeMassPresets[0].id;
+  }
 
   // Filter available rides for selected park
   const parkRides = Object.values(RIDE_TIERS).filter(r => r.parkId === selectedParkId);
@@ -41,8 +84,8 @@ function renderWaitTimesHub() {
     crowdLevelKey: selectedCrowdKey
   });
 
-  const currentPark = PARKS_METADATA[selectedParkId] || PARKS_METADATA[6];
-  const hourlyData = HOURLY_CROWD_CURVES[selectedParkId] || HOURLY_CROWD_CURVES[6] || {};
+  const currentPark = PARKS_METADATA[selectedParkId] || PARKS_METADATA[isDlr ? 16 : 6];
+  const hourlyData = HOURLY_CROWD_CURVES[selectedParkId] || HOURLY_CROWD_CURVES[isDlr ? 16 : 6] || {};
 
   const curDateObj = selectedDateStr ? new Date(selectedDateStr + 'T00:00:00') : new Date();
   const dateCrowd = getCrowdForDate(curDateObj);
@@ -255,7 +298,7 @@ function renderWaitTimesHub() {
               <span>⛪ Step 1: Sunday Mass Schedule</span>
             </div>
             <select class="form-select" id="mass-schedule-select" onchange="window.handleMassChange(this.value)" style="background: #ffffff; border-radius: 10px; font-weight: 600;">
-              ${SUNDAY_MASS_PRESETS.map(m => `
+              ${activeMassPresets.map(m => `
                 <option value="${m.id}" ${m.id === selectedMassId ? 'selected' : ''}>
                   ${m.name}
                 </option>
@@ -272,12 +315,7 @@ function renderWaitTimesHub() {
               <span>🏰 Step 2: Park &amp; Calendar Date</span>
             </div>
             <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px;">
-              ${[
-                { id: 6, icon: "🏰", name: "Magic Kingdom" },
-                { id: 5, icon: "🌐", name: "EPCOT" },
-                { id: 7, icon: "🎬", name: "Hollywood Studios" },
-                { id: 8, icon: "🌳", name: "Animal Kingdom" }
-              ].map(p => `
+              ${activeParks.map(p => `
                 <button class="park-tab-pill ${p.id === selectedParkId ? 'active' : ''}" onclick="window.handleParkChange(${p.id})">
                   ${p.icon} ${p.name}
                 </button>

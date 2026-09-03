@@ -2,17 +2,16 @@
 // Fetches real-time queue times from Queue-Times API (proxied via /api/queue-times/:park_id)
 // Matches attractions with tier classifications, 0.72 deflated real waits, and Catholic prayer nooks
 
-import { RIDE_TIERS } from '../data/ride-tiers.js';
-import { getCompanionForRide } from '../data/queue-companions-data.js';
+import { RIDE_TIERS } from '../data/ride-tiers.js?v=20260902_v2';
+import { getCompanionForRide } from '../data/queue-companions-data.js?v=20260902_v2';
+import { getDisneylandCompanionForRide } from '../data/disneyland-queue-companions-data.js?v=20260902_v2';
+import { getActiveResort, getActiveResortId } from './resort-switcher.js?v=20260902_v2';
 
-const PARKS = [
-  { id: 6, name: "Magic Kingdom", icon: "🏰" },
-  { id: 5, name: "EPCOT", icon: "🌐" },
-  { id: 7, name: "Hollywood Studios", icon: "🎬" },
-  { id: 8, name: "Animal Kingdom", icon: "🌳" }
-];
+function getLiveParks() {
+  return getActiveResort().parks;
+}
 
-let activeLiveParkId = 6;
+let activeLiveParkId = getActiveResort().defaultLiveParkId;
 let liveDataCache = {};
 let isLoading = false;
 let searchQuery = "";
@@ -22,8 +21,15 @@ export function initLiveWaitTimes(containerId = 'live-wait-times-container') {
   const container = document.getElementById(containerId);
   if (!container) return;
 
+  activeLiveParkId = getActiveResort().defaultLiveParkId;
   renderLiveWaitTimes(containerId);
   loadParkWaitTimes(activeLiveParkId, containerId);
+
+  window.addEventListener('catholic-resort-changed', (e) => {
+    const res = (e && e.detail && e.detail.resort) || getActiveResort();
+    activeLiveParkId = res ? res.defaultLiveParkId : 16;
+    loadParkWaitTimes(activeLiveParkId, containerId);
+  });
 }
 
 export async function loadParkWaitTimes(parkId, containerId = 'live-wait-times-container') {
@@ -56,7 +62,11 @@ export function renderLiveWaitTimes(containerId = 'live-wait-times-container') {
   const container = document.getElementById(containerId);
   if (!container) return;
 
-  const currentPark = PARKS.find(p => p.id === activeLiveParkId) || PARKS[0];
+  const parksList = getLiveParks();
+  const currentPark = parksList.find(p => p.id === activeLiveParkId) || parksList[0];
+  if (currentPark && activeLiveParkId !== currentPark.id) {
+    activeLiveParkId = currentPark.id;
+  }
   const cached = liveDataCache[activeLiveParkId];
   const lastUpdated = cached && cached.timestamp ? cached.timestamp.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }) : null;
 
@@ -122,7 +132,7 @@ export function renderLiveWaitTimes(containerId = 'live-wait-times-container') {
 
         <!-- 4 Park Switcher Pills -->
         <div style="display: flex; gap: 8px; flex-wrap: wrap; padding-bottom: 14px; border-bottom: 1px solid #f1f5f9;">
-          ${PARKS.map(p => `
+          ${parksList.map(p => `
             <button class="park-tab-pill ${p.id === activeLiveParkId ? 'active' : ''}" onclick="window.switchLivePark(${p.id})" style="font-size: 0.88rem; padding: 8px 18px;">
               ${p.icon} ${p.name}
             </button>
@@ -179,7 +189,9 @@ export function renderLiveWaitTimes(containerId = 'live-wait-times-container') {
             const tierMeta = Object.values(RIDE_TIERS).find(t => t.name.toLowerCase() === r.name.toLowerCase() || r.name.toLowerCase().includes(t.name.toLowerCase()));
             const prayerNook = tierMeta ? tierMeta.nearbyPrayerNook : null;
 
-            const companion = getCompanionForRide(r.name);
+            const companion = getActiveResortId() === 'dlr'
+              ? (getDisneylandCompanionForRide(r.name) || getCompanionForRide(r.name))
+              : (getCompanionForRide(r.name) || getDisneylandCompanionForRide(r.name));
 
             return `
               <div style="background: #ffffff; border: 1.5px solid ${!r.is_open ? '#f1f5f9' : (isLongWait ? '#fde68a' : '#e2e8f0')}; border-radius: 16px; padding: 16px 18px; box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03); opacity: ${r.is_open ? '1' : '0.65'};">

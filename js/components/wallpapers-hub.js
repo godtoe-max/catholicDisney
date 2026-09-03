@@ -1,5 +1,5 @@
 // Catholic Disney High-Resolution Wallpapers Hub Component
-import { wallpapersData } from '../data/wallpapers.js';
+import { wallpapersData } from '../data/wallpapers.js?v=20260902_v2';
 
 export function initWallpapersHub() {
   renderWallpapers('all');

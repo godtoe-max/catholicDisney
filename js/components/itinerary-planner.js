@@ -1,8 +1,10 @@
 // Catholic Disney: Large-Family Pilgrimage Itinerary Planner
 // Features: Canon 1251 Solemnity Abrogation on Fridays, Travel Days, Disney Springs, Park Hoppers, Tradition Churches & 5-Yr Crowd Data
 
-import { TRADITIONS_LITURGICAL, DISNEY_ABSTINENCE_DINING } from '../data/holy-days-data.js';
-import { getCrowdForDate } from '../data/calendar-crowds-data.js';
+import { TRADITIONS_LITURGICAL, DISNEY_ABSTINENCE_DINING } from '../data/holy-days-data.js?v=20260902_v2';
+import { DISNEYLAND_TRADITIONS_LITURGICAL, DISNEYLAND_MISSION_EXCURSION } from '../data/disneyland-churches-data.js?v=20260902_v2';
+import { getCrowdForDate } from '../data/calendar-crowds-data.js?v=20260902_v2';
+import { getActiveResortId, getActiveResort } from './resort-switcher.js?v=20260902_v2';
 
 export const PARK_OPTIONS = [
   { id: "mk", name: "Magic Kingdom", icon: "🏰", food: "Columbia Harbour House (Liberty Square - Grilled Salmon & Lobster Roll)" },
@@ -17,6 +19,25 @@ export const PARK_OPTIONS = [
   { id: "travel_depart", name: "Travel & Departure Day", icon: "🚗", food: "Airport / Travel Dining or Final Morning Resort Brunch" },
   { id: "rest", name: "Basilica Pilgrimage & Rest Day", icon: "⛪", food: "Cookes of Dublin / Raglan Road (Disney Springs - Atlantic Fish & Chips)" }
 ];
+
+export const DISNEYLAND_PARK_OPTIONS = [
+  { id: "dl", name: "Disneyland Park", icon: "🏰", food: "French Market / Cafe Orleans (New Orleans Square - Salmon / Gumbo) or Plaza Inn" },
+  { id: "dca", name: "Disney California Adventure", icon: "🎡", food: "Pacific Wharf Cafe (Sourdough Clam Chowder) or Flo's V8 Cafe" },
+  { id: "hopper_dl_dca", name: "Park Hopper: Disneyland + DCA", icon: "🦘", food: "French Market (Lunch) / San Fransokyo Square Sourdough (Dinner)" },
+  { id: "downtown_disney", name: "Downtown Disney & Hotel Exploration", icon: "🛍️", food: "Naples Ristorante e Bar (Wood-fired Margherita Pizza) or Jazz Kitchen" },
+  { id: "mission_excursion", name: "Mission San Juan Capistrano Excursion", icon: "🔔", food: "Historic Mission Inn / San Juan Capistrano dining (Train excursion)" },
+  { id: "travel_arrival", name: "Travel & Arrival Day", icon: "✈️", food: "Harbor Blvd Dining or Downtown Disney Quick-Service" },
+  { id: "travel_depart", name: "Travel & Departure Day", icon: "🚗", food: "Airport / Travel Dining or Final Morning Resort Brunch" },
+  { id: "rest", name: "Christ Cathedral Pilgrimage & Rest Day", icon: "⛪", food: "Christ Cathedral Cultural Plaza / Garden Grove dining" }
+];
+
+export function getActiveParkOptions() {
+  return getActiveResortId() === 'dlr' ? DISNEYLAND_PARK_OPTIONS : PARK_OPTIONS;
+}
+
+export function getActiveTraditions() {
+  return getActiveResortId() === 'dlr' ? DISNEYLAND_TRADITIONS_LITURGICAL : TRADITIONS_LITURGICAL;
+}
 
 let selectedDailyParks = [];
 
@@ -39,6 +60,14 @@ export function initItineraryPlanner() {
     });
   }
 
+  window.addEventListener('catholic-resort-changed', () => {
+    selectedDailyParks = [];
+    updateTraditionParishPreview();
+    refreshDailyParksUI();
+    const outputBox = document.querySelector('.itinerary-output-box');
+    if (outputBox) outputBox.remove();
+  });
+
   // Pre-fill default dates (e.g. upcoming Monday to Friday)
   prefillDefaultDates();
   updateTraditionParishPreview();
@@ -51,8 +80,9 @@ function updateTraditionParishPreview() {
   if (!preview) return;
 
   const traditionId = traditionSelect ? traditionSelect.value : 'roman';
-  const tradition = TRADITIONS_LITURGICAL[traditionId] || TRADITIONS_LITURGICAL.roman;
-  const church = tradition.churchInfo || TRADITIONS_LITURGICAL.roman.churchInfo;
+  const activeTraditions = getActiveTraditions();
+  const tradition = activeTraditions[traditionId] || activeTraditions.roman;
+  const church = tradition.churchInfo || activeTraditions.roman.churchInfo;
 
   preview.innerHTML = `
     <strong>📍 Designated Church:</strong> ${church.shortName}<br>
@@ -93,7 +123,8 @@ export function refreshDailyParksUI() {
   if (!container || !startInput) return;
 
   const traditionId = traditionSelect ? traditionSelect.value : 'roman';
-  const tradition = TRADITIONS_LITURGICAL[traditionId] || TRADITIONS_LITURGICAL.roman;
+  const activeTraditions = getActiveTraditions();
+  const tradition = activeTraditions[traditionId] || activeTraditions.roman;
 
   let startDate = startInput.value ? new Date(startInput.value + 'T00:00:00') : new Date();
   let endDate = endInput && endInput.value ? new Date(endInput.value + 'T00:00:00') : new Date(startDate.getTime() + 4 * 86400000);
@@ -104,9 +135,14 @@ export function refreshDailyParksUI() {
 
   const diffTime = Math.abs(endDate - startDate);
   const duration = Math.max(1, Math.min(14, Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1));
+  const parkOptions = getActiveParkOptions();
+  const isDlr = getActiveResortId() === 'dlr';
 
   // Default rotation with Travel Days and balanced parks
-  const defaultRotation = ["travel_arrival", "mk", "epcot", "hs", "ak", "springs", "travel_depart"];
+  const defaultRotation = isDlr 
+    ? ["travel_arrival", "dl", "dca", "hopper_dl_dca", "mission_excursion", "downtown_disney", "travel_depart"]
+    : ["travel_arrival", "mk", "epcot", "hs", "ak", "springs", "travel_depart"];
+
   if (selectedDailyParks.length !== duration) {
     selectedDailyParks = [];
     for (let i = 0; i < duration; i++) {
@@ -117,9 +153,12 @@ export function refreshDailyParksUI() {
       } else if (i === duration - 1 && duration >= 4) {
         selectedDailyParks.push("travel_depart");
       } else if (isSunday) {
-        selectedDailyParks.push("mk");
+        selectedDailyParks.push(isDlr ? "dl" : "mk");
       } else {
-        selectedDailyParks.push(["mk", "epcot", "hs", "ak", "springs"][i % 5]);
+        const rotationList = isDlr 
+          ? ["dl", "dca", "hopper_dl_dca", "mission_excursion", "downtown_disney"] 
+          : ["mk", "epcot", "hs", "ak", "springs"];
+        selectedDailyParks.push(rotationList[i % rotationList.length]);
       }
     }
   }
@@ -144,7 +183,7 @@ export function refreshDailyParksUI() {
 
     const crowd = getCrowdForDate(curDate);
     const formattedDay = curDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-    const currentSelectedPark = selectedDailyParks[idx] || "mk";
+    const currentSelectedPark = selectedDailyParks[idx] || (isDlr ? "dl" : "mk");
 
     return `
       <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 14px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);">
@@ -163,7 +202,7 @@ export function refreshDailyParksUI() {
         </div>
 
         <select class="form-select" onchange="window.updateDayPark(${idx}, this.value)" style="font-size: 0.85rem; padding: 6px 10px; border-radius: 8px; font-weight: 700; width: 100%; box-sizing: border-box;">
-          ${PARK_OPTIONS.map(opt => `
+          ${parkOptions.map(opt => `
             <option value="${opt.id}" ${opt.id === currentSelectedPark ? 'selected' : ''}>
               ${opt.icon} ${opt.name}
             </option>
@@ -205,8 +244,9 @@ export function generateCustomItinerary() {
   const traditionId = traditionSelect ? traditionSelect.value : 'roman';
   const focus = focusSelect ? focusSelect.value : 'park-touring';
 
-  const tradition = TRADITIONS_LITURGICAL[traditionId] || TRADITIONS_LITURGICAL.roman;
-  const church = tradition.churchInfo || TRADITIONS_LITURGICAL.roman.churchInfo;
+  const activeTraditions = getActiveTraditions();
+  const tradition = activeTraditions[traditionId] || activeTraditions.roman;
+  const church = tradition.churchInfo || activeTraditions.roman.churchInfo;
 
   let startDate = startInput && startInput.value ? new Date(startInput.value + 'T00:00:00') : new Date();
   let endDate = endInput && endInput.value ? new Date(endInput.value + 'T00:00:00') : new Date(startDate.getTime() + 4 * 86400000);
@@ -552,13 +592,58 @@ function buildCalendarItineraryDays({ startDate, duration, adults, kids, totalPa
       afternoonNook: "Stroll Disney Springs waterfront, World of Disney, and Lego imagination sculptures.",
       eveningEvent: "Dinner at Raglan Road with live Irish music and evening waterfront stroll."
     },
+    dl: {
+      parkName: "Disneyland Park",
+      icon: "🏰",
+      food: "French Market / Cafe Orleans (New Orleans Square - Salmon / Gumbo) or Plaza Inn",
+      theme: "The Original Storybook Kingdom & The Triumph of Virtue",
+      morningEvent: "Rope Drop at Disneyland Park & Morning Offering walking down Main Street toward Sleeping Beauty Castle.",
+      afternoonNook: "Snow White Grotto wishing well & Court of Angels quiet courtyard in New Orleans Square.",
+      eveningEvent: "Together Forever Fireworks over Sleeping Beauty Castle & late night Matterhorn bobsledding."
+    },
+    dca: {
+      parkName: "Disney California Adventure",
+      icon: "🎡",
+      food: "Pacific Wharf Cafe (Sourdough Clam Chowder) or Flo's V8 Cafe in Cars Land",
+      theme: "St. Junípero Serra, California Wilderness & Family Heroism",
+      morningEvent: "Radiator Springs Racers rope drop & morning flight on Soarin' Around the World.",
+      afternoonNook: "Redwood Creek Challenge Trail pine amphitheater & Carthay Circle fountain courtyard.",
+      eveningEvent: "Cars Land sunset neon lighting & World of Color luminous water spectacular."
+    },
+    hopper_dl_dca: {
+      parkName: "Park Hopper: Disneyland + DCA",
+      icon: "🦘",
+      food: "French Market / Cafe Orleans (Lunch) & San Fransokyo Square Sourdough (Dinner)",
+      theme: "Two Parks, One Sacred Journey (Seamless 60-Second Esplanade Walk)",
+      morningEvent: "Morning E-tickets at Disneyland Park (Space Mountain, Indiana Jones).",
+      afternoonNook: "Breeze across the 100-foot Esplanade into DCA for Grizzly Peak shade and afternoon treats.",
+      eveningEvent: "Cars Land neon illumination followed by Disneyland nighttime fireworks."
+    },
+    downtown_disney: {
+      parkName: "Downtown Disney & Hotel Discovery",
+      icon: "🛍️",
+      food: "Naples Ristorante e Bar (Wood-fired Margherita Pizza) or Jazz Kitchen Coastal Grill",
+      theme: "Sabbath Rest, Family Fellowship & Southern California Sunshine",
+      morningEvent: "Gentle morning stroll through the craftsman architecture of Disney's Grand Californian Hotel.",
+      afternoonNook: "Grand Californian great hearth lobby (relax by the massive stone fireplace).",
+      eveningEvent: "Outdoor live music in Downtown Disney and sweet Mickey beignets."
+    },
+    mission_excursion: {
+      parkName: "Mission San Juan Capistrano Excursion",
+      icon: "🔔",
+      food: "Historic El Adobe de Capistrano or Trevors at the Tracks (historic depot)",
+      theme: "In the Footsteps of Saint Junípero Serra (1776 Serra Chapel)",
+      morningEvent: "Scenic 22-minute ride on the Amtrak Pacific Surfliner from Anaheim ARTIC depot directly to historic Capistrano.",
+      afternoonNook: "Serra Chapel (built 1782)—the only surviving church where St. Junípero Serra offered Holy Mass.",
+      eveningEvent: "Walk the 400-year-old mission gardens, ring the sacred bells, and evening train return to Anaheim."
+    },
     travel_arrival: {
       parkName: "Travel & Arrival Day",
       icon: "✈️",
-      food: "Resort food court or Disney Springs casual dining",
+      food: "Resort food court or casual dining",
       theme: "The Pilgrim's Journey & St. Christopher's Protection",
-      morningEvent: "Travel journey to Orlando. Pray the Traveler's Blessing and St. Christopher prayer for safe arrival.",
-      afternoonNook: "Resort check-in, unpacking, stroller assembly, and exploring the resort grounds.",
+      morningEvent: `Travel journey to ${(getActiveResortId() === 'dlr') ? 'Anaheim, California' : 'Orlando, Florida'}. Pray the Traveler's Blessing for safe arrival.`,
+      afternoonNook: "Hotel check-in, unpacking, stroller assembly, and exploring the resort grounds.",
       eveningEvent: "Evening family dinner, unpacking, and early bedtime to prepare for rope drop tomorrow!"
     },
     travel_depart: {
@@ -567,17 +652,17 @@ function buildCalendarItineraryDays({ startDate, duration, adults, kids, totalPa
       food: "Morning resort breakfast or airport travel dining",
       theme: "Gratitude, Thanksgiving & Carrying Grace Home",
       morningEvent: "Morning Mass of Thanksgiving for family blessings and safe vacation memories.",
-      afternoonNook: "Pack bags, return rental strollers, and bid farewell to Walt Disney World.",
+      afternoonNook: `Pack bags, return rental strollers, and bid farewell to ${(getActiveResortId() === 'dlr') ? 'Disneyland Resort' : 'Walt Disney World'}.`,
       eveningEvent: "Safe travels home with peaceful hearts, refreshed in faith and family unity."
     },
     rest: {
-      parkName: "Basilica Pilgrimage & Rest Day",
+      parkName: (getActiveResortId() === 'dlr') ? "Christ Cathedral Pilgrimage & Rest Day" : "Basilica Pilgrimage & Rest Day",
       icon: "⛪",
-      food: "Cookes of Dublin / Raglan Road at Disney Springs (Atlantic Fish & Chips)",
+      food: (getActiveResortId() === 'dlr') ? "Christ Cathedral Cultural Plaza / Garden Grove dining" : "Cookes of Dublin / Raglan Road at Disney Springs",
       theme: "Sabbath Rest, Marian Pilgrimage & Family Renewal",
       morningEvent: `Pilgrimage and Holy Mass at ${church.shortName} (${church.address}).`,
-      afternoonNook: `Sacrament of Confession at ${church.shortName}, followed by peaceful resort poolside rest.`,
-      eveningEvent: "Family stroll and dinner at Disney Springs with live Irish music."
+      afternoonNook: `Sacrament of Confession at ${church.shortName}, followed by peaceful family rest.`,
+      eveningEvent: (getActiveResortId() === 'dlr') ? "Evening stroll through Downtown Disney with sweet treats." : "Family stroll and dinner at Disney Springs with live Irish music."
     }
   };
 
@@ -876,12 +961,21 @@ window.openTravelAgentModal = () => {
                   Preferred Lodging Tier
                 </label>
                 <select id="ta-lodging" class="form-select" style="padding: 9px 12px; font-size: 0.85rem; width: 100%; box-sizing: border-box; border-radius: 10px; border: 1.5px solid #cbd5e1;">
-                  <option value="Disney Value Family Suites (Art of Animation / All-Star Music for 6)" selected>Disney Value Suites (Art of Animation / Music for 6)</option>
-                  <option value="Disney Moderate (Fort Wilderness Cabins for 6 / Caribbean Beach)">Disney Moderate (Fort Wilderness Cabins for 6)</option>
-                  <option value="Disney Deluxe &amp; 1-2 Bedroom Villa Suites">Disney Deluxe &amp; 1-2 Bedroom Villas</option>
-                  <option value="Off-Property Family Suites (Near Mary Queen of the Universe)">Off-Property Suites (Near Mary Queen of Universe)</option>
-                  <option value="Tickets &amp; Itinerary Only (Lodging already arranged)">Tickets &amp; Planning Only (Lodging booked)</option>
-                  <option value="Recommend the Best Large-Family Value Option">Recommend Best Large-Family Value</option>
+                  ${getActiveResortId() === 'dlr' ? `
+                    <option value="Harbor Blvd Walkable Good Neighbor Suites (Direct Walk to Gates)" selected>Harbor Blvd Good Neighbor Suites (Walk to Gates)</option>
+                    <option value="Disneyland Hotel (Classic Disney Nostalgia &amp; Monorail)">Disneyland Hotel (Classic Nostalgia)</option>
+                    <option value="Disney's Grand Californian Hotel &amp; Spa (Private DCA Entrance)">Grand Californian Hotel &amp; Spa</option>
+                    <option value="Pixar Place Hotel (Modern Suites overlooking DCA)">Pixar Place Hotel</option>
+                    <option value="Tickets &amp; Itinerary Only (Lodging already arranged)">Tickets &amp; Planning Only (Lodging booked)</option>
+                    <option value="Recommend the Best Large-Family Value Option">Recommend Best Large-Family Value</option>
+                  ` : `
+                    <option value="Disney Value Family Suites (Art of Animation / All-Star Music for 6)" selected>Disney Value Suites (Art of Animation / Music for 6)</option>
+                    <option value="Disney Moderate (Fort Wilderness Cabins for 6 / Caribbean Beach)">Disney Moderate (Fort Wilderness Cabins for 6)</option>
+                    <option value="Disney Deluxe &amp; 1-2 Bedroom Villa Suites">Disney Deluxe &amp; 1-2 Bedroom Villas</option>
+                    <option value="Off-Property Family Suites (Near Mary Queen of the Universe)">Off-Property Suites (Near Mary Queen of Universe)</option>
+                    <option value="Tickets &amp; Itinerary Only (Lodging already arranged)">Tickets &amp; Planning Only (Lodging booked)</option>
+                    <option value="Recommend the Best Large-Family Value Option">Recommend Best Large-Family Value</option>
+                  `}
                 </select>
               </div>
             </div>

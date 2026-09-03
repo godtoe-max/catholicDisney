@@ -1,11 +1,12 @@
 // Catholic Disney: Rule-Based Wait Time Analytics & Natural Language Coaching Engine
 // Implements the mathematical formulas and rules from CATHOLIC_DISNEY_WAIT_TIMES_SPEC.md
 
-import { RIDE_TIERS, SUNDAY_MASS_PRESETS, CROWD_MULTIPLIERS } from '../data/ride-tiers.js';
-import { HOURLY_CROWD_CURVES } from '../data/wait-times-data.js';
+import { RIDE_TIERS, SUNDAY_MASS_PRESETS, DISNEYLAND_SUNDAY_MASS_PRESETS, CROWD_MULTIPLIERS } from '../data/ride-tiers.js?v=20260902_v2';
+import { HOURLY_CROWD_CURVES } from '../data/wait-times-data.js?v=20260902_v2';
 
 export function calculateItineraryProjections({ massPresetId, parkId, rideIds, crowdLevelKey }) {
-  const massPreset = SUNDAY_MASS_PRESETS.find(m => m.id === massPresetId) || SUNDAY_MASS_PRESETS[0];
+  const allPresets = [...SUNDAY_MASS_PRESETS, ...(DISNEYLAND_SUNDAY_MASS_PRESETS || [])];
+  const massPreset = allPresets.find(m => m.id === massPresetId) || allPresets[0];
   const crowdConfig = CROWD_MULTIPLIERS[crowdLevelKey] || CROWD_MULTIPLIERS.moderate;
   const parkHourlyCurve = HOURLY_CROWD_CURVES[parkId] || HOURLY_CROWD_CURVES[6] || {};
 

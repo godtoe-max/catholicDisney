@@ -2,7 +2,7 @@
 // Unified & Sequential: Opening Prayers -> Decades (1-5) -> Closing Prayers (Salve Regina, Collect, St. Michael)
 // Freedom of Choice: Choose any mystery set anytime with zero day restrictions
 
-import { ROSARY_MYSTERIES, TRADITIONS, TRADITION_PRAYERS } from '../data/rosary-mysteries.js';
+import { ROSARY_MYSTERIES, TRADITIONS, TRADITION_PRAYERS } from '../data/rosary-mysteries.js?v=20260902_v2';
 
 let currentTraditionKey = 'roman'; // 'roman', 'latin', 'byzantine', 'anglican'
 let currentMysteryKey = 'joyful'; // 'joyful', 'luminous', 'sorrowful', 'glorious', 'byzantine_rule'

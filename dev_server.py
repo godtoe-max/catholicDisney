@@ -36,6 +36,12 @@ class ProxyHandler(http.server.SimpleHTTPRequestHandler):
                 return
         return super().do_GET()
 
+    def end_headers(self):
+        self.send_header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
+        self.send_header("Pragma", "no-cache")
+        self.send_header("Expires", "0")
+        super().end_headers()
+
 if __name__ == "__main__":
     handler_class = functools.partial(ProxyHandler, directory=DIRECTORY)
     socketserver.TCPServer.allow_reuse_address = True

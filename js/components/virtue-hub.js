@@ -1,5 +1,5 @@
 // Virtue in the Vault: Theological & Movie Breakdown Component
-import { virtueVaultData } from '../data/virtue-vault.js';
+import { virtueVaultData } from '../data/virtue-vault.js?v=20260902_v2';
 
 export function initVirtueHub() {
   renderVirtueCards('all', '');

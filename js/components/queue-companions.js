@@ -1,26 +1,94 @@
 // Catholic Disney: Queue Companions Interactive Explorer
 // Browse and read saint connections, Christian scientist stories, and queue reflections for Disney attractions and Lands
 
-import { QUEUE_COMPANIONS, getCompanionForRide } from '../data/queue-companions-data.js';
-import { LAND_PATRONS, getLandPatron } from '../data/land-patrons-data.js';
+import { QUEUE_COMPANIONS, getCompanionForRide } from '../data/queue-companions-data.js?v=20260902_v2';
+import { LAND_PATRONS, getLandPatron } from '../data/land-patrons-data.js?v=20260902_v2';
+import { DISNEYLAND_QUEUE_COMPANIONS, getDisneylandCompanionForRide } from '../data/disneyland-queue-companions-data.js?v=20260902_v2';
+import { DISNEYLAND_LAND_PATRONS, getDisneylandLandPatron } from '../data/disneyland-land-patrons-data.js?v=20260902_v2';
+import { getActiveResortId, getActiveResort } from './resort-switcher.js?v=20260902_v2';
 
 let currentViewMode = 'rides'; // 'rides' or 'lands'
 let activeParkFilter = 'all';
 let searchQuery = '';
+
+function getResortData() {
+  const resortId = getActiveResortId();
+  if (resortId === 'dlr') {
+    const rides = DISNEYLAND_QUEUE_COMPANIONS.map(c => ({
+      id: c.rideId,
+      name: c.rideName,
+      park: c.park,
+      land: c.land,
+      icon: c.icon,
+      saint: c.patronSaint,
+      saintTitle: c.patronRole,
+      feastDay: c.feastDay,
+      scripture: c.scripturePassage || 'Psalm 121:1-2',
+      story: c.catholicConnection,
+      didYouKnow: c.summary,
+      reflection: c.queuePrayer,
+      queueReflection: c.queuePrayer,
+      prayerNook: c.prayerNook
+    }));
+
+    const lands = DISNEYLAND_LAND_PATRONS.map(l => ({
+      id: l.landId,
+      name: l.landName,
+      park: l.park,
+      land: l.landName,
+      icon: l.icon,
+      saint: l.patronSaint,
+      saintTitle: l.patronTitle,
+      feastDay: l.feastDay,
+      scripture: 'Revelation 21:3-4',
+      story: `${l.spiritualConnection}\n\n${l.catecheticalReflection}`,
+      didYouKnow: l.spiritualConnection,
+      reflection: l.catecheticalReflection,
+      queueReflection: l.catecheticalReflection,
+      prayerNook: l.designatedPrayerNook
+    }));
+
+    const parkFilters = [
+      { id: 'all', label: '🌟 All Parks' },
+      { id: 'disneyland', label: '🏰 Disneyland Park' },
+      { id: 'california', label: '🎡 Disney California Adventure' }
+    ];
+
+    return { rides, lands, parkFilters, resortName: 'Disneyland Resort' };
+  }
+
+  return {
+    rides: QUEUE_COMPANIONS,
+    lands: LAND_PATRONS,
+    parkFilters: [
+      { id: 'all', label: '🌟 All Parks' },
+      { id: 'magic', label: '🏰 Magic Kingdom' },
+      { id: 'epcot', label: '🌐 EPCOT' },
+      { id: 'hollywood', label: '🎬 Hollywood Studios' },
+      { id: 'animal', label: '🌳 Animal Kingdom' }
+    ],
+    resortName: 'Walt Disney World'
+  };
+}
 
 export function initQueueCompanions() {
   const container = document.getElementById('queue-companions-container');
   if (!container) return;
 
   renderQueueCompanions();
+
+  window.addEventListener('catholic-resort-changed', () => {
+    activeParkFilter = 'all';
+    renderQueueCompanions();
+  });
 }
 
 export function renderQueueCompanions() {
   const container = document.getElementById('queue-companions-container');
   if (!container) return;
 
-  // Filter rides or lands based on currentViewMode
-  const dataset = currentViewMode === 'rides' ? QUEUE_COMPANIONS : LAND_PATRONS;
+  const data = getResortData();
+  const dataset = currentViewMode === 'rides' ? data.rides : data.lands;
 
   const filtered = dataset.filter(item => {
     const matchesPark = (activeParkFilter === 'all') || item.park.toLowerCase().includes(activeParkFilter.toLowerCase());
@@ -29,7 +97,7 @@ export function renderQueueCompanions() {
       item.name.toLowerCase().includes(query) || 
       item.saint.toLowerCase().includes(query) || 
       (item.land && item.land.toLowerCase().includes(query)) ||
-      item.story.toLowerCase().includes(query);
+      (item.story && item.story.toLowerCase().includes(query));
     return matchesPark && matchesSearch;
   });
 
@@ -38,7 +106,7 @@ export function renderQueueCompanions() {
       <!-- Section Header -->
       <div class="section-header" style="text-align: center; margin-bottom: 24px;">
         <span class="section-tag">Faith in the Queue • Stories, Saints &amp; Miracles</span>
-        <h2 class="section-title">Queue Companions: <span class="text-gradient-sun">Catholic Saints at Disney Attractions &amp; Lands</span></h2>
+        <h2 class="section-title">Queue Companions: <span class="text-gradient-sun">Catholic Saints at ${data.resortName}</span></h2>
         <p class="section-description" style="max-width: 780px; margin: 0 auto;">
           Turn line waits and park strolls into captivating family storytelling moments. Discover the champions of faith, holy patrons, and sacred miracles behind every Disney ride and land!
         </p>
@@ -47,33 +115,23 @@ export function renderQueueCompanions() {
       <!-- Mode Switcher: Rides vs Lands/Countries -->
       <div style="display: flex; justify-content: center; gap: 12px; margin-bottom: 22px; flex-wrap: wrap;">
         <button class="btn ${currentViewMode === 'rides' ? 'btn-primary' : 'btn-outline'}" onclick="window.setCompanionMode('rides')" style="font-weight: 800; padding: 10px 22px; border-radius: 999px;">
-          🎢 Attractions &amp; Rides (${QUEUE_COMPANIONS.length})
+          🎢 Attractions &amp; Rides (${data.rides.length})
         </button>
         <button class="btn ${currentViewMode === 'lands' ? 'btn-primary' : 'btn-outline'}" onclick="window.setCompanionMode('lands')" style="font-weight: 800; padding: 10px 22px; border-radius: 999px;">
-          🗺️ Lands &amp; EPCOT World Showcase (${LAND_PATRONS.length})
+          🌍 Lands &amp; Pavilions (${data.lands.length})
         </button>
       </div>
 
-      <!-- Filter Controls Bar -->
-      <div style="background: #ffffff; border: 1.5px solid var(--border-subtle); border-radius: var(--radius-xl); padding: 18px 22px; margin-bottom: 24px; box-shadow: var(--shadow-sm);">
+      <!-- Park Filter & Search Bar -->
+      <div class="filter-bar" style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 18px; padding: 14px 18px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
           <!-- Park Filter Chips -->
           <div class="filter-chips" style="gap: 6px; padding: 0;">
-            <button class="filter-chip ${activeParkFilter === 'all' ? 'active' : ''}" onclick="window.setCompanionPark('all')">
-              🌟 All Parks
-            </button>
-            <button class="filter-chip ${activeParkFilter === 'magic' ? 'active' : ''}" onclick="window.setCompanionPark('magic')">
-              🏰 Magic Kingdom
-            </button>
-            <button class="filter-chip ${activeParkFilter === 'epcot' ? 'active' : ''}" onclick="window.setCompanionPark('epcot')">
-              🌐 EPCOT
-            </button>
-            <button class="filter-chip ${activeParkFilter === 'hollywood' ? 'active' : ''}" onclick="window.setCompanionPark('hollywood')">
-              🎬 Hollywood Studios
-            </button>
-            <button class="filter-chip ${activeParkFilter === 'animal' ? 'active' : ''}" onclick="window.setCompanionPark('animal')">
-              🌳 Animal Kingdom
-            </button>
+            ${data.parkFilters.map(f => `
+              <button class="filter-chip ${activeParkFilter === f.id ? 'active' : ''}" onclick="window.setCompanionPark('${f.id}')">
+                ${f.label}
+              </button>
+            `).join('')}
           </div>
 
           <!-- Search Input -->
@@ -232,12 +290,20 @@ function showModalContent(item) {
 }
 
 window.openCompanionModal = (companionId) => {
-  const comp = QUEUE_COMPANIONS.find(c => c.id === companionId) || getCompanionForRide(companionId);
+  const data = getResortData();
+  const comp = data.rides.find(c => c.id === companionId || c.name.toLowerCase() === String(companionId).toLowerCase())
+    || QUEUE_COMPANIONS.find(c => c.id === companionId) 
+    || getCompanionForRide(companionId)
+    || getDisneylandCompanionForRide(companionId);
   if (comp) showModalContent(comp);
 };
 
 window.openLandModal = (landId) => {
-  const land = LAND_PATRONS.find(l => l.id === landId) || getLandPatron(landId);
+  const data = getResortData();
+  const land = data.lands.find(l => l.id === landId || l.name.toLowerCase() === String(landId).toLowerCase())
+    || LAND_PATRONS.find(l => l.id === landId) 
+    || getLandPatron(landId)
+    || getDisneylandLandPatron(landId);
   if (land) showModalContent(land);
 };
 

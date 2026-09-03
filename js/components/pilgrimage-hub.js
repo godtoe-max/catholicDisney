@@ -1,28 +1,88 @@
-// Pilgrimage & Florida WDW Hub Component with Diverse Catholic Traditions & Rites
-import { parishesData } from '../data/parishes-wdw.js';
-import { parkSecretsData } from '../data/park-secrets.js';
-import { prayerNooksData } from '../data/prayer-nooks.js';
+// Pilgrimage & Theme Park Hub Component with Diverse Catholic Traditions & Rites
+import { parishesData } from '../data/parishes-wdw.js?v=20260902_v2';
+import { disneylandParishesData } from '../data/parishes-dlr.js?v=20260902_v2';
+import { parkSecretsData, disneylandParkSecretsData } from '../data/park-secrets.js?v=20260902_v2';
+import { prayerNooksData, disneylandPrayerNooksData } from '../data/prayer-nooks.js?v=20260902_v2';
+import { getActiveResortId, getActiveResort } from './resort-switcher.js?v=20260902_v2';
+
+function getActiveParishes() {
+  return getActiveResortId() === 'dlr' ? disneylandParishesData : parishesData;
+}
+
+function getActiveSecrets() {
+  return getActiveResortId() === 'dlr' ? disneylandParkSecretsData : parkSecretsData;
+}
+
+function getActivePrayerNooks() {
+  return getActiveResortId() === 'dlr' ? disneylandPrayerNooksData : prayerNooksData;
+}
 
 export function initPilgrimageHub() {
+  renderPilgrimageHeader();
   renderBasilicaSpotlight();
   renderParishFinder('all', '');
+  renderSecretsFilterChips();
   renderParkSecrets('all');
-  renderPrayerNooks();
+  renderNookFilterChips();
+  renderPrayerNooks('all');
   setupPilgrimageFilters();
+
+  window.addEventListener('catholic-resort-changed', () => {
+    renderPilgrimageHeader();
+    renderBasilicaSpotlight();
+    renderParishFinder('all', '');
+    renderSecretsFilterChips();
+    renderParkSecrets('all');
+    renderNookFilterChips();
+    renderPrayerNooks('all');
+  });
+}
+
+function renderPilgrimageHeader() {
+  const isDlr = getActiveResortId() === 'dlr';
+  const tagEl = document.querySelector('#pilgrimage-tab .section-tag');
+  const titleEl = document.querySelector('#pilgrimage-tab .section-title');
+  const descEl = document.querySelector('#pilgrimage-tab .section-description');
+  const parishesHeading = document.querySelector('#pilgrimage-tab h3');
+
+  if (tagEl) {
+    tagEl.textContent = isDlr 
+      ? 'Southern California & Anaheim Pilgrimage' 
+      : 'Florida & Central Florida Pilgrimage';
+  }
+  if (titleEl) {
+    titleEl.innerHTML = isDlr
+      ? 'The Catholic Family Guide to <span class="text-gradient-blue">Disneyland Resort</span>'
+      : 'The Catholic Family Guide to <span class="text-gradient-blue">Walt Disney World</span>';
+  }
+  if (descEl) {
+    descEl.textContent = isDlr
+      ? 'Keep your family grounded in joy and prayer! Find Mass times minutes from Disneyland gates, explore the monumental Christ Cathedral, and walk in the footsteps of St. Junípero Serra.'
+      : 'Keep your family grounded in joy and prayer! Find Mass times minutes from the parks, visit the world-famous tourist Basilica, and discover hidden Christian art in the Disney castles.';
+  }
+  if (parishesHeading) {
+    parishesHeading.textContent = isDlr
+      ? '⛪ Catholic Parishes & Liturgical Traditions Near Disneyland'
+      : '⛪ Catholic Parishes & Liturgical Traditions Near Disney World';
+  }
 }
 
 function renderBasilicaSpotlight() {
   const container = document.getElementById('basilica-spotlight-container');
   if (!container) return;
 
-  const basilica = parishesData.find(p => p.id === 'mary-queen-universe');
+  const isDlr = getActiveResortId() === 'dlr';
+  const parishes = getActiveParishes();
+  const basilica = isDlr 
+    ? parishes.find(p => p.id === 'christ-cathedral') || parishes[0]
+    : parishes.find(p => p.id === 'mary-queen-universe') || parishes[0];
   if (!basilica) return;
 
   container.innerHTML = `
     <div class="flagship-spotlight-card">
-      <div class="spotlight-image-side">
+      <div class="spotlight-image-side" style="${isDlr ? 'background: linear-gradient(135deg, #1e3a8a 0%, #0369a1 100%);' : ''}">
         <div class="spotlight-overlay">
-          <span class="spotlight-badge">☀️ Orlando Flagship Pilgrimage Site</span>
+          <span class="spotlight-badge">${isDlr ? '🌴 Orange County Flagship Pilgrimage Site' : '☀️ Orlando Flagship Pilgrimage Site'}</span>
         </div>
       </div>
       <div class="spotlight-content-side">
@@ -40,10 +100,12 @@ function renderBasilicaSpotlight() {
             <span class="mass-day">📅 Sunday Masses</span>
             <span class="mass-times">${basilica.massSchedule.sunday.join(' • ')}</span>
           </div>
-          <div class="mass-grid-row">
-            <span class="mass-day">🕯️ Saturday Vigil</span>
-            <span class="mass-times">${basilica.massSchedule.saturdayVigil.join(', ')}</span>
-          </div>
+          ${basilica.massSchedule.saturdayVigil && basilica.massSchedule.saturdayVigil.length > 0 ? `
+            <div class="mass-grid-row">
+              <span class="mass-day">🕯️ Saturday Vigil</span>
+              <span class="mass-times">${basilica.massSchedule.saturdayVigil.join(', ')}</span>
+            </div>
+          ` : ''}
           <div class="mass-grid-row">
             <span class="mass-day">☀️ Daily Mass</span>
             <span class="mass-times">${basilica.massSchedule.weekday.join(' • ')}</span>
@@ -59,8 +121,8 @@ function renderBasilicaSpotlight() {
         </ul>
 
         <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 10px;">
-          <a href="${basilica.website}" target="_blank" rel="noopener noreferrer" class="btn btn-sun">Official Shrine Website ↗</a>
-          <a href="https://maps.google.com/?q=${encodeURIComponent(basilica.address)}" target="_blank" rel="noopener noreferrer" class="btn btn-outline">Directions (4 mi from WDW) ↗</a>
+          <a href="${basilica.website}" target="_blank" rel="noopener noreferrer" class="btn btn-sun">Official Website ↗</a>
+          <a href="https://maps.google.com/?q=${encodeURIComponent(basilica.address)}" target="_blank" rel="noopener noreferrer" class="btn btn-outline">Directions (${basilica.distance}) ↗</a>
         </div>
       </div>
     </div>
@@ -84,9 +146,10 @@ export function renderParishFinder(filter = 'all', searchQuery = '') {
   const container = document.getElementById('parishes-grid');
   if (!container) return;
 
+  const parishes = getActiveParishes();
   const query = searchQuery.toLowerCase().trim();
 
-  const filtered = parishesData.filter(parish => {
+  const filtered = parishes.filter(parish => {
     // Search match
     const matchesSearch = !query || 
       parish.name.toLowerCase().includes(query) ||
@@ -188,13 +251,69 @@ export function renderParishFinder(filter = 'all', searchQuery = '') {
   }).join('');
 }
 
+export function renderSecretsFilterChips() {
+  const container = document.getElementById('park-filter-chips');
+  if (!container) return;
+  const isDlr = getActiveResortId() === 'dlr';
+  container.innerHTML = isDlr ? `
+    <button class="filter-chip active" data-park="all">All Parks</button>
+    <button class="filter-chip" data-park="Disneyland Park">Disneyland Park</button>
+    <button class="filter-chip" data-park="Disney California Adventure">Disney California Adventure</button>
+  ` : `
+    <button class="filter-chip active" data-park="all">All Parks</button>
+    <button class="filter-chip" data-park="Magic Kingdom">Magic Kingdom</button>
+    <button class="filter-chip" data-park="Epcot">Epcot World Showcase</button>
+    <button class="filter-chip" data-park="Animal Kingdom">Animal Kingdom</button>
+  `;
+
+  const parkSecretsGrid = document.getElementById('park-secrets-grid');
+  container.querySelectorAll('.filter-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      container.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      const park = chip.getAttribute('data-park') || 'all';
+      renderParkSecrets(park);
+      if (parkSecretsGrid) parkSecretsGrid.scrollTo({ left: 0, behavior: 'smooth' });
+    });
+  });
+}
+
+export function renderNookFilterChips() {
+  const container = document.getElementById('nook-filter-chips');
+  if (!container) return;
+  const isDlr = getActiveResortId() === 'dlr';
+  container.innerHTML = isDlr ? `
+    <button class="filter-chip active" data-park="all">All Parks (7 Nooks)</button>
+    <button class="filter-chip" data-park="Disneyland Park">Disneyland Park</button>
+    <button class="filter-chip" data-park="Disney California Adventure">Disney California Adventure</button>
+  ` : `
+    <button class="filter-chip active" data-park="all">All Parks (10 Nooks)</button>
+    <button class="filter-chip" data-park="Magic Kingdom">Magic Kingdom</button>
+    <button class="filter-chip" data-park="Epcot">Epcot</button>
+    <button class="filter-chip" data-park="Disney's Hollywood Studios">Hollywood Studios</button>
+    <button class="filter-chip" data-park="Disney's Animal Kingdom">Animal Kingdom</button>
+  `;
+
+  const nooksContainer = document.getElementById('prayer-nooks-container');
+  container.querySelectorAll('.filter-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      container.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      const park = chip.getAttribute('data-park') || 'all';
+      renderPrayerNooks(park);
+      if (nooksContainer) nooksContainer.scrollTo({ left: 0, behavior: 'smooth' });
+    });
+  });
+}
+
 export function renderParkSecrets(parkFilter = 'all') {
   const container = document.getElementById('park-secrets-grid');
   if (!container) return;
 
+  const dataset = getActiveSecrets();
   const filtered = parkFilter === 'all' 
-    ? parkSecretsData 
-    : parkSecretsData.filter(s => s.park.toLowerCase().includes(parkFilter.toLowerCase()));
+    ? dataset 
+    : dataset.filter(s => s.park.toLowerCase().includes(parkFilter.toLowerCase()));
 
   container.innerHTML = filtered.map(secret => `
     <div class="secret-card">
@@ -222,9 +341,9 @@ export function renderPrayerNooks(parkFilter = 'all') {
   const container = document.getElementById('prayer-nooks-container');
   if (!container) return;
 
-  // Flatten all nooks with park context
+  const dataset = getActivePrayerNooks();
   const allNooks = [];
-  prayerNooksData.forEach(group => {
+  dataset.forEach(group => {
     group.nooks.forEach(nook => {
       allNooks.push({
         ...nook,
@@ -328,28 +447,6 @@ function setupPilgrimageFilters() {
       nooksContainer.scrollBy({ left: 380, behavior: 'smooth' });
     });
   }
-
-  const parkChips = document.querySelectorAll('#park-filter-chips .filter-chip');
-  parkChips.forEach(chip => {
-    chip.addEventListener('click', () => {
-      parkChips.forEach(c => c.classList.remove('active'));
-      chip.classList.add('active');
-      const park = chip.getAttribute('data-park') || 'all';
-      renderParkSecrets(park);
-      if (parkSecretsGrid) parkSecretsGrid.scrollTo({ left: 0, behavior: 'smooth' });
-    });
-  });
-
-  const nookChips = document.querySelectorAll('#nook-filter-chips .filter-chip');
-  nookChips.forEach(chip => {
-    chip.addEventListener('click', () => {
-      nookChips.forEach(c => c.classList.remove('active'));
-      chip.classList.add('active');
-      const park = chip.getAttribute('data-park') || 'all';
-      renderPrayerNooks(park);
-      if (nooksContainer) nooksContainer.scrollTo({ left: 0, behavior: 'smooth' });
-    });
-  });
 
   window.resetParishFilters = () => {
     if (parishSearch) parishSearch.value = '';

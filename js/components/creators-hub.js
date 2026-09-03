@@ -1,5 +1,5 @@
 // Catholic Animation & Creative Arts Showcase Component
-import { creatorsData } from '../data/creators.js';
+import { creatorsData } from '../data/creators.js?v=20260902_v2';
 
 export function initCreatorsHub() {
   renderCreatorsCards();

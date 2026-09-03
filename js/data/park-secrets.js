@@ -89,3 +89,62 @@ export const parkSecretsData = [
     badge: "Creation Theology"
   }
 ];
+
+// Disneyland Resort (California) Park Secrets & Christian Heritage
+export const disneylandParkSecretsData = [
+  {
+    id: "sleeping-beauty-gothic-walkthrough",
+    park: "Disneyland Park",
+    location: "Sleeping Beauty Castle Interior",
+    title: "Medieval French Books of Hours & Stained Glass Tapestries",
+    category: "Medieval Catholic Art",
+    description: "Inside the winding interior passageways of Sleeping Beauty Castle, master animator Eyvind Earle created 3D diorama displays directly modeled on 15th-century French Catholic illuminated manuscripts.",
+    catholicConnection: "Earle spent months studying the Très Riches Heures du Duc de Berry and medieval cathedral tapestries. The rich lapis lazuli blues, illuminated gold borders, and Gothic arches reflect how medieval Catholic artists depicted divine truth and triumph of grace over evil.",
+    insiderTip: "Walk through during twilight when the passageway lanterns illuminate the stained glass panels with deep jewel tones.",
+    badge: "Must See"
+  },
+  {
+    id: "king-arthur-carrousel-chivalry",
+    park: "Disneyland Park",
+    location: "Fantasyland",
+    title: "Christian Chivalry & 1922 Dentzel Hand-Carved Steeds",
+    category: "Chivalric Tradition",
+    description: "Built by the renowned Dentzel Carrousel Company in 1922, every single one of the 68 jumping horses was hand-carved with historic armor, royal crests, and heraldic crosses.",
+    catholicConnection: "The Legend of King Arthur and the Round Table is rooted in Christian chivalry—the code by which knights took solemn vows before Catholic bishops to defend the weak, protect holy places, and seek the Holy Grail (the chalice of the Last Supper).",
+    insiderTip: "Look for 'Jingler', the lead horse with ornate bells and floral garlands, dedicated to Julie Andrews.",
+    badge: "Chivalric Legend"
+  },
+  {
+    id: "buena-vista-mission-bell",
+    park: "Disney California Adventure",
+    location: "Buena Vista Street & Red Car Trolley",
+    title: "El Camino Real Mission Bell & Saint Junípero Serra Heritage",
+    category: "California Mission Heritage",
+    description: "At the foot of Buena Vista Street sits an authentic cast iron El Camino Real mission bell mounted on a shepherd's crook post, mirroring the historic bells lining California's Royal Highway.",
+    catholicConnection: "The original 21 California Missions were founded by Franciscan missionary Saint Junípero Serra starting in 1769. These bells rang daily for the Angelus prayer, Mass, and community gatherings, marking the birth of California's Catholic foundation.",
+    insiderTip: "Pause by the bell in the morning as the Red Car Trolley passes for a tangible connection to California's Franciscan history.",
+    badge: "California Heritage"
+  },
+  {
+    id: "new-orleans-st-louis-ironwork",
+    park: "Disneyland Park",
+    location: "New Orleans Square",
+    title: "French Quarter Balconies & St. Louis Cathedral Motifs",
+    category: "Sacred Architecture",
+    description: "Walt Disney worked directly with New Orleans artisans to cast authentic wrought-iron and cast-iron filigree railings throughout the square.",
+    catholicConnection: "The architectural center of the New Orleans French Quarter is Saint Louis Cathedral, the oldest continuously active Roman Catholic cathedral in the United States. The fleur-de-lis and cross motifs in the ironwork reflect centuries of French and Spanish Catholic piety.",
+    insiderTip: "Look up at the second-story balconies along Royal Street to spot hand-forged fleur-de-lis symbols.",
+    badge: "Historic Architecture"
+  },
+  {
+    id: "san-fransokyo-st-francis",
+    park: "Disney California Adventure",
+    location: "San Fransokyo Square",
+    title: "The Legacy of Saint Francis of Assisi by the Bay",
+    category: "Patron Saints",
+    description: "The vibrant waterfront district celebrates the heritage of San Francisco, named directly in honor of Saint Francis of Assisi by Spanish Franciscan explorers in 1776.",
+    catholicConnection: "Saint Francis is the patron saint of ecology, animals, and peacemakers. The district's wind turbines, solar elements, and celebration of community reflect Franciscan reverence for God's creation and stewardship.",
+    insiderTip: "Enjoy a loaf of fresh Boudin sourdough bread on the wharf patio overlooking the tranquil bay waters.",
+    badge: "Patron Saint"
+  }
+];

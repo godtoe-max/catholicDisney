@@ -1,16 +1,18 @@
 // CatholicDisney.com Application Controller
-import { initPilgrimageHub } from './components/pilgrimage-hub.js?v=20260902n';
-import { initQueueRosary } from './components/queue-rosary.js?v=20260902n';
-import { initQueueCompanions } from './components/queue-companions.js?v=20260902n';
-import { initWaitTimesHub } from './components/wait-times-hub.js?v=20260902n';
-import { initLiveWaitTimes } from './components/live-wait-times.js?v=20260902n';
-import { initVirtueHub } from './components/virtue-hub.js?v=20260902n';
-import { initLiturgicalHub } from './components/liturgical-hub.js?v=20260902n';
-import { initItineraryPlanner } from './components/itinerary-planner.js?v=20260902n';
-import { initCreatorsHub } from './components/creators-hub.js?v=20260902n';
-import { initWallpapersHub } from './components/wallpapers-hub.js?v=20260902n';
+import { initResortSwitcher } from './components/resort-switcher.js?v=20260902_v2';
+import { initPilgrimageHub } from './components/pilgrimage-hub.js?v=20260902_v2';
+import { initQueueRosary } from './components/queue-rosary.js?v=20260902_v2';
+import { initQueueCompanions } from './components/queue-companions.js?v=20260902_v2';
+import { initWaitTimesHub } from './components/wait-times-hub.js?v=20260902_v2';
+import { initLiveWaitTimes } from './components/live-wait-times.js?v=20260902_v2';
+import { initVirtueHub } from './components/virtue-hub.js?v=20260902_v2';
+import { initLiturgicalHub } from './components/liturgical-hub.js?v=20260902_v2';
+import { initItineraryPlanner } from './components/itinerary-planner.js?v=20260902_v2';
+import { initCreatorsHub } from './components/creators-hub.js?v=20260902_v2';
+import { initWallpapersHub } from './components/wallpapers-hub.js?v=20260902_v2';
 
-document.addEventListener('DOMContentLoaded', () => {
+function bootApp() {
+  initResortSwitcher();
   initTabNavigation();
   initHamburgerMenu();
   initPilgrimageHub();
@@ -26,7 +28,26 @@ document.addEventListener('DOMContentLoaded', () => {
   initTipsForm();
   initModalListeners();
   initLightbox();
-});
+
+  window.dispatchEvent(new CustomEvent('catholic-app-ready'));
+
+  let storedResort = 'wdw';
+  try {
+    storedResort = localStorage.getItem('catholic_disney_resort') || 'wdw';
+  } catch(e) {}
+
+  if (storedResort === 'dlr') {
+    window.dispatchEvent(new CustomEvent('catholic-resort-changed', {
+      detail: { resortId: 'dlr' }
+    }));
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', bootApp);
+} else {
+  bootApp();
+}
 
 // Mode Switcher between Live Waits and Crowd Simulator
 window.switchWaitMode = (mode) => {

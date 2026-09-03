@@ -578,3 +578,87 @@ export const DISNEY_ABSTINENCE_DINING = [
     catholicTip: "Just 8 minutes from the Basilica of Mary Queen of the Universe. Ideal Friday dinner stop after attending 12:15 PM or 5:00 PM Mass!"
   }
 ];
+
+// Disneyland Resort (California) Meatless & Friday Abstinence Dining Guide
+export const DISNEYLAND_ABSTINENCE_DINING = [
+  {
+    park: "Disneyland Park",
+    parkId: 16,
+    icon: "🏰",
+    restaurant: "Harbour Galley",
+    land: "Critter Country / Rivers of America",
+    type: "Quick-Service",
+    seafoodHighlights: "Fresh Clam Chowder in a Boudin Sourdough Bowl, Lobster Roll with kettle chips.",
+    catholicTip: "Enjoy your chowder on the quiet waterfront patio overlooking Fowler's Harbor and the Sailing Ship Columbia."
+  },
+  {
+    park: "Disneyland Park",
+    parkId: 16,
+    icon: "🏰",
+    restaurant: "Rancho del Zocalo Restaurante",
+    land: "Frontierland",
+    type: "Quick-Service",
+    seafoodHighlights: "Cheese Enchiladas with rice and beans, Baja Fish Tacos, Fresh Garden Guacamole.",
+    catholicTip: "Beautiful Spanish hacienda courtyard with bubbling tile fountains and plenty of cool shade."
+  },
+  {
+    park: "Disneyland Park",
+    parkId: 16,
+    icon: "🏰",
+    restaurant: "Bengal Barbecue",
+    land: "Adventureland",
+    type: "Quick-Service",
+    seafoodHighlights: "Grilled Vegetable Skewers (Zucchini, Yellow Squash, Red Onion, Pepper) with savory glaze.",
+    catholicTip: "Quick, protein-rich meatless bite directly across from the Indiana Jones queue."
+  },
+  {
+    park: "Disneyland Park",
+    parkId: 16,
+    icon: "🏰",
+    restaurant: "Alien Pizza Planet",
+    land: "Tomorrowland",
+    type: "Quick-Service",
+    seafoodHighlights: "Three-Cheese Pizza, Celestial Vegetable Caprese Salad, Penne with Marinara.",
+    catholicTip: "High-capacity air-conditioned seating. Excellent option for feeding large families on Friday."
+  },
+  {
+    park: "Disney California Adventure",
+    parkId: 17,
+    icon: "🎡",
+    restaurant: "Pacific Wharf Cafe & Sourdough Bakery",
+    land: "San Fransokyo Square",
+    type: "Quick-Service",
+    seafoodHighlights: "Signature clam chowder or creamy tomato basil soup served in warm freshly baked San Francisco sourdough.",
+    catholicTip: "Outdoor patio tables with sea breezes honoring the spirit of St. Francis of Assisi."
+  },
+  {
+    park: "Disney California Adventure",
+    parkId: 17,
+    icon: "🎡",
+    restaurant: "Lucky Fortune Cookery",
+    land: "San Fransokyo Square",
+    type: "Quick-Service",
+    seafoodHighlights: "Crispy Tofu Rice Bowl with spicy garlic or teriyaki glaze, Steamed Edamame.",
+    catholicTip: "Nutritious and delicious plant-based lunch to keep family energy high without meat."
+  },
+  {
+    park: "Disney California Adventure",
+    parkId: 17,
+    icon: "🎡",
+    restaurant: "Flo's V8 Cafe",
+    land: "Cars Land",
+    type: "Quick-Service",
+    seafoodHighlights: "Impossible Burger with fries, House-made Garden Green Salad with balsamic dressing.",
+    catholicTip: "Sit in the rear sunroom with panoramic picture-window views of Radiator Springs Racers soaring over the canyon."
+  },
+  {
+    park: "Downtown Disney / Anaheim",
+    parkId: 0,
+    icon: "⛪",
+    restaurant: "Naples Ristorante e Bar",
+    land: "Downtown Disney (Walking distance)",
+    type: "Table-Service & Walk-up",
+    seafoodHighlights: "Authentic Neapolitan Margherita Pizza, Quattro Formaggi, Calamari Fritti, Spaghetti alla Puttanesca.",
+    catholicTip: "Only a 5-minute walk from the Disneyland Esplanade. Perfect Friday family feast before or after evening touring."
+  }
+];

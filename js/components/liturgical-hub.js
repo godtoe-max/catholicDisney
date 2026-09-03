@@ -1,8 +1,10 @@
 // Catholic Disney: Liturgical Living, Holy Days of Obligation & Abstinence Tracker
 // Supports 4 Liturgical Traditions: Roman (USCCB), TLM (1962), Byzantine, and Anglican Ordinariate
 
-import { liturgicalPairingsData } from '../data/liturgical-pairings.js';
-import { TRADITIONS_LITURGICAL, DISNEY_ABSTINENCE_DINING } from '../data/holy-days-data.js';
+import { liturgicalPairingsData } from '../data/liturgical-pairings.js?v=20260902_v2';
+import { TRADITIONS_LITURGICAL, DISNEY_ABSTINENCE_DINING, DISNEYLAND_ABSTINENCE_DINING } from '../data/holy-days-data.js?v=20260902_v2';
+import { DISNEYLAND_TRADITIONS_LITURGICAL, DISNEYLAND_MISSION_EXCURSION } from '../data/disneyland-churches-data.js?v=20260902_v2';
+import { getActiveResortId, getActiveResort } from './resort-switcher.js?v=20260902_v2';
 
 let activeTraditionId = "roman";
 let activeViewTab = "holydays"; // 'holydays', 'abstinence', 'dining', 'movies'
@@ -10,18 +12,25 @@ let activeDiningPark = "all";
 
 export function initLiturgicalHub() {
   renderLiturgicalHub();
+  window.addEventListener('catholic-resort-changed', () => {
+    renderLiturgicalHub();
+  });
 }
 
 export function renderLiturgicalHub() {
   const container = document.getElementById('liturgical-hub-container');
   if (!container) return;
 
-  const tradition = TRADITIONS_LITURGICAL[activeTraditionId] || TRADITIONS_LITURGICAL.roman;
+  const isDlr = getActiveResortId() === 'dlr';
+  const activeTraditions = isDlr ? DISNEYLAND_TRADITIONS_LITURGICAL : TRADITIONS_LITURGICAL;
+  const tradition = activeTraditions[activeTraditionId] || activeTraditions.roman;
+  const church = tradition.churchInfo || (isDlr ? DISNEYLAND_TRADITIONS_LITURGICAL.roman.churchInfo : TRADITIONS_LITURGICAL.roman.churchInfo);
 
   // Filter dining items
+  const diningDataset = isDlr ? DISNEYLAND_ABSTINENCE_DINING : DISNEY_ABSTINENCE_DINING;
   const filteredDining = activeDiningPark === 'all'
-    ? DISNEY_ABSTINENCE_DINING
-    : DISNEY_ABSTINENCE_DINING.filter(d => String(d.parkId) === String(activeDiningPark));
+    ? diningDataset
+    : diningDataset.filter(d => String(d.parkId) === String(activeDiningPark));
 
   container.innerHTML = `
     <!-- Tradition Selector Navigation -->
@@ -29,33 +38,61 @@ export function renderLiturgicalHub() {
       <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
         <div>
           <span class="section-tag" style="background: #fef3c7; color: #92400e; margin-bottom: 4px;">
-            Liturgical Traditions &amp; Precepts
+            ${isDlr ? '🌴 Southern California Parishes & Traditions' : '🏰 Central Florida Parishes & Traditions'}
           </span>
           <h3 style="font-size: 1.45rem; color: #0f172a; margin: 0; font-weight: 800;">
             Select Your Liturgical Tradition
           </h3>
         </div>
         <span style="font-size: 0.85rem; color: #64748b;">
-          Mass obligation &amp; fasting rules tailored to your family's rite
+          ${isDlr ? 'Mass obligations & churches in Anaheim / Orange County' : 'Mass obligation & fasting rules tailored to your family'}
         </span>
       </div>
 
       <!-- Tradition Selector Pills -->
       <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-        ${Object.values(TRADITIONS_LITURGICAL).map(t => `
-          <button class="filter-chip ${activeTraditionId === t.id ? 'active' : ''}" 
-                  onclick="window.switchLiturgicalTradition('${t.id}')"
-                  style="font-size: 0.9rem; padding: 8px 16px;">
-            ${t.icon} ${t.name}
-          </button>
-        `).join('')}
+        ${Object.keys(activeTraditions).map(k => {
+          const t = activeTraditions[k];
+          return `
+            <button class="filter-chip ${activeTraditionId === k ? 'active' : ''}" 
+                    onclick="window.switchLiturgicalTradition('${k}')"
+                    style="font-size: 0.9rem; padding: 8px 16px;">
+              ${t.icon} ${t.name}
+            </button>
+          `;
+        }).join('')}
       </div>
 
-      <!-- Current Tradition Info Banner -->
-      <div style="background: #f8fafc; border-left: 4px solid #1a73e8; border-radius: 8px; padding: 12px 16px; margin-top: 16px;">
-        <strong style="color: #0f172a; font-size: 0.95rem;">${tradition.name}</strong> — 
-        <span style="color: #475569; font-size: 0.88rem;">${tradition.description}</span>
+      <!-- Current Tradition & Designated Local Church Banner -->
+      <div style="background: #f8fafc; border-left: 4px solid #1a73e8; border-radius: 8px; padding: 14px 16px; margin-top: 16px;">
+        <div style="font-weight: 800; color: #0f172a; font-size: 1rem; margin-bottom: 4px;">
+          ${tradition.name}
+        </div>
+        <div style="color: #475569; font-size: 0.88rem; line-height: 1.45; margin-bottom: 8px;">
+          ${tradition.summary || tradition.description}
+        </div>
+        <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 8px 12px; font-size: 0.84rem; color: #1e40af;">
+          <strong>📍 Designated ${isDlr ? 'Orange County' : 'Orlando'} Parish:</strong> <span style="font-weight: 700;">${church.parishName}</span> (${church.address})<br>
+          ⏰ <strong>Sunday Times:</strong> ${church.sundayTimes} • <em>${church.distanceFromPark}</em>
+        </div>
       </div>
+
+      ${isDlr ? `
+        <!-- Historic Mission Excursion Callout (California Exclusive) -->
+        <div style="background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border: 1.5px solid #fde68a; border-radius: 12px; padding: 14px 16px; margin-top: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+          <div style="flex: 1; min-width: 260px;">
+            <div style="font-weight: 800; color: #92400e; font-size: 0.95rem; display: flex; align-items: center; gap: 6px;">
+              <span>🔔</span> Historic California Pilgrimage: ${DISNEYLAND_MISSION_EXCURSION.name}
+            </div>
+            <p style="font-size: 0.85rem; color: #78350f; margin: 4px 0 0; line-height: 1.4;">
+              ${DISNEYLAND_MISSION_EXCURSION.transitDescription}
+            </p>
+          </div>
+          <span style="background: #ffffff; color: #b45309; font-weight: 800; font-size: 0.78rem; padding: 4px 10px; border-radius: 999px; border: 1px solid #fcd34d;">
+            Serra Chapel (1782)
+          </span>
+        </div>
+      ` : ''}
 
       <!-- Feature View Navigation Tabs -->
       <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; border-top: 1px dashed #e2e8f0; padding-top: 16px;">
@@ -179,7 +216,7 @@ export function renderLiturgicalHub() {
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
           <div>
             <h4 style="font-size: 1.35rem; color: #0f172a; margin-bottom: 4px; font-weight: 800;">
-              🍽️ Catholic Family Meatless Dining Guide at Disney World
+              🍽️ Catholic Family Meatless Dining Guide at ${isDlr ? 'Disneyland Resort' : 'Disney World'}
             </h4>
             <p style="font-size: 0.92rem; color: #475569; margin-bottom: 0;">
               Where to enjoy delicious fish, seafood, and hearty meatless meals on Friday abstinence days without sacrificing quality or family fun.
@@ -189,10 +226,16 @@ export function renderLiturgicalHub() {
           <!-- Park Filters -->
           <div style="display: flex; gap: 6px; flex-wrap: wrap;">
             <button class="filter-chip ${activeDiningPark === 'all' ? 'active' : ''}" onclick="window.filterDiningByPark('all')">All Locations</button>
-            <button class="filter-chip ${activeDiningPark === '6' ? 'active' : ''}" onclick="window.filterDiningByPark('6')">🏰 Magic Kingdom</button>
-            <button class="filter-chip ${activeDiningPark === '5' ? 'active' : ''}" onclick="window.filterDiningByPark('5')">🌐 EPCOT</button>
-            <button class="filter-chip ${activeDiningPark === '7' ? 'active' : ''}" onclick="window.filterDiningByPark('7')">🎬 Studios</button>
-            <button class="filter-chip ${activeDiningPark === '8' ? 'active' : ''}" onclick="window.filterDiningByPark('8')">🌳 Animal Kingdom</button>
+            ${isDlr ? `
+              <button class="filter-chip ${activeDiningPark === '16' ? 'active' : ''}" onclick="window.filterDiningByPark('16')">🏰 Disneyland Park</button>
+              <button class="filter-chip ${activeDiningPark === '17' ? 'active' : ''}" onclick="window.filterDiningByPark('17')">🎡 Disney California Adv.</button>
+              <button class="filter-chip ${activeDiningPark === '0' ? 'active' : ''}" onclick="window.filterDiningByPark('0')">⛪ Downtown Disney</button>
+            ` : `
+              <button class="filter-chip ${activeDiningPark === '6' ? 'active' : ''}" onclick="window.filterDiningByPark('6')">🏰 Magic Kingdom</button>
+              <button class="filter-chip ${activeDiningPark === '5' ? 'active' : ''}" onclick="window.filterDiningByPark('5')">🌐 EPCOT</button>
+              <button class="filter-chip ${activeDiningPark === '7' ? 'active' : ''}" onclick="window.filterDiningByPark('7')">🎬 Studios</button>
+              <button class="filter-chip ${activeDiningPark === '8' ? 'active' : ''}" onclick="window.filterDiningByPark('8')">🌳 Animal Kingdom</button>
+            `}
           </div>
         </div>
 

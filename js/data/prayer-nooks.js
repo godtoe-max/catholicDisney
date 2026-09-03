@@ -91,3 +91,66 @@ export const prayerNooksData = [
     ]
   }
 ];
+
+// Disneyland Resort (California) Quiet Prayer Nooks & Serene Spots
+export const disneylandPrayerNooksData = [
+  {
+    park: "Disneyland Park",
+    nooks: [
+      {
+        name: "Snow White Grotto & Wishing Well",
+        location: "East slope pathway directly beside Sleeping Beauty Castle",
+        ambiance: "Tranquil waterfall, marble statues of Snow White and the woodland creatures, bubbling wishing well.",
+        bestFor: "Morning prayer, Marian thanksgiving, finding peaceful contemplation right next to the castle.",
+        amenities: "Shaded curved stone bench facing the waterfall, peaceful birdsong."
+      },
+      {
+        name: "Court of Angels & Royal Street Courtyards",
+        location: "New Orleans Square hidden alleyways behind French Market",
+        ambiance: "Wrought-iron balconies, historic brick archways, Spanish tiles, secluded from the main parade corridor.",
+        bestFor: "Praying a 15-minute Rosary, quiet spiritual reflection.",
+        amenities: "Ornate ironwork benches under leafy Magnolia trees."
+      },
+      {
+        name: "Fowler's Harbor & Waterfront Walkway",
+        location: "Critter Country & Rivers of America boardwalk",
+        ambiance: "River breeze, views of the Sailing Ship Columbia, secluded wooden rocking benches.",
+        bestFor: "Mid-day sensory retreat, breathing in God's peace away from loud ride queues.",
+        amenities: "Spacious wooden benches overlooking the river water."
+      },
+      {
+        name: "Pixar Short Film & Tomorrowland Elevated Terrace",
+        location: "Second-level terrace pathway near Space Mountain",
+        ambiance: "Elevated, shaded, breezy, overlooked by Monorail beamway, low pedestrian traffic.",
+        bestFor: "Quick prayer of thanksgiving before lunch or afternoon touring.",
+        amenities: "Clean modern benches with shaded overhead canopies."
+      }
+    ]
+  },
+  {
+    park: "Disney California Adventure",
+    nooks: [
+      {
+        name: "Redwood Creek Challenge Trail Woodland Sanctuary",
+        location: "Deep interior shaded walking paths of Grizzly Peak",
+        ambiance: "Towering California redwoods, babbling natural creeks, natural log benches, pine scent.",
+        bestFor: "A Franciscan nature meditation, peaceful Rosary in the shade of giant redwood trees.",
+        amenities: "Wooden log benches, cool mountain shade, rushing stream sound."
+      },
+      {
+        name: "San Fransokyo Square Waterfront Pier",
+        location: "Waterfront wooden deck overlooking Paradise Bay",
+        ambiance: "Gentle bay waters, ocean breeze, sound of water lapping against the pier pilings.",
+        bestFor: "Quiet prayer for peace, reflecting on St. Francis of Assisi by the water.",
+        amenities: "Outdoor waterfront seating tables and benches."
+      },
+      {
+        name: "Carthay Circle Rose Gardens",
+        location: "Quiet curved garden walkway behind the Carthay Circle Restaurant",
+        ambiance: "Spanish revival bell tower backdrop, blooming rose bushes, shaded tile fountain.",
+        bestFor: "Quiet reading, prayer with babies and resting toddlers.",
+        amenities: "Decorative wrought-iron benches under fragrant rose trellises."
+      }
+    ]
+  }
+];

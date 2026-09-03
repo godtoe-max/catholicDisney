@@ -35,10 +35,38 @@ export const PARKS_METADATA = {
     "openingTime": "8:00 AM",
     "closingTime": "7:00 PM",
     "defaultPrayerNook": "Tree of Life Serene Pathways"
+  },
+  "16": {
+    "id": 16,
+    "name": "Disneyland Park",
+    "icon": "\ud83c\udff0",
+    "slug": "disneyland",
+    "openingTime": "8:00 AM",
+    "closingTime": "11:00 PM",
+    "defaultPrayerNook": "Snow White Grotto & Wishing Well"
+  },
+  "17": {
+    "id": 17,
+    "name": "Disney California Adventure",
+    "icon": "\ud83c\udfa1",
+    "slug": "disney-california-adventure",
+    "openingTime": "8:00 AM",
+    "closingTime": "10:00 PM",
+    "defaultPrayerNook": "San Fransokyo Waterfront Pier"
   }
 };
 
 export const HOURLY_CROWD_CURVES = {
+  "16": {
+    "8": 25.4, "9": 42.3, "10": 59.4, "11": 72.1, "12": 80.4, "13": 84.8,
+    "14": 82.9, "15": 77.9, "16": 76.3, "17": 42.0, "18": 67.8, "19": 63.3,
+    "20": 55.1, "21": 46.5, "22": 34.0, "23": 21.5
+  },
+  "17": {
+    "8": 45.2, "9": 70.5, "10": 85.9, "11": 96.0, "12": 101.1, "13": 98.7,
+    "14": 96.1, "15": 93.3, "16": 88.7, "17": 59.3, "18": 78.8, "19": 71.0,
+    "20": 55.9, "21": 40.5, "22": 30.0, "23": 20.0
+  },
   "6": {
     "8": 25.9,
     "9": 32.0,

@@ -13,8 +13,117 @@
   
   <!-- Favicon / Crest icon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☀️</text></svg>">
+
+  <script>
+    (function() {
+      function applyResortVisuals(resortId) {
+        var isDlr = resortId === 'dlr';
+
+        var wdwBtns = document.querySelectorAll('.resort-btn-wdw');
+        var dlrBtns = document.querySelectorAll('.resort-btn-dlr');
+
+        wdwBtns.forEach(function(btn) {
+          var isDark = btn.closest('[style*="1e3a8a"]');
+          btn.style.background = !isDlr ? (isDark ? '#fbbf24' : '#1a73e8') : 'transparent';
+          btn.style.color = !isDlr ? (isDark ? '#78350f' : '#ffffff') : (isDark ? '#ffffff' : '#334155');
+          btn.style.boxShadow = !isDlr ? '0 2px 8px rgba(0,0,0,0.25)' : 'none';
+        });
+
+        dlrBtns.forEach(function(btn) {
+          var isDark = btn.closest('[style*="1e3a8a"]');
+          btn.style.background = isDlr ? (isDark ? '#fbbf24' : '#1a73e8') : 'transparent';
+          btn.style.color = isDlr ? (isDark ? '#78350f' : '#ffffff') : (isDark ? '#ffffff' : '#334155');
+          btn.style.boxShadow = isDlr ? '0 2px 8px rgba(0,0,0,0.25)' : 'none';
+        });
+
+        var tagEl = document.querySelector('#pilgrimage-tab .section-tag');
+        var titleEl = document.querySelector('#pilgrimage-tab .section-title');
+        var descEl = document.querySelector('#pilgrimage-tab .section-description');
+        var parishesHeading = document.querySelector('#pilgrimage-tab h3');
+
+        if (tagEl) tagEl.textContent = isDlr ? 'Southern California & Anaheim Pilgrimage' : 'Florida & Central Florida Pilgrimage';
+        if (titleEl) titleEl.innerHTML = isDlr ? 'The Catholic Family Guide to <span class="text-gradient-blue">Disneyland Resort</span>' : 'The Catholic Family Guide to <span class="text-gradient-blue">Walt Disney World</span>';
+        if (descEl) descEl.textContent = isDlr ? 'Keep your family grounded in joy and prayer! Find Mass times minutes from Disneyland gates, explore the monumental Christ Cathedral, and walk in the footsteps of St. Jun\u00edpero Serra.' : 'Keep your family grounded in joy and prayer! Find Mass times minutes from the parks, visit the world-famous tourist Basilica, and discover hidden Christian art in the Disney castles.';
+        if (parishesHeading) parishesHeading.textContent = isDlr ? '⛪ Catholic Parishes & Liturgical Traditions Near Disneyland' : '⛪ Catholic Parishes & Liturgical Traditions Near Disney World';
+
+        var heroImg = document.getElementById('hero-icon-display');
+        var heroBadge = document.querySelector('.hero-art-badge-tag span');
+        var heroPilgrimageBtn = document.getElementById('hero-pilgrimage-btn');
+        var drawerPilgrimageTitle = document.getElementById('drawer-pilgrimage-title');
+
+        if (heroImg) {
+          heroImg.src = isDlr ? 'assets/images/christ_cathedral_la_vang.jpg' : 'assets/images/queen_of_universe_icon.jpg';
+        }
+        if (heroBadge) {
+          heroBadge.textContent = isDlr 
+            ? '🌴 Christ Cathedral & Outdoor Shrine of Our Lady of La Vang • Garden Grove' 
+            : '☀️ Mary Queen of the Universe • Basilica Shrine Altarpiece';
+        }
+        if (heroPilgrimageBtn) {
+          heroPilgrimageBtn.innerHTML = isDlr ? '🌴 California &amp; Shrines Guide' : '🏰 Florida &amp; Shrines Guide';
+        }
+        if (drawerPilgrimageTitle) {
+          drawerPilgrimageTitle.textContent = isDlr ? 'California & Shrines' : 'Florida & Shrines';
+        }
+      }
+
+      window.selectCatholicResort = function(resortId) {
+        try {
+          localStorage.setItem('catholic_disney_resort', resortId);
+        } catch(e) {}
+
+        applyResortVisuals(resortId);
+
+        window.dispatchEvent(new CustomEvent('catholic-resort-changed', {
+          detail: { resortId: resortId }
+        }));
+
+        if (window.__setActiveResort) {
+          window.__setActiveResort(resortId);
+        }
+      };
+
+      window.__applyResortVisuals = applyResortVisuals;
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var stored = 'wdw';
+        try {
+          stored = localStorage.getItem('catholic_disney_resort') || 'wdw';
+        } catch(e) {}
+        applyResortVisuals(stored);
+      });
+    })();
+  </script>
 </head>
 <body>
+
+  <!-- Top Global Resort Destination Switcher Bar -->
+  <div style="background: linear-gradient(90deg, #1e3a8a 0%, #0f172a 100%); color: #ffffff; padding: 10px 16px; border-bottom: 2.5px solid #f59e0b; box-shadow: 0 4px 14px rgba(0,0,0,0.18); position: relative; z-index: 9999;">
+    <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+      <div style="display: flex; align-items: center; gap: 10px; font-size: 0.92rem; font-weight: 800;">
+        <span style="color: #fbbf24; font-size: 1.25rem;">📍</span>
+        <span>Choose Your Catholic Pilgrimage Destination:</span>
+      </div>
+      <div class="resort-switcher-mount" style="display: flex; align-items: center;">
+        <div class="resort-switcher-pill" style="display: inline-flex; background: rgba(255,255,255,0.18); border-radius: 999px; padding: 4px; gap: 6px; border: 1.5px solid rgba(251, 191, 36, 0.5);">
+          <button 
+            type="button" 
+            class="resort-btn-wdw"
+            onclick="window.selectCatholicResort('wdw')" 
+            style="border: none; background: #fbbf24; color: #78350f; padding: 7px 18px; border-radius: 999px; font-weight: 800; font-size: 0.86rem; cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.25);">
+            <span>🏰</span> <span>Florida (WDW)</span>
+          </button>
+          <button 
+            type="button" 
+            class="resort-btn-dlr"
+            onclick="window.selectCatholicResort('dlr')" 
+            style="border: none; background: transparent; color: #ffffff; padding: 7px 18px; border-radius: 999px; font-weight: 800; font-size: 0.86rem; cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 6px;">
+            <span>🌴</span> <span>California (DLR)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Site Header & Navigation -->
   <header class="site-header">
@@ -28,36 +137,14 @@
       </a>
 
       <div class="header-nav-group">
-        <!-- Desktop Quick Links (Hidden on small mobile) -->
-        <nav class="desktop-nav-links" aria-label="Desktop Navigation">
-          <button class="desktop-nav-link active" data-tab="pilgrimage-tab">
-            <span>🏰</span> Florida & Parks
-          </button>
-          <button class="desktop-nav-link" data-tab="companions-tab">
-            <span>✨</span> Saints & Rides
-          </button>
-          <button class="desktop-nav-link" data-tab="rosary-tab">
-            <span>📿</span> Queue Rosary
-          </button>
-          <button class="desktop-nav-link" data-tab="wait-times-tab">
-            <span>⏱️</span> Wait Times & Crowds
-          </button>
-          <button class="desktop-nav-link" data-tab="virtue-tab">
-            <span>📖</span> Movie Guides
-          </button>
-          <button class="desktop-nav-link" data-tab="wallpapers-tab">
-            <span>📱</span> Wallpapers
-          </button>
-          <button class="desktop-nav-link" data-tab="planner-tab">
-            <span>🗺️</span> Planner
-          </button>
-        </nav>
-
-        <!-- Hamburger Menu Toggle Button -->
-        <button class="hamburger-btn" id="hamburger-btn" aria-label="Open Navigation Menu" aria-expanded="false">
-          <span class="hamburger-line"></span>
-          <span class="hamburger-line"></span>
-          <span class="hamburger-line"></span>
+        <!-- Hamburger Menu Toggle Button (All Navigation inside Drawer) -->
+        <button class="hamburger-btn" id="hamburger-btn" aria-label="Open Navigation Menu" aria-expanded="false" style="display: inline-flex; align-items: center; gap: 8px; width: auto; padding: 0 16px; border-radius: 999px; height: 42px; background: #ffffff; border: 1.5px solid #cbd5e1; font-weight: 700; font-size: 0.92rem; color: #0f172a; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
+          <div style="display: flex; flex-direction: column; gap: 4px; align-items: center; justify-content: center;">
+            <span class="hamburger-line" style="width: 18px; height: 2.2px;"></span>
+            <span class="hamburger-line" style="width: 18px; height: 2.2px;"></span>
+            <span class="hamburger-line" style="width: 18px; height: 2.2px;"></span>
+          </div>
+          <span style="letter-spacing: 0.3px; font-weight: 800;">Menu</span>
         </button>
       </div>
     </div>
@@ -85,16 +172,39 @@
 
     <!-- Clean Headline Banner (Unobstructed below the art) -->
     <div class="hero-content-banner animate-fade-in-up">
+      <!-- Destination Switcher Bar -->
+      <div style="display: inline-flex; align-items: center; justify-content: center; gap: 12px; background: #ffffff; border: 2px solid #1a73e8; border-radius: 999px; padding: 6px 14px; margin-bottom: 20px; box-shadow: 0 4px 14px rgba(26, 115, 232, 0.12); flex-wrap: wrap;">
+        <span style="font-size: 0.84rem; font-weight: 800; color: #1e3a8a; text-transform: uppercase; letter-spacing: 0.5px;">Resort Destination:</span>
+        <div class="resort-switcher-mount">
+          <div class="resort-switcher-pill" style="display: inline-flex; background: #e2e8f0; border-radius: 999px; padding: 4px; gap: 4px; border: 1.5px solid #cbd5e1;">
+            <button 
+              type="button" 
+              class="resort-btn-wdw"
+              onclick="window.selectCatholicResort('wdw')" 
+              style="border: none; background: #1a73e8; color: #ffffff; padding: 7px 16px; border-radius: 999px; font-weight: 800; font-size: 0.84rem; cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 8px rgba(26, 115, 232, 0.3);">
+              <span>🏰</span> <span>Florida (WDW)</span>
+            </button>
+            <button 
+              type="button" 
+              class="resort-btn-dlr"
+              onclick="window.selectCatholicResort('dlr')" 
+              style="border: none; background: transparent; color: #334155; padding: 7px 16px; border-radius: 999px; font-weight: 800; font-size: 0.84rem; cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 6px;">
+              <span>🌴</span> <span>California (DLR)</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
       <h1 class="hero-title">
-        Making Family Vacations & Stories <span class="text-gradient-sun">Holy and Fun!</span>
+        Making Family Vacations &amp; Stories <span class="text-gradient-sun">Holy and Fun!</span>
       </h1>
       <p class="hero-subtitle">
-        Your joyful Catholic guide to Walt Disney World pilgrimages, finding Mass & Confession near the parks, discovering hidden Christian art in the castles, and inspiring virtue in your kids.
+        Your joyful Catholic guide to Walt Disney World &amp; Disneyland pilgrimages, finding Mass &amp; Confession near the parks, discovering hidden Christian art in the castles, and inspiring virtue in your kids.
       </p>
 
       <div class="hero-cta-group">
-        <button class="btn btn-sun" onclick="window.navigateToTab('pilgrimage-tab')">
-          🏰 Florida & Theme Park Guide
+        <button class="btn btn-sun" id="hero-pilgrimage-btn" onclick="window.navigateToTab('pilgrimage-tab')">
+          🏰 Florida &amp; Shrines Guide
         </button>
         <button class="btn btn-primary" onclick="window.navigateToTab('companions-tab')">
           ✨ Saints & Rides (Queue Stories)
@@ -709,7 +819,7 @@
         <button class="drawer-nav-item active" data-tab="pilgrimage-tab">
           <span class="drawer-nav-icon">🏰</span>
           <div class="drawer-nav-text">
-            <span class="drawer-nav-title">Florida & Theme Parks</span>
+            <span class="drawer-nav-title" id="drawer-pilgrimage-title">Florida &amp; Shrines</span>
             <span class="drawer-nav-subtext">Basilica, Parishes, Catholic Art & Sanctuaries</span>
           </div>
         </button>
@@ -859,7 +969,7 @@
     <textarea name="notes"></textarea>
   </form>
 
-  <!-- Application JS Entry Point with Cache-Buster -->
-  <script type="module" src="js/app.js?v=20260902n"></script>
+  <!-- Application Standalone JS Engine -->
+  <script src="js/bundle.js?v=20260903c"></script>
 </body>
 </html>

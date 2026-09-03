@@ -55,7 +55,46 @@ export const RIDE_TIERS = {
   113: { id: 113, name: "Kilimanjaro Safaris", parkId: 8, land: "Africa", tier: "D", ratio: 0.60, pph: 2800, baseWait: 45, nearbyNook: "Harambe Village Riverwalk" },
   110: { id: 110, name: "Expedition Everest", parkId: 8, land: "Asia", tier: "D", ratio: 0.55, pph: 2000, baseWait: 38, nearbyNook: "Anandapur Riverfront Shaded Pergola" },
   112: { id: 112, name: "Kali River Rapids", parkId: 8, land: "Asia", tier: "C", ratio: 0.45, pph: 1800, baseWait: 35, nearbyNook: "Maharajah Jungle Trek Quiet Alcove" },
-  115: { id: 115, name: "DINOSAUR", parkId: 8, land: "DinoLand U.S.A.", tier: "C", ratio: 0.35, pph: 2200, baseWait: 28, nearbyNook: "Cretaceous Trail Shaded Path" }
+  115: { id: 115, name: "DINOSAUR", parkId: 8, land: "DinoLand U.S.A.", tier: "C", ratio: 0.35, pph: 2200, baseWait: 28, nearbyNook: "Cretaceous Trail Shaded Path" },
+
+  // DISNEYLAND PARK (Park ID: 16)
+  284: { id: 284, name: "Space Mountain", parkId: 16, land: "Tomorrowland", tier: "E", ratio: 0.95, pph: 1600, baseWait: 65, nearbyNook: "Tomorrowland Elevated Terrace" },
+  279: { id: 279, name: "Matterhorn Bobsleds", parkId: 16, land: "Fantasyland", tier: "E", ratio: 0.90, pph: 1500, baseWait: 60, nearbyNook: "Snow White Grotto & Alpine Lake" },
+  326: { id: 326, name: "Indiana Jones Adventure", parkId: 16, land: "Adventureland", tier: "E", ratio: 0.95, pph: 1800, baseWait: 65, nearbyNook: "Bengal BBQ Shaded Bamboo Alcove" },
+  323: { id: 323, name: "Big Thunder Mountain Railroad", parkId: 16, land: "Frontierland", tier: "E", ratio: 0.85, pph: 1800, baseWait: 50, nearbyNook: "Fowler's Harbor Waterfront Benches" },
+  6340: { id: 6340, name: "Star Wars: Rise of the Resistance", parkId: 16, land: "Star Wars: Galaxy's Edge", tier: "E", ratio: 1.00, pph: 1700, baseWait: 85, nearbyNook: "Black Spire Ancient Ruins Garden" },
+  6339: { id: 6339, name: "Millennium Falcon: Smugglers Run", parkId: 16, land: "Star Wars: Galaxy's Edge", tier: "D", ratio: 0.70, pph: 1800, baseWait: 55, nearbyNook: "Resistance Forest Benches" },
+  281: { id: 281, name: "Peter Pan's Flight", parkId: 16, land: "Fantasyland", tier: "E-ANOMALY", ratio: 0.80, pph: 800, baseWait: 55, nearbyNook: "Snow White Grotto & Wishing Well" },
+  325: { id: 325, name: "Haunted Mansion Holiday", parkId: 16, land: "New Orleans Square", tier: "D", ratio: 0.65, pph: 2600, baseWait: 45, nearbyNook: "Court of Angels Courtyard" },
+  289: { id: 289, name: "Pirates of the Caribbean", parkId: 16, land: "New Orleans Square", tier: "D", ratio: 0.55, pph: 3200, baseWait: 38, nearbyNook: "Royal Street Shaded Courtyard" },
+  296: { id: 296, name: "Jungle Cruise", parkId: 16, land: "Adventureland", tier: "D", ratio: 0.60, pph: 1800, baseWait: 42, nearbyNook: "Tropical Hideaway River Veranda" },
+  11526: { id: 11526, name: "Mickey & Minnie's Runaway Railway", parkId: 16, land: "Mickey's Toontown", tier: "D", ratio: 0.65, pph: 1800, baseWait: 50, nearbyNook: "Toontown CenTOONial Park Green" },
+  307: { id: 307, name: "it's a small world", parkId: 16, land: "Fantasyland", tier: "C", ratio: 0.30, pph: 3000, baseWait: 20, nearbyNook: "Small World Promenade Garden Benches" },
+  285: { id: 285, name: "Alice in Wonderland", parkId: 16, land: "Fantasyland", tier: "C", ratio: 0.45, pph: 1200, baseWait: 35, nearbyNook: "Mad Hatter Trellis Pathway" },
+  332: { id: 332, name: "Roger Rabbit's Car Toon Spin", parkId: 16, land: "Mickey's Toontown", tier: "C", ratio: 0.40, pph: 1400, baseWait: 30, nearbyNook: "Toontown Quiet Alley Benches" },
+  273: { id: 273, name: "Buzz Lightyear Astro Blasters", parkId: 16, land: "Tomorrowland", tier: "C", ratio: 0.35, pph: 2000, baseWait: 28, nearbyNook: "Tomorrowland Central Terrace" },
+  275: { id: 275, name: "Dumbo the Flying Elephant", parkId: 16, land: "Fantasyland", tier: "B", ratio: 0.25, pph: 1000, baseWait: 22, nearbyNook: "Fantasyland Courtyard Benches" },
+  283: { id: 283, name: "Snow White's Enchanted Wish", parkId: 16, land: "Fantasyland", tier: "B", ratio: 0.25, pph: 1200, baseWait: 20, nearbyNook: "Castle Eastern Slope Benches" },
+  282: { id: 282, name: "Pinocchio's Daring Journey", parkId: 16, land: "Fantasyland", tier: "B", ratio: 0.20, pph: 1200, baseWait: 15, nearbyNook: "Village Haus Rear Benches" },
+  280: { id: 280, name: "Mr. Toad's Wild Ride", parkId: 16, land: "Fantasyland", tier: "B", ratio: 0.25, pph: 1200, baseWait: 20, nearbyNook: "King Arthur Carrousel Courtyard" },
+  277: { id: 277, name: "King Arthur Carrousel", parkId: 16, land: "Fantasyland", tier: "A", ratio: 0.12, pph: 1800, baseWait: 10, nearbyNook: "Fantasyland Castle Archway" },
+  674: { id: 674, name: "Disneyland Railroad", parkId: 16, land: "Main Street U.S.A", tier: "A", ratio: 0.15, pph: 2400, baseWait: 10, nearbyNook: "New Orleans Square Train Depot Garden" },
+
+  // DISNEY CALIFORNIA ADVENTURE (Park ID: 17)
+  295: { id: 295, name: "Radiator Springs Racers", parkId: 17, land: "Cars Land", tier: "E", ratio: 1.00, pph: 1600, baseWait: 85, nearbyNook: "Ornament Valley Scenic Overlook" },
+  329: { id: 329, name: "Guardians of the Galaxy - Mission: BREAKOUT!", parkId: 17, land: "Avengers Campus", tier: "E", ratio: 0.90, pph: 1800, baseWait: 70, nearbyNook: "Avengers Campus Shaded Terrace" },
+  17129: { id: 17129, name: "Soarin' Across America", parkId: 17, land: "Grizzly Peak", tier: "E", ratio: 0.80, pph: 2200, baseWait: 60, nearbyNook: "Grizzly Peak Airfield Hangar Benches" },
+  322: { id: 322, name: "Incredicoaster", parkId: 17, land: "Pixar Pier", tier: "E", ratio: 0.75, pph: 1800, baseWait: 55, nearbyNook: "Pixar Pier Boardwalk Bay Overlook" },
+  8843: { id: 8843, name: "WEB SLINGERS: A Spider-Man Adventure", parkId: 17, land: "Avengers Campus", tier: "D", ratio: 0.70, pph: 1700, baseWait: 55, nearbyNook: "Ancient Sanctum Shaded Benches" },
+  302: { id: 302, name: "Grizzly River Run", parkId: 17, land: "Grizzly Peak", tier: "D", ratio: 0.60, pph: 2000, baseWait: 45, nearbyNook: "Redwood Creek Trail Shaded Hermitage" },
+  313: { id: 313, name: "Toy Story Midway Mania!", parkId: 17, land: "Pixar Pier", tier: "D", ratio: 0.65, pph: 2000, baseWait: 50, nearbyNook: "Paradise Gardens Pergola" },
+  291: { id: 291, name: "Monsters, Inc. Mike & Sulley to the Rescue!", parkId: 17, land: "Hollywood Land", tier: "C", ratio: 0.35, pph: 1600, baseWait: 25, nearbyNook: "Hollywood Backlot Quiet Plaza" },
+  316: { id: 316, name: "The Little Mermaid - Ariel's Undersea Adventure", parkId: 17, land: "Paradise Gardens Park", tier: "C", ratio: 0.20, pph: 2400, baseWait: 15, nearbyNook: "Palace Courtyard Waterfront Seating" },
+  319: { id: 319, name: "Goofy's Sky School", parkId: 17, land: "Paradise Gardens Park", tier: "C", ratio: 0.35, pph: 1000, baseWait: 28, nearbyNook: "Paradise Gardens Gazebo" },
+  311: { id: 311, name: "Pixar Pal-A-Round - Swinging", parkId: 17, land: "Pixar Pier", tier: "C", ratio: 0.40, pph: 1200, baseWait: 30, nearbyNook: "Pier Promenade Overlook" },
+  301: { id: 301, name: "Silly Symphony Swings", parkId: 17, land: "Paradise Gardens Park", tier: "B", ratio: 0.20, pph: 1200, baseWait: 15, nearbyNook: "Lakeside Boardwalk Benches" },
+  298: { id: 298, name: "Golden Zephyr", parkId: 17, land: "Paradise Gardens Park", tier: "B", ratio: 0.18, pph: 1000, baseWait: 12, nearbyNook: "Paradise Bay Benches" },
+  321: { id: 321, name: "Animation Academy", parkId: 17, land: "Hollywood Land", tier: "A", ratio: 0.12, pph: 2000, baseWait: 10, nearbyNook: "Sorcerer's Workshop Quiet Alcove" }
 };
 
 // Mass Schedule Presets with Travel & Transit Buffers
@@ -140,3 +179,79 @@ export const CROWD_MULTIPLIERS = {
   moderate: { id: "moderate", label: "Moderate Regular Day (Level 5-7 • Spring/Fall Weekdays)", factor: 1.00, isHoliday: false },
   peak: { id: "peak", label: "Peak Holiday / Holy Day (Level 8-10 • Easter, Christmas, Spring Break)", factor: 1.35, isHoliday: true }
 };
+
+
+export const DISNEYLAND_SUNDAY_MASS_PRESETS = [
+  {
+    id: "boniface-630",
+    name: "Saint Boniface (Anaheim) - 6:30 AM (Early Rope Drop)",
+    parish: "Saint Boniface Catholic Church (Harbor Blvd)",
+    massTime: "6:30 AM",
+    massHour: 6.5,
+    massDurationMin: 50,
+    transitBufferMin: 25, // 5 min drive / ART to Disneyland main gate
+    gateArrivalHour: 7.75, // 7:45 AM (Perfect for 8:00 AM rope drop!)
+    gateArrivalFormatted: "7:45 AM (Full Rope Drop)",
+    distanceMiles: 1.5
+  },
+  {
+    id: "boniface-800",
+    name: "Saint Boniface (Anaheim) - 8:00 AM",
+    parish: "Saint Boniface Catholic Church",
+    massTime: "8:00 AM",
+    massHour: 8.0,
+    massDurationMin: 55,
+    transitBufferMin: 30,
+    gateArrivalHour: 9.42, // ~9:25 AM
+    gateArrivalFormatted: "9:25 AM",
+    distanceMiles: 1.5
+  },
+  {
+    id: "christ-cathedral-815",
+    name: "Christ Cathedral (Garden Grove) - 8:15 AM",
+    parish: "Christ Cathedral & Shrine of Our Lady of La Vang",
+    massTime: "8:15 AM",
+    massHour: 8.25,
+    massDurationMin: 60,
+    transitBufferMin: 35,
+    gateArrivalHour: 9.83, // ~9:50 AM
+    gateArrivalFormatted: "9:50 AM",
+    distanceMiles: 3.5
+  },
+  {
+    id: "st-john-tlm-700",
+    name: "Saint John the Baptist (Costa Mesa TLM) - 7:00 AM Low Mass",
+    parish: "Norbertine Fathers of Saint Michael's Abbey",
+    massTime: "7:00 AM (TLM)",
+    massHour: 7.0,
+    massDurationMin: 50,
+    transitBufferMin: 35,
+    gateArrivalHour: 8.42, // ~8:25 AM
+    gateArrivalFormatted: "8:25 AM",
+    distanceMiles: 11.5
+  },
+  {
+    id: "annunciation-byzantine-1000",
+    name: "Annunciation Byzantine (Anaheim) - 10:00 AM Divine Liturgy",
+    parish: "Annunciation Byzantine Catholic Church",
+    massTime: "10:00 AM (Byzantine)",
+    massHour: 10.0,
+    massDurationMin: 70,
+    transitBufferMin: 25,
+    gateArrivalHour: 11.58, // ~11:35 AM
+    gateArrivalFormatted: "11:35 AM",
+    distanceMiles: 2.4
+  },
+  {
+    id: "boniface-vigil-500",
+    name: "Saturday Vigil (St. Boniface 5:00 PM / Full Sunday Park Day)",
+    parish: "Saint Boniface Catholic Church (Saturday)",
+    massTime: "Saturday 5:00 PM Vigil",
+    massHour: 0,
+    massDurationMin: 55,
+    transitBufferMin: 0,
+    gateArrivalHour: 7.75,
+    gateArrivalFormatted: "7:45 AM (Full Rope Drop)",
+    distanceMiles: 1.5
+  }
+];
