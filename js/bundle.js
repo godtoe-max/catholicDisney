@@ -12044,11 +12044,13 @@ function renderBasilicaSpotlight() {
   const basilica = isDlr 
     ? parishes.find(p => p.id === 'christ-cathedral') || parishes[0]
     : parishes.find(p => p.id === 'mary-queen-universe') || parishes[0];
-  if (!basilica) return;
+  const bgImg = isDlr 
+    ? 'assets/images/christ_cathedral_la_vang.jpg' 
+    : 'assets/images/basilica.jpg';
 
   container.innerHTML = `
     <div class="flagship-spotlight-card">
-      <div class="spotlight-image-side" style="${isDlr ? 'background: linear-gradient(135deg, #1e3a8a 0%, #0369a1 100%);' : ''}">
+      <div class="spotlight-image-side" style="background: url('${bgImg}') center/cover no-repeat; min-height: 360px;">
         <div class="spotlight-overlay">
           <span class="spotlight-badge">${isDlr ? '🌴 Orange County Flagship Pilgrimage Site' : '☀️ Orlando Flagship Pilgrimage Site'}</span>
         </div>
