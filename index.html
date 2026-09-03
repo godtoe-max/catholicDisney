@@ -53,55 +53,20 @@
 
         if (heroImg) {
           heroImg.src = isDlr ? 'assets/images/christ_cathedral_la_vang.jpg' : 'assets/images/basilica.jpg';
+          heroImg.alt = isDlr ? 'Christ Cathedral and Outdoor Shrine of Our Lady of La Vang' : 'Basilica of the National Shrine of Mary, Queen of the Universe';
         }
         if (heroBadge) {
           heroBadge.textContent = isDlr 
             ? '🌴 Christ Cathedral & Outdoor Shrine of Our Lady of La Vang • Garden Grove, CA' 
             : '☀️ Basilica of the National Shrine of Mary, Queen of the Universe • Orlando, FL';
         }
-        var ribbon = document.getElementById('hero-icon-ribbon');
-        if (ribbon) {
-          if (isDlr) {
-            ribbon.innerHTML = '<button class="btn btn-sm btn-sun" onclick="window.switchHeroIcon(\'christ_cathedral\')" style="font-size: 0.78rem; padding: 4px 12px; border-radius: 999px; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">🌴 Christ Cathedral &amp; Shrine</button>';
-          } else {
-            ribbon.innerHTML = '<button class="btn btn-sm btn-sun" onclick="window.switchHeroIcon(\'basilica\')" style="font-size: 0.78rem; padding: 4px 12px; border-radius: 999px; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">🏰 Basilica Grounds</button><button class="btn btn-sm btn-outline" onclick="window.switchHeroIcon(\'queen\')" style="font-size: 0.78rem; padding: 4px 12px; border-radius: 999px; background: rgba(255,255,255,0.9); box-shadow: 0 2px 8px rgba(0,0,0,0.3);">👑 Queen Altarpiece</button><button class="btn btn-sm btn-outline" onclick="window.switchHeroIcon(\'holy_family\')" style="font-size: 0.78rem; padding: 4px 12px; border-radius: 999px; background: rgba(255,255,255,0.9); box-shadow: 0 2px 8px rgba(0,0,0,0.3);">☩ Holy Family Icon</button>';
-          }
+        if (heroPilgrimageBtn) {
+          heroPilgrimageBtn.innerHTML = isDlr ? '🌴 California &amp; Shrines Guide' : '🏰 Florida &amp; Shrines Guide';
+        }
+        if (drawerPilgrimageTitle) {
+          drawerPilgrimageTitle.textContent = isDlr ? 'California & Shrines' : 'Florida & Shrines';
         }
       }
-
-      window.switchHeroIcon = function(type) {
-        var heroImg = document.getElementById('hero-icon-display');
-        var heroBadge = document.querySelector('.hero-art-badge-tag span');
-        var ribbon = document.getElementById('hero-icon-ribbon');
-        if (!heroImg) return;
-
-        if (type === 'basilica') {
-          heroImg.src = 'assets/images/basilica.jpg';
-          if (heroBadge) heroBadge.textContent = '☀️ Basilica of the National Shrine of Mary, Queen of the Universe • Orlando, FL';
-        } else if (type === 'queen') {
-          heroImg.src = 'assets/images/queen_of_universe_icon.jpg';
-          if (heroBadge) heroBadge.textContent = '👑 Mary Queen of the Universe • Basilica Shrine Altarpiece';
-        } else if (type === 'holy_family') {
-          heroImg.src = 'assets/images/holy_family_icon.jpg';
-          if (heroBadge) heroBadge.textContent = '☩ Holy Family • Byzantine Gold Leaf Sacred Icon';
-        } else if (type === 'christ_cathedral') {
-          heroImg.src = 'assets/images/christ_cathedral_la_vang.jpg';
-          if (heroBadge) heroBadge.textContent = '🌴 Christ Cathedral & Outdoor Shrine of Our Lady of La Vang • Garden Grove, CA';
-        }
-
-        if (ribbon && window.event && window.event.target) {
-          var btns = ribbon.querySelectorAll('button');
-          btns.forEach(function(b) {
-            b.className = 'btn btn-sm btn-outline';
-            b.style.background = 'rgba(255,255,255,0.9)';
-          });
-          var activeBtn = window.event.target.closest('button');
-          if (activeBtn) {
-            activeBtn.className = 'btn btn-sm btn-sun';
-            activeBtn.style.background = '';
-          }
-        }
-      };
 
       window.selectCatholicResort = function(resortId) {
         try {
@@ -166,19 +131,6 @@
         <span>☀️ Basilica of the National Shrine of Mary, Queen of the Universe • Orlando, FL</span>
       </div>
       <img id="hero-icon-display" src="assets/images/basilica.jpg" alt="Basilica of the National Shrine of Mary, Queen of the Universe" class="hero-art-img">
-      
-      <!-- Icon Style Switcher Ribbon -->
-      <div id="hero-icon-ribbon" style="position: absolute; bottom: 14px; right: 16px; display: flex; gap: 8px; z-index: 5; flex-wrap: wrap;">
-        <button class="btn btn-sm btn-sun" onclick="window.switchHeroIcon('basilica')" style="font-size: 0.78rem; padding: 4px 12px; border-radius: 999px; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">
-          🏰 Basilica Grounds
-        </button>
-        <button class="btn btn-sm btn-outline" onclick="window.switchHeroIcon('queen')" style="font-size: 0.78rem; padding: 4px 12px; border-radius: 999px; background: rgba(255,255,255,0.9); box-shadow: 0 2px 8px rgba(0,0,0,0.3);">
-          👑 Queen Altarpiece
-        </button>
-        <button class="btn btn-sm btn-outline" onclick="window.switchHeroIcon('holy_family')" style="font-size: 0.78rem; padding: 4px 12px; border-radius: 999px; background: rgba(255,255,255,0.9); box-shadow: 0 2px 8px rgba(0,0,0,0.3);">
-          ☩ Holy Family Icon
-        </button>
-      </div>
     </div>
 
     <!-- Clean Headline Banner (Unobstructed below the art) -->
@@ -981,6 +933,6 @@
   </form>
 
   <!-- Application Standalone JS Engine -->
-  <script src="js/bundle.js?v=20260903e"></script>
+  <script src="js/bundle.js?v=20260903f"></script>
 </body>
 </html>
