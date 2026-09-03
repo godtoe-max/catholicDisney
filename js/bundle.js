@@ -900,6 +900,23 @@ var creatorsData = CD.creatorsData = global.creatorsData = [
   }
 ];
 
+var disneylandCreatorsData = CD.disneylandCreatorsData = global.disneylandCreatorsData = [
+  creatorsData[0],
+  creatorsData[1],
+  creatorsData[2],
+  {
+    id: "anaheim-catholic-disneyland-fellowship",
+    name: "Southern California Catholic Disneyland Fellowship",
+    category: "Local Community & Pilgrimage Meetups",
+    founder: "Orange County & Los Angeles Catholic Families & Magic Key Holders",
+    mission: "Organizing family park meetups, morning Mass at Christ Cathedral & St. Boniface Anaheim, Disneyland Catholic architectural tours, and Catholic Dapper Days.",
+    featuredProject: "Annual 'Our Lady of the Angels' Disneyland Resort Pilgrimage",
+    description: "A joyful community of faithful Catholic families living in or visiting Southern California who celebrate the harmony between faith and world-class storytelling.",
+    tags: ["Anaheim / OC Local", "Family Meetups", "Christ Cathedral Pilgrimage"],
+    status: "Active Community"
+  }
+];
+
   })();
   syncGlobals();
 
@@ -14550,15 +14567,25 @@ Generated on CatholicDisney.com
 // Catholic Animation & Creative Arts Showcase Component
 
 
+
 var initCreatorsHub = CD.initCreatorsHub = global.initCreatorsHub = function() {
   renderCreatorsCards();
+  renderCommunityCta();
+
+  window.addEventListener('catholic-resort-changed', () => {
+    renderCreatorsCards();
+    renderCommunityCta();
+  });
 }
 
 var renderCreatorsCards = CD.renderCreatorsCards = global.renderCreatorsCards = function() {
   const container = document.getElementById('creators-cards-grid');
   if (!container) return;
 
-  container.innerHTML = creatorsData.map(creator => `
+  const isDlr = getActiveResortId() === 'dlr';
+  const data = isDlr ? disneylandCreatorsData : creatorsData;
+
+  container.innerHTML = data.map(creator => `
     <div class="parish-card">
       <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
         <span class="park-pill" style="background: rgba(212, 175, 55, 0.15); border-color: var(--border-gold-glow); color: var(--gold-light);">
@@ -14583,6 +14610,36 @@ var renderCreatorsCards = CD.renderCreatorsCards = global.renderCreatorsCards = 
       </div>
     </div>
   `).join('');
+}
+
+var renderCommunityCta = CD.renderCommunityCta = global.renderCommunityCta = function() {
+  const ctaContainer = document.querySelector('.community-cta-box');
+  if (!ctaContainer) return;
+
+  const isDlr = getActiveResortId() === 'dlr';
+  ctaContainer.innerHTML = isDlr ? `
+    <div>
+      <span class="section-tag" style="background: #fef3c7; color: #92400e; margin-bottom: 8px;">California Community</span>
+      <h3 style="color: var(--text-primary); font-size: 1.6rem; margin: 4px 0 6px;">Living in Southern California or Visiting Disneyland?</h3>
+      <p style="margin-bottom: 0; font-size: 0.95rem;">
+        Join local Catholic Disney family meetups, morning Mass at Christ Cathedral & St. Boniface Anaheim, Disneyland Catholic architectural walks, and joyful fellowship in the Golden State.
+      </p>
+    </div>
+    <a href="mailto:info@catholicdisney.com?subject=Join%20California%20Catholic%20Disney%20Fellowship" class="btn btn-primary" style="white-space: nowrap;">
+      Connect With Us ✉️
+    </a>
+  ` : `
+    <div>
+      <span class="section-tag" style="background: #fef3c7; color: #92400e; margin-bottom: 8px;">Florida Community</span>
+      <h3 style="color: var(--text-primary); font-size: 1.6rem; margin: 4px 0 6px;">Moving to Florida or Visiting Orlando?</h3>
+      <p style="margin-bottom: 0; font-size: 0.95rem;">
+        Join local Catholic Disney family meetups, morning Mass at the Basilica of Mary Queen of the Universe, Epcot Catholic cultural walks, and joyful fellowship with other Catholic Disney enthusiasts living in the Sunshine State.
+      </p>
+    </div>
+    <a href="mailto:info@catholicdisney.com?subject=Join%20Florida%20Catholic%20Disney%20Fellowship" class="btn btn-primary" style="white-space: nowrap;">
+      Connect With Us ✉️
+    </a>
+  `;
 }
 
   })();

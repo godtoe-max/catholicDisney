@@ -45,3 +45,20 @@ export const creatorsData = [
     status: "Active Community"
   }
 ];
+
+export const disneylandCreatorsData = [
+  creatorsData[0],
+  creatorsData[1],
+  creatorsData[2],
+  {
+    id: "anaheim-catholic-disneyland-fellowship",
+    name: "Southern California Catholic Disneyland Fellowship",
+    category: "Local Community & Pilgrimage Meetups",
+    founder: "Orange County & Los Angeles Catholic Families & Magic Key Holders",
+    mission: "Organizing family park meetups, morning Mass at Christ Cathedral & St. Boniface Anaheim, Disneyland Catholic architectural tours, and Catholic Dapper Days.",
+    featuredProject: "Annual 'Our Lady of the Angels' Disneyland Resort Pilgrimage",
+    description: "A joyful community of faithful Catholic families living in or visiting Southern California who celebrate the harmony between faith and world-class storytelling.",
+    tags: ["Anaheim / OC Local", "Family Meetups", "Christ Cathedral Pilgrimage"],
+    status: "Active Community"
+  }
+];
