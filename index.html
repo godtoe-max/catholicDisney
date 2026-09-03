@@ -178,9 +178,6 @@
         <button class="btn btn-outline" onclick="window.navigateToTab('wait-times-tab')">
           ⏱️ Wait Times & Crowds
         </button>
-        <button class="btn btn-outline" onclick="window.navigateToTab('virtue-tab')">
-          📖 Family Movie Night Guides
-        </button>
         <button class="btn btn-outline" onclick="window.navigateToTab('planner-tab')">
           🗺️ Plan Your Pilgrimage
         </button>
@@ -423,40 +420,7 @@
     </section>
 
     <!-- ========================================================
-         TAB 4: VIRTUE IN THE VAULT (THEOLOGICAL HUB)
-         ======================================================== -->
-    <section id="virtue-tab" class="tab-content" role="tabpanel">
-      <div class="section-header">
-        <span class="section-tag">Faith & Storytelling</span>
-        <h2 class="section-title">Virtue in the Vault: <span class="text-gradient-sun">Stories that Inspire the Soul</span></h2>
-        <p class="section-description">
-          Discover how timeless fairy tales reflect the beauty of God's love, the formation of conscience, repentance, and self-sacrificial love.
-        </p>
-      </div>
-
-      <!-- Filter Bar -->
-      <div class="filter-bar">
-        <div class="filter-chips" id="virtue-filter-chips">
-          <button class="filter-chip active" data-virtue="all">All Virtues</button>
-          <button class="filter-chip" data-virtue="Charity">Charity & Mercy</button>
-          <button class="filter-chip" data-virtue="Conscience">Formation of Conscience</button>
-          <button class="filter-chip" data-virtue="Sacrificial">Sacrificial Love (Agape)</button>
-          <button class="filter-chip" data-virtue="Identity">Baptismal Identity</button>
-          <button class="filter-chip" data-virtue="Charisms">Charisms & Healing</button>
-        </div>
-
-        <div class="search-input-wrapper">
-          <span class="search-icon">🔍</span>
-          <input type="text" id="virtue-search-input" class="search-input" placeholder="Search movie title or virtue...">
-        </div>
-      </div>
-
-      <!-- Movie Cards Grid -->
-      <div id="virtue-cards-grid" class="cards-grid-3"></div>
-    </section>
-
-    <!-- ========================================================
-         TAB 5: LITURGICAL LIVING, HOLY DAYS & ABSTINENCE
+         TAB 4: LITURGICAL LIVING, HOLY DAYS & ABSTINENCE
          ======================================================== -->
     <section id="liturgical-tab" class="tab-content" role="tabpanel">
       <div class="section-header">
@@ -756,14 +720,6 @@
 
   </main>
 
-  <!-- Virtue & Theological Analysis Modal -->
-  <div id="virtue-modal" class="modal-backdrop" role="dialog" aria-modal="true">
-    <div class="modal-container">
-      <button class="modal-close-btn" onclick="window.closeVirtueModal()" aria-label="Close dialog">✕</button>
-      <div id="virtue-modal-content"></div>
-    </div>
-  </div>
-
   <!-- Slide-out Navigation Drawer (Mobile & Desktop Hamburger Menu) -->
   <div id="nav-drawer-backdrop" class="nav-drawer-backdrop" aria-hidden="true">
     <div id="nav-drawer" class="nav-drawer" role="dialog" aria-modal="true" aria-label="Site Navigation">
@@ -808,14 +764,6 @@
           <div class="drawer-nav-text">
             <span class="drawer-nav-title">Wait Times & Crowd Guide</span>
             <span class="drawer-nav-subtext">891k+ Observations, Hourly Curves & Rosary Matches</span>
-          </div>
-        </button>
-
-        <button class="drawer-nav-item" data-tab="virtue-tab">
-          <span class="drawer-nav-icon">📖</span>
-          <div class="drawer-nav-text">
-            <span class="drawer-nav-title">Virtue in the Vault</span>
-            <span class="drawer-nav-subtext">Theological Film Breakdowns & Family Discussions</span>
           </div>
         </button>
 
@@ -887,7 +835,6 @@
             <li><a href="#rosary-tab" onclick="window.navigateToTab('rosary-tab')">📿 Interactive Queue Rosary</a></li>
             <li><a href="#pilgrimage-tab" onclick="window.navigateToTab('pilgrimage-tab')">Mary Queen of the Universe Basilica</a></li>
             <li><a href="#pilgrimage-tab" onclick="window.navigateToTab('pilgrimage-tab')">Mass Finder Near WDW</a></li>
-            <li><a href="#virtue-tab" onclick="window.navigateToTab('virtue-tab')">Virtue in the Vault</a></li>
             <li><a href="#wallpapers-tab" onclick="window.navigateToTab('wallpapers-tab')">Free HD Wallpapers</a></li>
             <li><a href="#planner-tab" onclick="window.navigateToTab('planner-tab')">Vacation Itinerary Generator</a></li>
           </ul>
@@ -933,6 +880,6 @@
   </form>
 
   <!-- Application Standalone JS Engine -->
-  <script src="js/bundle.js?v=20260903f"></script>
+  <script src="js/bundle.js?v=20260903g"></script>
 </body>
 </html>

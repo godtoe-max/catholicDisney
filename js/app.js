@@ -5,7 +5,6 @@ import { initQueueRosary } from './components/queue-rosary.js?v=20260902_v2';
 import { initQueueCompanions } from './components/queue-companions.js?v=20260902_v2';
 import { initWaitTimesHub } from './components/wait-times-hub.js?v=20260902_v2';
 import { initLiveWaitTimes } from './components/live-wait-times.js?v=20260902_v2';
-import { initVirtueHub } from './components/virtue-hub.js?v=20260902_v2';
 import { initLiturgicalHub } from './components/liturgical-hub.js?v=20260902_v2';
 import { initItineraryPlanner } from './components/itinerary-planner.js?v=20260902_v2';
 import { initCreatorsHub } from './components/creators-hub.js?v=20260902_v2';
@@ -20,7 +19,6 @@ function bootApp() {
   initQueueCompanions();
   initWaitTimesHub();
   initLiveWaitTimes();
-  initVirtueHub();
   initLiturgicalHub();
   initItineraryPlanner();
   initCreatorsHub();
