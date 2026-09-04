@@ -9,6 +9,7 @@ import { getActiveResort, getActiveResortId } from './resort-switcher.js?v=20260
 import { 
   initWaitTimeAlerts, 
   evaluateWaitAlerts, 
+  getActiveAlertsManagerHTML,
   getTriggeredAlertsBannerHTML, 
   activeAlerts,
   openSetAlertModal,
@@ -143,12 +144,12 @@ export function renderLiveWaitTimes(containerId = 'live-wait-times-container') {
     ? Math.round(allRides.filter(r => r.is_open && r.wait_time > 0).reduce((acc, r) => acc + r.wait_time, 0) / Math.max(1, allRides.filter(r => r.is_open && r.wait_time > 0).length)) 
     : 0;
 
-  const triggeredBannerHTML = getTriggeredAlertsBannerHTML(allRides);
+  const activeAlertsManagerHTML = getActiveAlertsManagerHTML(allRides);
 
   container.innerHTML = `
     <div class="live-wait-times-board" style="margin-top: 10px;">
-      <!-- Triggered Goal Alert Banner (if threshold is met) -->
-      ${triggeredBannerHTML}
+      <!-- Active In-Park Notification & Alerts Manager Section -->
+      ${activeAlertsManagerHTML}
 
       <!-- Header & Park Selector Bar -->
       <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 20px; padding: 22px 24px; box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04); margin-bottom: 20px;">

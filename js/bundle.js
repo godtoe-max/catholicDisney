@@ -10891,14 +10891,17 @@ function generateCoachingInsights({ massPreset, arrivalHour, totalPostedWaitMin,
 
   (function() {
 // Catholic Disney: Ride Wait Time Drop Alerts & In-Park Notifications Engine
-// Allows pilgrims to set wait time targets (e.g., "Alert me when Space Mountain <= 30 min")
+// Allows pilgrims to set wait time targets (e.g., "Alert me when Space Mountain <= 30 min" or reopens)
 // Triggers audio chimes, mobile vibrations, OS lock-screen notifications, and suggests walking prayer companions.
+
+
 
 const ALERTS_STORAGE_KEY = 'catholic_disney_ride_alerts';
 
 var activeAlerts = CD.activeAlerts = global.activeAlerts = [];
 var swRegistration = CD.swRegistration = global.swRegistration = null;
 let currentModalRide = null;
+let backgroundPollTimer = null;
 
 // Initialize Service Worker and Alert Engine
 var initWaitTimeAlerts = CD.initWaitTimeAlerts = global.initWaitTimeAlerts = function() {
@@ -10906,6 +10909,7 @@ var initWaitTimeAlerts = CD.initWaitTimeAlerts = global.initWaitTimeAlerts = fun
   initServiceWorker();
   injectAlertModalDOM();
   injectToastContainerDOM();
+  startBackgroundAlertPolling();
 }
 
 function loadAlertsFromStorage() {
@@ -11031,6 +11035,9 @@ var requestNotificationPermission = CD.requestNotificationPermission = global.re
         '☩ In-Park Wait Alerts Active!',
         'You will now receive device notifications when wait times drop or rides reopen! ✨'
       );
+      if (typeof window !== 'undefined' && window.renderLiveWaitTimes) {
+        window.renderLiveWaitTimes();
+      }
       return true;
     }
   } catch (e) {
@@ -11114,54 +11121,241 @@ var evaluateWaitAlerts = CD.evaluateWaitAlerts = global.evaluateWaitAlerts = fun
     const waitTime = Number(ride.wait_time) || 0;
     const targetThreshold = Number(alert.threshold) || 30;
 
+    // Update alert's last known live state
+    alert.current_wait = isOpen ? waitTime : 'Closed';
+    alert.is_open = isOpen;
+    if (parkName && parkName !== 'Disney Park') alert.park_name = parkName;
+
     // Condition A: Wait Time Reached / Dropped
     if (isOpen && waitTime <= targetThreshold) {
       const nowMs = Date.now();
       const lastNotifiedMs = alert.last_notified_at ? new Date(alert.last_notified_at).getTime() : 0;
-      const reAlertWindowMs = 6 * 60 * 1000; // 6 mins re-alert interval
+      const reAlertWindowMs = 5 * 60 * 1000; // 5 mins re-alert interval
 
       const shouldAlert = !alert.last_notified_at || (nowMs - lastNotifiedMs >= reAlertWindowMs) || (alert.last_notified_wait !== waitTime);
 
       if (shouldAlert) {
         const prayerSuggestion = waitTime <= 15
-          ? 'Walk-on opportunity! Perfect time to walk over with a short prayer of gratitude.'
+          ? 'Walk-on opportunity! Perfect time to head over with a prayer of gratitude.'
           : 'Great queue window! Ideal for 1-2 Decades of the Rosary during your walk & wait.';
 
         sendPushNotification(
           `🔔 Goal Reached: ${ride.name} (${waitTime}m)!`,
-          `Standby wait dropped to ${waitTime} min (Goal ≤ ${targetThreshold}m) at ${parkName}! ${prayerSuggestion}`,
+          `Standby wait dropped to ${waitTime} min (Goal ≤ ${targetThreshold}m) at ${alert.park_name || parkName}! ${prayerSuggestion}`,
           { rideId: ride.id }
         );
 
         alert.last_notified_wait = waitTime;
         alert.last_notified_at = new Date().toISOString();
+        alert.status = 'triggered';
         stateModified = true;
       }
     } else if (isOpen && waitTime > targetThreshold) {
-      if (alert.last_notified_wait !== null || alert.last_notified_at) {
-        alert.last_notified_wait = null;
-        alert.last_notified_at = null;
+      alert.status = 'watching';
+      if (alert.was_down) {
+        // Reopened from downtime
+        if (alert.notify_reopen) {
+          sendPushNotification(
+            `✨ Reopened: ${ride.name} is Back Online!`,
+            `${ride.name} has just reopened from downtime with a ${waitTime} min standby wait at ${alert.park_name || parkName}! Head over now!`,
+            { rideId: ride.id }
+          );
+        }
+        alert.was_down = false;
         stateModified = true;
       }
-    }
-
-    // Condition B: Ride Reopening from Downtime
-    if (alert.notify_reopen && alert.was_down && isOpen) {
-      sendPushNotification(
-        `✨ Reopened: ${ride.name}!`,
-        `${ride.name} is back up with a ${waitTime} min standby wait! Head over now before lines build up.`,
-        { rideId: ride.id }
-      );
-      alert.was_down = false;
-      stateModified = true;
     } else if (!isOpen) {
+      alert.status = 'down';
       alert.was_down = true;
+      stateModified = true;
     }
   });
 
   if (stateModified) {
     saveAlertsToStorage();
   }
+}
+
+// Multi-park background polling engine
+var startBackgroundAlertPolling = CD.startBackgroundAlertPolling = global.startBackgroundAlertPolling = function() {
+  if (backgroundPollTimer) clearInterval(backgroundPollTimer);
+
+  backgroundPollTimer = setInterval(async () => {
+    if (!activeAlerts || activeAlerts.length === 0) return;
+
+    // Check if any alerts are active
+    const hasActive = activeAlerts.some((a) => a.is_active);
+    if (!hasActive) return;
+
+    // Determine unique parks to poll based on active alerts
+    const isDlr = getActiveResortId() === 'dlr';
+    const parksToPoll = isDlr ? [16, 17] : [6, 5, 7, 8];
+
+    for (const parkId of parksToPoll) {
+      try {
+        const resp = await fetch(`/api/queue-times/${parkId}`);
+        if (!resp.ok) continue;
+        const data = await resp.json();
+        if (data && data.lands) {
+          const parkRides = [];
+          data.lands.forEach((land) => {
+            if (land.rides) {
+              land.rides.forEach((r) => {
+                parkRides.push({ ...r, landName: land.name });
+              });
+            }
+          });
+          const parkNames = { 6: 'Magic Kingdom', 5: 'EPCOT', 7: 'Hollywood Studios', 8: 'Animal Kingdom', 16: 'Disneyland Park', 17: 'Disney California Adventure' };
+          evaluateWaitAlerts(parkRides, parkNames[parkId] || 'Disney Park');
+        }
+      } catch (e) {
+        // Offline / CORS fallback
+      }
+    }
+  }, 45000);
+}
+
+// Generates the comprehensive Active Alerts & Notification Center HTML
+var getActiveAlertsManagerHTML = CD.getActiveAlertsManagerHTML = global.getActiveAlertsManagerHTML = function(allRides = []) {
+  const isDlr = getActiveResortId() === 'dlr';
+  const permissionStatus = typeof window !== 'undefined' && 'Notification' in window ? Notification.permission : 'unsupported';
+  const alertsCount = (activeAlerts || []).length;
+  const activeCount = (activeAlerts || []).filter((a) => a.is_active).length;
+
+  return `
+    <!-- Active Alerts & In-Park Notification Center -->
+    <div class="cd-alerts-manager-card" id="cd-alerts-manager-card" style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 20px; padding: 22px; box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05); margin-bottom: 24px;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid #f1f5f9;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <span class="park-pill" style="background: #e0f2fe; color: #0369a1; font-weight: 800; font-size: 0.78rem;">
+              🔔 In-Park Notification Center
+            </span>
+            <span style="font-size: 0.78rem; font-weight: 800; color: ${activeCount > 0 ? '#166534' : '#64748b'}; background: ${activeCount > 0 ? '#dcfce7' : '#f1f5f9'}; padding: 2px 8px; border-radius: 999px;">
+              ${activeCount} Active ${activeCount === 1 ? 'Alert' : 'Alerts'}
+            </span>
+          </div>
+          <h3 style="font-size: 1.35rem; color: #0f172a; margin: 6px 0 2px; font-weight: 800;">
+            My Ride Wait Alerts &amp; Reopen Tracker
+          </h3>
+          <p style="font-size: 0.86rem; color: #64748b; margin: 0; max-width: 650px;">
+            Set your target wait times for headliners. Our engine monitors live standby lines every 45s and triggers phone chimes, haptics, and lock-screen alerts the moment waits drop or rides reopen!
+          </p>
+        </div>
+
+        <!-- Controls: Permission & Test Chime -->
+        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+          ${permissionStatus !== 'granted' ? `
+            <button class="btn btn-sm btn-sun" onclick="window.requestDeviceNotificationPermission()" style="font-size: 0.82rem; padding: 6px 14px; font-weight: 800;">
+              📲 Enable Phone Push Alerts
+            </button>
+          ` : `
+            <span style="font-size: 0.78rem; color: #166534; background: #dcfce7; padding: 6px 12px; border-radius: 10px; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;">
+              📱 Lock-Screen Alerts: <strong>Active ✅</strong>
+            </span>
+          `}
+          <button class="btn btn-sm btn-outline" onclick="window.testDeviceAlertChime()" style="font-size: 0.82rem; padding: 6px 12px;" title="Test Harmonic Chime, Vibration & Lock-Screen Push">
+            🎵 Test Chime &amp; Push
+          </button>
+        </div>
+      </div>
+
+      <!-- Alerts List / Grid -->
+      ${alertsCount > 0 ? `
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; margin-bottom: 16px;">
+          ${activeAlerts.map((alert) => {
+            const currentWait = alert.current_wait !== undefined ? alert.current_wait : '--';
+            const isClosed = currentWait === 'Closed' || alert.status === 'down';
+            const isGoalMet = !isClosed && typeof currentWait === 'number' && currentWait <= alert.threshold;
+            
+            let statusBadge = '';
+            if (isGoalMet) {
+              statusBadge = `<span style="background: #dcfce7; color: #166534; font-weight: 800; padding: 3px 8px; border-radius: 6px; font-size: 0.76rem;">🎯 GOAL MET (${currentWait}m ≤ ${alert.threshold}m)</span>`;
+            } else if (isClosed) {
+              statusBadge = `<span style="background: #fee2e2; color: #991b1b; font-weight: 800; padding: 3px 8px; border-radius: 6px; font-size: 0.76rem;">🔴 CLOSED (Reopen Alert ON)</span>`;
+            } else {
+              statusBadge = `<span style="background: #eff6ff; color: #1e40af; font-weight: 800; padding: 3px 8px; border-radius: 6px; font-size: 0.76rem;">👀 WATCHING (${currentWait}m / Goal ≤${alert.threshold}m)</span>`;
+            }
+
+            return `
+              <div style="background: #f8fafc; border: 1.5px solid ${isGoalMet ? '#86efac' : '#cbd5e1'}; border-radius: 14px; padding: 14px; display: flex; flex-direction: column; justify-content: space-between; gap: 10px; box-shadow: ${isGoalMet ? '0 4px 12px rgba(22, 101, 52, 0.08)' : 'none'};">
+                <div>
+                  <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 6px; margin-bottom: 6px;">
+                    <div>
+                      <strong style="color: #0f172a; font-size: 0.95rem; display: block;">🎢 ${escapeHtml(alert.ride_name)}</strong>
+                      <span style="font-size: 0.76rem; color: #64748b;">${escapeHtml(alert.park_name || 'Disney Park')} • ${escapeHtml(alert.land_name || 'Attraction')}</span>
+                    </div>
+                    ${statusBadge}
+                  </div>
+
+                  <div style="font-size: 0.8rem; color: #475569; line-height: 1.4; margin-top: 4px;">
+                    <div>🎯 <strong>Target:</strong> Alert when wait drops to <strong>&le; ${alert.threshold} mins</strong></div>
+                    <div>🔔 <strong>Reopen Alert:</strong> ${alert.notify_reopen !== false ? 'Enabled (Notifies when back up)' : 'Off'}</div>
+                  </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; gap: 6px; border-top: 1px solid #e2e8f0; padding-top: 10px; margin-top: 4px; flex-wrap: wrap;">
+                  <button class="btn btn-sm btn-sun" onclick="window.simulateRideAlert('${alert.id}')" style="font-size: 0.76rem; padding: 4px 10px;" title="Test notification for this attraction">
+                    🧪 Simulate Alert
+                  </button>
+                  <div style="display: flex; gap: 6px;">
+                    <button class="btn btn-sm btn-outline" onclick="window.editAlert('${alert.id}')" style="font-size: 0.76rem; padding: 4px 8px;">
+                      ✏️ Edit
+                    </button>
+                    <button class="btn btn-sm btn-outline" onclick="window.deleteActiveAlert('${alert.id}')" style="font-size: 0.76rem; padding: 4px 8px; color: #dc2626;" title="Delete Alert">
+                      🗑️
+                    </button>
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      ` : `
+        <!-- Empty State: No alerts configured -->
+        <div style="background: #f8fafc; border: 1.5px dashed #cbd5e1; border-radius: 14px; padding: 20px; text-align: center; margin-bottom: 16px;">
+          <div style="font-size: 1.8rem; margin-bottom: 6px;">🔔</div>
+          <h4 style="font-size: 1.05rem; color: #0f172a; margin: 0 0 4px; font-weight: 800;">
+            No Active Wait Alerts Configured
+          </h4>
+          <p style="font-size: 0.86rem; color: #64748b; margin: 0 0 14px; max-width: 520px; margin-left: auto; margin-right: auto;">
+            Tap the <strong>🔔 Alert</strong> button on any attraction card below to monitor wait time drops, or use the 1-click quick presets below for popular headliners!
+          </p>
+
+          <!-- 1-Click Preset Shortcuts -->
+          <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
+            ${isDlr ? `
+              <button class="btn btn-sm btn-outline" onclick="window.quickSetAlert('Space Mountain', 16, 25)" style="font-size: 0.78rem;">
+                + 🚀 Space Mountain (&le;25m)
+              </button>
+              <button class="btn btn-sm btn-outline" onclick="window.quickSetAlert('Radiator Springs Racers', 17, 35)" style="font-size: 0.78rem;">
+                + 🏎️ Radiator Springs (&le;35m)
+              </button>
+              <button class="btn btn-sm btn-outline" onclick="window.quickSetAlert('Indiana Jones Adventure', 16, 30)" style="font-size: 0.78rem;">
+                + 🐍 Indiana Jones (&le;30m)
+              </button>
+              <button class="btn btn-sm btn-outline" onclick="window.quickSetAlert('Matterhorn Bobsleds', 16, 25)" style="font-size: 0.78rem;">
+                + 🏔️ Matterhorn (&le;25m)
+              </button>
+            ` : `
+              <button class="btn btn-sm btn-outline" onclick="window.quickSetAlert('Space Mountain', 6, 30)" style="font-size: 0.78rem;">
+                + 🚀 Space Mountain (&le;30m)
+              </button>
+              <button class="btn btn-sm btn-outline" onclick="window.quickSetAlert('Star Wars: Rise of the Resistance', 7, 45)" style="font-size: 0.78rem;">
+                + ⚔️ Rise of Resistance (&le;45m)
+              </button>
+              <button class="btn btn-sm btn-outline" onclick="window.quickSetAlert('Seven Dwarfs Mine Train', 6, 35)" style="font-size: 0.78rem;">
+                + 💎 Seven Dwarfs (&le;35m)
+              </button>
+              <button class="btn btn-sm btn-outline" onclick="window.quickSetAlert('Avatar Flight of Passage', 8, 45)" style="font-size: 0.78rem;">
+                + 🦅 Flight of Passage (&le;45m)
+              </button>
+            `}
+          </div>
+        </div>
+      `}
+    </div>
+  `;
 }
 
 // Injects the alert configuration modal into DOM
@@ -11291,7 +11485,7 @@ var openSetAlertModal = CD.openSetAlertModal = global.openSetAlertModal = functi
     }
   }
 
-  const existingAlert = activeAlerts.find((a) => String(a.ride_id) === String(ride.id) || Number(a.ride_id) === Number(ride.id));
+  const existingAlert = activeAlerts.find((a) => String(a.ride_id) === String(ride.id) || Number(a.ride_id) === Number(ride.id) || (a.ride_name && a.ride_name === ride.name));
   const defaultThreshold = existingAlert ? existingAlert.threshold : (ride.wait_time > 30 ? Math.min(60, Math.floor(ride.wait_time / 10) * 10 - 10) : 25);
   const finalThreshold = Math.max(5, defaultThreshold || 30);
 
@@ -11330,7 +11524,7 @@ async function saveCurrentModalAlert() {
     await requestNotificationPermission();
   }
 
-  const existingIdx = activeAlerts.findIndex((a) => String(a.ride_id) === String(currentModalRide.id) || Number(a.ride_id) === Number(currentModalRide.id));
+  const existingIdx = activeAlerts.findIndex((a) => String(a.ride_id) === String(currentModalRide.id) || Number(a.ride_id) === Number(currentModalRide.id) || (a.ride_name && a.ride_name === currentModalRide.name));
 
   const newAlert = {
     id: existingIdx >= 0 ? activeAlerts[existingIdx].id : `cd_alert_${Date.now()}`,
@@ -11341,6 +11535,8 @@ async function saveCurrentModalAlert() {
     threshold: threshold,
     notify_reopen: notifyReopen,
     is_active: true,
+    current_wait: currentModalRide.is_open ? currentModalRide.wait_time : 'Closed',
+    is_open: Boolean(currentModalRide.is_open),
     last_notified_wait: null,
     was_down: !currentModalRide.is_open,
     created_at: new Date().toISOString()
@@ -11356,13 +11552,13 @@ async function saveCurrentModalAlert() {
   closeAlertModal();
 
   showToast(
-    `🔔 Alert Set for ${currentModalRide.name}`,
-    `You'll be alerted when wait drops to ≤ ${threshold} min${notifyReopen ? ' or reopens' : ''}!`,
+    `🔔 Alert Active for ${currentModalRide.name}`,
+    `You will be notified when wait drops to ≤ ${threshold} min${notifyReopen ? ' or reopens' : ''}!`,
     '✅'
   );
   playChimeSound();
 
-  // Re-render live board so alert badges update
+  // Re-render live board & alert center
   if (typeof window !== 'undefined' && window.renderLiveWaitTimes) {
     window.renderLiveWaitTimes();
   }
@@ -11377,65 +11573,74 @@ var deleteAlert = CD.deleteAlert = global.deleteAlert = function(alertId) {
   }
 }
 
-// Generates HTML for the Goal Reached strip at the top of the wait times board
-var getTriggeredAlertsBannerHTML = CD.getTriggeredAlertsBannerHTML = global.getTriggeredAlertsBannerHTML = function(allRides) {
-  if (!activeAlerts || activeAlerts.length === 0 || !allRides || allRides.length === 0) {
-    return '';
+// 1-Click Preset Setup
+var quickSetAlert = CD.quickSetAlert = global.quickSetAlert = async function(rideName, parkId, threshold = 30) {
+  if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'default') {
+    await requestNotificationPermission();
   }
 
-  const triggered = [];
+  const parkNames = { 6: 'Magic Kingdom', 5: 'EPCOT', 7: 'Hollywood Studios', 8: 'Animal Kingdom', 16: 'Disneyland Park', 17: 'Disney California Adventure' };
+  const parkName = parkNames[parkId] || 'Disney Park';
 
-  activeAlerts.forEach((alert) => {
-    if (!alert.is_active) return;
-    const ride = allRides.find((r) =>
-      String(r.id) === String(alert.ride_id) ||
-      Number(r.id) === Number(alert.ride_id) ||
-      (alert.ride_name && r.name && r.name.toLowerCase().trim() === alert.ride_name.toLowerCase().trim())
-    );
+  const existingIdx = activeAlerts.findIndex((a) => a.ride_name && a.ride_name.toLowerCase() === rideName.toLowerCase());
 
-    if (ride && ride.is_open && Number(ride.wait_time) <= Number(alert.threshold)) {
-      triggered.push({
-        alert,
-        ride,
-        waitTime: Number(ride.wait_time)
-      });
-    }
-  });
+  const newAlert = {
+    id: existingIdx >= 0 ? activeAlerts[existingIdx].id : `cd_alert_${Date.now()}`,
+    ride_id: `ride_${Date.now()}`,
+    ride_name: rideName,
+    park_name: parkName,
+    land_name: 'Attraction',
+    threshold: threshold,
+    notify_reopen: true,
+    is_active: true,
+    current_wait: 'Watching',
+    is_open: true,
+    last_notified_wait: null,
+    was_down: false,
+    created_at: new Date().toISOString()
+  };
 
-  if (triggered.length === 0) return '';
+  if (existingIdx >= 0) {
+    activeAlerts[existingIdx] = newAlert;
+  } else {
+    activeAlerts.push(newAlert);
+  }
 
-  return `
-    <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 1.5px solid #86efac; border-radius: 16px; padding: 14px 18px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(22, 101, 52, 0.08);">
-      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <span style="font-size: 1.4rem;">🎯</span>
-          <div>
-            <h4 style="margin: 0; font-size: 1rem; font-weight: 800; color: #166534;">
-              Goal Reached! Walk-On &amp; Queue Prayer Opportunities (${triggered.length})
-            </h4>
-            <p style="margin: 2px 0 0; font-size: 0.8rem; color: #15803d;">
-              Standby wait times have dropped into your target window. Perfect time to walk over!
-            </p>
-          </div>
-        </div>
-        <button class="btn btn-sm btn-sun" onclick="window.testDeviceAlertChime()" style="font-size: 0.78rem; padding: 4px 10px;">
-          🔔 Test Chime &amp; Push
-        </button>
-      </div>
+  saveAlertsToStorage();
+  playChimeSound();
+  showToast(
+    `🔔 Alert Active: ${rideName}`,
+    `Monitoring standby lines for drops &le; ${threshold} mins & reopenings!`,
+    '✅'
+  );
 
-      <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px;">
-        ${triggered.map(t => `
-          <div style="background: #ffffff; border: 1px solid #86efac; border-radius: 10px; padding: 6px 12px; display: inline-flex; align-items: center; gap: 8px; font-size: 0.84rem; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
-            <span style="font-weight: 800; color: #0f172a;">🎢 ${escapeHtml(t.ride.name)}</span>
-            <span style="background: #dcfce7; color: #166534; font-weight: 800; padding: 2px 8px; border-radius: 999px; font-size: 0.76rem;">
-              ${t.waitTime}m (Goal &le;${t.alert.threshold}m)
-            </span>
-            <button onclick="window.deleteActiveAlert('${t.alert.id}')" title="Dismiss Alert" style="background:none; border:none; color:#94a3b8; font-size:1.1rem; cursor:pointer; padding:0 2px; line-height:1;">&times;</button>
-          </div>
-        `).join('')}
-      </div>
-    </div>
-  `;
+  if (typeof window !== 'undefined' && window.renderLiveWaitTimes) {
+    window.renderLiveWaitTimes();
+  }
+}
+
+// Simulates an alert trigger on demand so the user can verify device chimes & push
+var simulateRideAlert = CD.simulateRideAlert = global.simulateRideAlert = function(alertId) {
+  const alert = (activeAlerts || []).find((a) => a.id === alertId);
+  if (!alert) return;
+
+  const targetThreshold = alert.threshold || 30;
+  const simulatedWait = Math.max(5, targetThreshold - 10);
+
+  sendPushNotification(
+    `🔔 Goal Reached: ${alert.ride_name} (${simulatedWait}m)!`,
+    `Standby wait dropped to ${simulatedWait} min (Goal ≤ ${targetThreshold}m) at ${alert.park_name}! Walk-on window open! Perfect time for 1 Decade of the Rosary on your walk. ✨`,
+    { rideId: alert.ride_id }
+  );
+
+  alert.current_wait = simulatedWait;
+  alert.is_open = true;
+  alert.status = 'triggered';
+  saveAlertsToStorage();
+
+  if (typeof window !== 'undefined' && window.renderLiveWaitTimes) {
+    window.renderLiveWaitTimes();
+  }
 }
 
 function escapeHtml(str) {
@@ -11450,6 +11655,12 @@ function escapeHtml(str) {
 
 // Global Window Helpers
 if (typeof window !== 'undefined') {
+  window.getActiveAlerts = () => activeAlerts;
+
+  window.setRideAlert = (rideName, threshold, parkId = 'magic-kingdom', notifyReopen = true) => {
+    quickSetAlert(rideName, parkId, threshold);
+  };
+
   window.openSetAlertModal = (rideJsonStr, parkName) => {
     try {
       const ride = typeof rideJsonStr === 'string' ? JSON.parse(decodeURIComponent(rideJsonStr)) : rideJsonStr;
@@ -11463,6 +11674,31 @@ if (typeof window !== 'undefined') {
     deleteAlert(alertId);
   };
 
+  window.editAlert = (alertId) => {
+    const alert = (activeAlerts || []).find((a) => a.id === alertId);
+    if (alert) {
+      openSetAlertModal({
+        id: alert.ride_id,
+        name: alert.ride_name,
+        wait_time: typeof alert.current_wait === 'number' ? alert.current_wait : alert.threshold,
+        is_open: alert.is_open !== false,
+        landName: alert.land_name
+      }, alert.park_name);
+    }
+  };
+
+  window.quickSetAlert = (rideName, parkId, threshold) => {
+    quickSetAlert(rideName, parkId, threshold);
+  };
+
+  window.simulateRideAlert = (alertId) => {
+    simulateRideAlert(alertId);
+  };
+
+  window.requestDeviceNotificationPermission = async () => {
+    await requestNotificationPermission();
+  };
+
   window.testDeviceAlertChime = async () => {
     if ('Notification' in window && Notification.permission !== 'granted') {
       await requestNotificationPermission();
@@ -11473,6 +11709,8 @@ if (typeof window !== 'undefined') {
     );
   };
 }
+
+
 
   })();
   syncGlobals();
@@ -12248,12 +12486,12 @@ var renderLiveWaitTimes = CD.renderLiveWaitTimes = global.renderLiveWaitTimes = 
     ? Math.round(allRides.filter(r => r.is_open && r.wait_time > 0).reduce((acc, r) => acc + r.wait_time, 0) / Math.max(1, allRides.filter(r => r.is_open && r.wait_time > 0).length)) 
     : 0;
 
-  const triggeredBannerHTML = getTriggeredAlertsBannerHTML(allRides);
+  const activeAlertsManagerHTML = getActiveAlertsManagerHTML(allRides);
 
   container.innerHTML = `
     <div class="live-wait-times-board" style="margin-top: 10px;">
-      <!-- Triggered Goal Alert Banner (if threshold is met) -->
-      ${triggeredBannerHTML}
+      <!-- Active In-Park Notification & Alerts Manager Section -->
+      ${activeAlertsManagerHTML}
 
       <!-- Header & Park Selector Bar -->
       <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 20px; padding: 22px 24px; box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04); margin-bottom: 20px;">
