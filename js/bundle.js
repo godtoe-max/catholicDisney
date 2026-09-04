@@ -15212,6 +15212,30 @@ Generated on CatholicDisney.com
   }
 };
 
+window.applyRecommendedDates = (startStr, endStr) => {
+  const startInput = document.getElementById('planner-start-date');
+  const endInput = document.getElementById('planner-end-date');
+  const plannerFormCard = document.getElementById('itinerary-planner-card');
+
+  if (startInput) startInput.value = startStr;
+  if (endInput) endInput.value = endStr;
+
+  refreshDailyParksUI();
+
+  if (plannerFormCard) {
+    plannerFormCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  if (typeof window.showToast === 'function') {
+    window.showToast(
+      '📅 Travel Dates Applied!',
+      `Selected ${startStr} to ${endStr}. Review your daily schedule and tap Generate Itinerary! ✨`,
+      '🌟'
+    );
+  }
+};
+
+
   })();
   syncGlobals();
 
