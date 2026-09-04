@@ -201,27 +201,45 @@ export function refreshDailyParksUI() {
   const parkOptions = getActiveParkOptions();
   const isDlr = getActiveResortId() === 'dlr';
 
-  // Default rotation with Travel Days and balanced parks
-  const defaultRotation = isDlr 
-    ? ["travel_arrival", "dl", "dca", "hopper_dl_dca", "mission_excursion", "downtown_disney", "travel_depart"]
-    : ["travel_arrival", "mk", "epcot", "hs", "ak", "springs", "travel_depart"];
+  // Validate that currently selected daily parks belong to the active resort
+  const validOptionIds = new Set(parkOptions.map(p => p.id));
+  const hasInvalidParks = selectedDailyParks.some(pId => !validOptionIds.has(pId));
 
-  if (selectedDailyParks.length !== duration) {
+  if (selectedDailyParks.length !== duration || hasInvalidParks) {
     selectedDailyParks = [];
     for (let i = 0; i < duration; i++) {
       const curDate = new Date(startDate.getTime() + i * 86400000);
-      const isSunday = curDate.getDay() === 0;
+      const dayOfWeek = curDate.getDay(); // 0 = Sun, 1 = Mon, 2 = Tue, 3 = Wed, 4 = Thu, 5 = Fri, 6 = Sat
+
       if (i === 0 && duration >= 4) {
         selectedDailyParks.push("travel_arrival");
       } else if (i === duration - 1 && duration >= 4) {
         selectedDailyParks.push("travel_depart");
-      } else if (isSunday) {
-        selectedDailyParks.push(isDlr ? "dl" : "mk");
       } else {
-        const rotationList = isDlr 
-          ? ["dl", "dca", "hopper_dl_dca", "mission_excursion", "downtown_disney"] 
-          : ["mk", "epcot", "hs", "ak", "springs"];
-        selectedDailyParks.push(rotationList[i % rotationList.length]);
+        // Intelligently assign the statistically optimal park for that specific day of the week
+        if (isDlr) {
+          switch (dayOfWeek) {
+            case 0: selectedDailyParks.push("rest"); break; // Sunday: Christ Cathedral / Mission Excursion
+            case 1: selectedDailyParks.push("dca"); break;  // Monday: Disney California Adventure
+            case 2: selectedDailyParks.push("dl"); break;   // Tuesday: Disneyland Park (#1 lowest wait day!)
+            case 3: selectedDailyParks.push("dca"); break;  // Wednesday: DCA
+            case 4: selectedDailyParks.push("dl"); break;   // Thursday: Disneyland Park
+            case 5: selectedDailyParks.push("hopper_dl_dca"); break; // Friday: Park Hopper
+            case 6: selectedDailyParks.push("downtown_disney"); break; // Saturday: Downtown Disney / Rest
+            default: selectedDailyParks.push("dl");
+          }
+        } else {
+          switch (dayOfWeek) {
+            case 0: selectedDailyParks.push("ak"); break; // Sunday: Animal Kingdom (Lowest Sunday morning standby)
+            case 1: selectedDailyParks.push("hs"); break; // Monday: Hollywood Studios (Lower LL competition)
+            case 2: selectedDailyParks.push("mk"); break; // Tuesday: Magic Kingdom (#1 lowest wait day!)
+            case 3: selectedDailyParks.push("epcot"); break; // Wednesday: EPCOT (Low mid-week World Showcase)
+            case 4: selectedDailyParks.push("mk"); break; // Thursday: Magic Kingdom (2nd best MK day!)
+            case 5: selectedDailyParks.push("springs"); break; // Friday: Disney Springs / Abstinence Seafood / Basilica
+            case 6: selectedDailyParks.push("hopper_mk_epcot"); break; // Saturday: Park Hopper
+            default: selectedDailyParks.push("mk");
+          }
+        }
       }
     }
   }
