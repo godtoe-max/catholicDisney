@@ -345,6 +345,14 @@ function escapeHtml(str) {
 }
 
 // Window Event Handlers for interactive live board
+window.renderLiveWaitTimes = () => {
+  renderLiveWaitTimes();
+};
+
+window.loadParkWaitTimes = (parkId) => {
+  loadParkWaitTimes(parkId);
+};
+
 window.switchLivePark = (parkId) => {
   activeLiveParkId = parkId;
   searchQuery = "";
@@ -368,3 +376,4 @@ window.handleStatusFilter = (filter) => {
   statusFilter = filter;
   renderLiveWaitTimes();
 };
+

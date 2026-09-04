@@ -632,10 +632,10 @@ async function saveCurrentModalAlert() {
     await requestNotificationPermission();
   }
 
-  const existingIdx = activeAlerts.findIndex((a) => String(a.ride_id) === String(currentModalRide.id) || Number(a.ride_id) === Number(currentModalRide.id) || (a.ride_name && a.ride_name === currentModalRide.name));
+  const existingIdx = activeAlerts.findIndex((a) => String(a.ride_id) === String(currentModalRide.id) || Number(a.ride_id) === Number(currentModalRide.id) || (a.ride_name && a.ride_name.toLowerCase() === currentModalRide.name.toLowerCase()));
 
   const newAlert = {
-    id: existingIdx >= 0 ? activeAlerts[existingIdx].id : `cd_alert_${Date.now()}`,
+    id: existingIdx >= 0 ? activeAlerts[existingIdx].id : `cd_alert_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
     ride_id: currentModalRide.id,
     ride_name: currentModalRide.name,
     park_name: currentModalRide.parkName || 'Disney Park',
@@ -682,19 +682,20 @@ export function deleteAlert(alertId) {
 }
 
 // 1-Click Preset Setup
-export async function quickSetAlert(rideName, parkId, threshold = 30) {
+export function quickSetAlert(rideName, parkId, threshold = 30) {
   if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'default') {
-    await requestNotificationPermission();
+    requestNotificationPermission().catch(() => {});
   }
 
   const parkNames = { 6: 'Magic Kingdom', 5: 'EPCOT', 7: 'Hollywood Studios', 8: 'Animal Kingdom', 16: 'Disneyland Park', 17: 'Disney California Adventure' };
   const parkName = parkNames[parkId] || 'Disney Park';
 
-  const existingIdx = activeAlerts.findIndex((a) => a.ride_name && a.ride_name.toLowerCase() === rideName.toLowerCase());
+
+  const existingIdx = activeAlerts.findIndex((a) => a.ride_name && a.ride_name.toLowerCase().trim() === rideName.toLowerCase().trim());
 
   const newAlert = {
-    id: existingIdx >= 0 ? activeAlerts[existingIdx].id : `cd_alert_${Date.now()}`,
-    ride_id: `ride_${Date.now()}`,
+    id: existingIdx >= 0 ? activeAlerts[existingIdx].id : `cd_alert_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+    ride_id: existingIdx >= 0 ? activeAlerts[existingIdx].ride_id : `ride_${rideName.replace(/\W+/g, '_').toLowerCase()}`,
     ride_name: rideName,
     park_name: parkName,
     land_name: 'Attraction',
@@ -713,6 +714,7 @@ export async function quickSetAlert(rideName, parkId, threshold = 30) {
   } else {
     activeAlerts.push(newAlert);
   }
+
 
   saveAlertsToStorage();
   playChimeSound();
