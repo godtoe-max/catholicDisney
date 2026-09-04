@@ -25,6 +25,8 @@ export function renderLiturgicalHub() {
   const activeTraditions = isDlr ? DISNEYLAND_TRADITIONS_LITURGICAL : TRADITIONS_LITURGICAL;
   const tradition = activeTraditions[activeTraditionId] || activeTraditions.roman;
   const church = tradition.churchInfo || (isDlr ? DISNEYLAND_TRADITIONS_LITURGICAL.roman.churchInfo : TRADITIONS_LITURGICAL.roman.churchInfo);
+  const holyDays = tradition.holyDays || TRADITIONS_LITURGICAL[activeTraditionId]?.holyDays || TRADITIONS_LITURGICAL.roman.holyDays || [];
+  const abstinenceRules = tradition.abstinenceRules || TRADITIONS_LITURGICAL[activeTraditionId]?.abstinenceRules || TRADITIONS_LITURGICAL.roman.abstinenceRules || { summary: '', details: [] };
 
   // Filter dining items
   const diningDataset = isDlr ? DISNEYLAND_ABSTINENCE_DINING : DISNEY_ABSTINENCE_DINING;
@@ -73,7 +75,7 @@ export function renderLiturgicalHub() {
         </div>
         <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 8px 12px; font-size: 0.84rem; color: #1e40af;">
           <strong>📍 Designated ${isDlr ? 'Orange County' : 'Orlando'} Parish:</strong> <span style="font-weight: 700;">${church.parishName}</span> (${church.address})<br>
-          ⏰ <strong>Sunday Times:</strong> ${church.sundayTimes} • <em>${church.distanceFromPark}</em>
+          ⏰ <strong>Sunday Times:</strong> ${church.sundayTimes} • <em>${church.distanceFromPark || church.distance || ''}</em>
         </div>
       </div>
 
@@ -98,7 +100,7 @@ export function renderLiturgicalHub() {
       <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; border-top: 1px dashed #e2e8f0; padding-top: 16px;">
         <button class="btn ${activeViewTab === 'holydays' ? 'btn-sun' : 'btn-outline'}" 
                 onclick="window.switchLiturgicalView('holydays')" style="font-size: 0.88rem; padding: 8px 16px;">
-          ⛪ Holy Days of Obligation (${tradition.holyDays.length})
+          ⛪ Holy Days of Obligation (${holyDays.length})
         </button>
         <button class="btn ${activeViewTab === 'abstinence' ? 'btn-sun' : 'btn-outline'}" 
                 onclick="window.switchLiturgicalView('abstinence')" style="font-size: 0.88rem; padding: 8px 16px;">
@@ -106,7 +108,7 @@ export function renderLiturgicalHub() {
         </button>
         <button class="btn ${activeViewTab === 'dining' ? 'btn-sun' : 'btn-outline'}" 
                 onclick="window.switchLiturgicalView('dining')" style="font-size: 0.88rem; padding: 8px 16px;">
-          🍽️ Disney Meatless Dining Guide (${DISNEY_ABSTINENCE_DINING.length})
+          🍽️ Disney Meatless Dining Guide (${diningDataset.length})
         </button>
         <button class="btn ${activeViewTab === 'movies' ? 'btn-sun' : 'btn-outline'}" 
                 onclick="window.switchLiturgicalView('movies')" style="font-size: 0.88rem; padding: 8px 16px;">
@@ -123,12 +125,12 @@ export function renderLiturgicalHub() {
             ⛪ Holy Days of Obligation (${tradition.name})
           </h4>
           <p style="font-size: 0.92rem; color: #475569; margin-bottom: 0;">
-            Never miss a Mass on vacation. Here are the feasts of precept, canonical relaxation rules, and local Orlando Mass locations.
+            Never miss a Mass on vacation. Here are the feasts of precept, canonical relaxation rules, and local ${isDlr ? 'Orange County' : 'Orlando'} Mass locations.
           </p>
         </div>
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px;">
-          ${tradition.holyDays.map(hd => `
+          ${holyDays.map(hd => `
             <div class="parish-card" style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 18px; padding: 22px; box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05); display: flex; flex-direction: column; justify-content: space-between;">
               <div>
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 10px;">
@@ -172,12 +174,12 @@ export function renderLiturgicalHub() {
             🐟 Fasting &amp; Abstinence Rules (${tradition.name})
           </h4>
           <p style="font-size: 0.92rem; color: #475569; margin-bottom: 0;">
-            ${tradition.abstinenceRules.summary}
+            ${abstinenceRules.summary || ''}
           </p>
         </div>
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; margin-bottom: 24px;">
-          ${tradition.abstinenceRules.details.map(rule => `
+          ${(abstinenceRules.details || []).map(rule => `
             <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 18px; padding: 22px; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);">
               <span class="park-pill" style="background: #dbeafe; color: #1e40af; font-weight: 800; font-size: 0.78rem; margin-bottom: 8px; display: inline-block;">
                 ${rule.rule}

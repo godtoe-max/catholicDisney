@@ -9710,11 +9710,11 @@ var DISNEYLAND_SUNDAY_MASS_PRESETS = CD.DISNEYLAND_SUNDAY_MASS_PRESETS = global.
   // ==========================================
 
   (function() {
-// Catholic Disney: Anaheim & Orange County Catholic Parishes & Liturgical Traditions
-// Serving Disneyland Resort pilgrims (Disneyland Park & Disney California Adventure)
+
 
 var DISNEYLAND_TRADITIONS_LITURGICAL = CD.DISNEYLAND_TRADITIONS_LITURGICAL = global.DISNEYLAND_TRADITIONS_LITURGICAL = {
   roman: {
+    ...TRADITIONS_LITURGICAL.roman,
     name: "Roman Rite (Diocese of Orange)",
     icon: "🇻🇦",
     summary: "The Ordinary Form of the Roman Rite in the Diocese of Orange. Featuring both historic Saint Boniface (the mother church of Anaheim, 1.5 miles north on Harbor Blvd) and the monumental Christ Cathedral in Garden Grove (seat of the diocese, housing the 35-foot bronze Shrine of Our Lady of La Vang).",
@@ -9745,10 +9745,15 @@ var DISNEYLAND_TRADITIONS_LITURGICAL = CD.DISNEYLAND_TRADITIONS_LITURGICAL = glo
         "Monumental 35-foot bronze Marian Shrine of Our Lady of La Vang",
         "Extensive 34-acre pilgrimage campus with outdoor Stations of the Cross"
       ]
-    }
+    },
+    holyDays: TRADITIONS_LITURGICAL.roman.holyDays.map(hd => ({
+      ...hd,
+      massAtDisney: `Special Holy Day Masses celebrated at Christ Cathedral (Garden Grove - 8 mins) & St. Boniface (Anaheim - 5 mins).`
+    }))
   },
 
   tlm: {
+    ...TRADITIONS_LITURGICAL.tlm,
     name: "Traditional Latin Mass (1962 Missal)",
     icon: "☩",
     summary: "The Traditional Latin Mass (Usus Antiquior) celebrated under diocesan faculty by the Norbertine Fathers of Saint Michael's Abbey at Saint John the Baptist in Costa Mesa, renowned for Gregorian chant and sacred liturgy.",
@@ -9766,10 +9771,15 @@ var DISNEYLAND_TRADITIONS_LITURGICAL = CD.DISNEYLAND_TRADITIONS_LITURGICAL = glo
         "Reverent liturgical music, Gregorian chant, and traditional vestments",
         "Generous confession availability before and during every Mass"
       ]
-    }
+    },
+    holyDays: (TRADITIONS_LITURGICAL.tlm.holyDays || TRADITIONS_LITURGICAL.roman.holyDays).map(hd => ({
+      ...hd,
+      massAtDisney: `Traditional Latin High & Low Masses celebrated at St. John the Baptist in Costa Mesa (14 mins from Disneyland).`
+    }))
   },
 
   byzantine: {
+    ...TRADITIONS_LITURGICAL.byzantine,
     name: "Byzantine Catholic Rite (Ruthenian)",
     icon: "☦️",
     summary: "The Byzantine Divine Liturgy of Saint John Chrysostom within the Ruthenian Byzantine Catholic Eparchy of Phoenix (in full communion with the Pope of Rome). Annunciation Byzantine is located practically adjacent to Disneyland on Ball Road!",
@@ -9787,10 +9797,15 @@ var DISNEYLAND_TRADITIONS_LITURGICAL = CD.DISNEYLAND_TRADITIONS_LITURGICAL = glo
         "Full traditional iconostasis, sacred Byzantine choral chant, and incense",
         "Communion under both species via liturgical golden spoon (leavened bread & consecrated wine)"
       ]
-    }
+    },
+    holyDays: (TRADITIONS_LITURGICAL.byzantine.holyDays || TRADITIONS_LITURGICAL.roman.holyDays).map(hd => ({
+      ...hd,
+      massAtDisney: `Feast Day Divine Liturgy celebrated at Annunciation Byzantine Church (6 mins from Disneyland gates on Ball Rd).`
+    }))
   },
 
   ordinariate: {
+    ...TRADITIONS_LITURGICAL.ordinariate,
     name: "Anglican Ordinariate (Divine Worship)",
     icon: "🇬🇧",
     summary: "The Personal Ordinariate of the Chair of Saint Peter, established by Pope Benedict XVI for communities of the Anglican tradition entering full Catholic communion while preserving their liturgical and musical patrimony.",
@@ -9808,7 +9823,11 @@ var DISNEYLAND_TRADITIONS_LITURGICAL = CD.DISNEYLAND_TRADITIONS_LITURGICAL = glo
         "Reverent celebration ad orientem with traditional altar rails",
         "Welcoming large-family fellowship and hospitality after Mass"
       ]
-    }
+    },
+    holyDays: (TRADITIONS_LITURGICAL.ordinariate.holyDays || TRADITIONS_LITURGICAL.roman.holyDays).map(hd => ({
+      ...hd,
+      massAtDisney: `Solemn Sung Mass celebrated by Blessed John Henry Newman Ordinariate Community at Queen of Life Chapel (Irvine).`
+    }))
   }
 };
 
@@ -13758,6 +13777,8 @@ var renderLiturgicalHub = CD.renderLiturgicalHub = global.renderLiturgicalHub = 
   const activeTraditions = isDlr ? DISNEYLAND_TRADITIONS_LITURGICAL : TRADITIONS_LITURGICAL;
   const tradition = activeTraditions[activeTraditionId] || activeTraditions.roman;
   const church = tradition.churchInfo || (isDlr ? DISNEYLAND_TRADITIONS_LITURGICAL.roman.churchInfo : TRADITIONS_LITURGICAL.roman.churchInfo);
+  const holyDays = tradition.holyDays || TRADITIONS_LITURGICAL[activeTraditionId]?.holyDays || TRADITIONS_LITURGICAL.roman.holyDays || [];
+  const abstinenceRules = tradition.abstinenceRules || TRADITIONS_LITURGICAL[activeTraditionId]?.abstinenceRules || TRADITIONS_LITURGICAL.roman.abstinenceRules || { summary: '', details: [] };
 
   // Filter dining items
   const diningDataset = isDlr ? DISNEYLAND_ABSTINENCE_DINING : DISNEY_ABSTINENCE_DINING;
@@ -13806,7 +13827,7 @@ var renderLiturgicalHub = CD.renderLiturgicalHub = global.renderLiturgicalHub = 
         </div>
         <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 8px 12px; font-size: 0.84rem; color: #1e40af;">
           <strong>📍 Designated ${isDlr ? 'Orange County' : 'Orlando'} Parish:</strong> <span style="font-weight: 700;">${church.parishName}</span> (${church.address})<br>
-          ⏰ <strong>Sunday Times:</strong> ${church.sundayTimes} • <em>${church.distanceFromPark}</em>
+          ⏰ <strong>Sunday Times:</strong> ${church.sundayTimes} • <em>${church.distanceFromPark || church.distance || ''}</em>
         </div>
       </div>
 
@@ -13831,7 +13852,7 @@ var renderLiturgicalHub = CD.renderLiturgicalHub = global.renderLiturgicalHub = 
       <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; border-top: 1px dashed #e2e8f0; padding-top: 16px;">
         <button class="btn ${activeViewTab === 'holydays' ? 'btn-sun' : 'btn-outline'}" 
                 onclick="window.switchLiturgicalView('holydays')" style="font-size: 0.88rem; padding: 8px 16px;">
-          ⛪ Holy Days of Obligation (${tradition.holyDays.length})
+          ⛪ Holy Days of Obligation (${holyDays.length})
         </button>
         <button class="btn ${activeViewTab === 'abstinence' ? 'btn-sun' : 'btn-outline'}" 
                 onclick="window.switchLiturgicalView('abstinence')" style="font-size: 0.88rem; padding: 8px 16px;">
@@ -13839,7 +13860,7 @@ var renderLiturgicalHub = CD.renderLiturgicalHub = global.renderLiturgicalHub = 
         </button>
         <button class="btn ${activeViewTab === 'dining' ? 'btn-sun' : 'btn-outline'}" 
                 onclick="window.switchLiturgicalView('dining')" style="font-size: 0.88rem; padding: 8px 16px;">
-          🍽️ Disney Meatless Dining Guide (${DISNEY_ABSTINENCE_DINING.length})
+          🍽️ Disney Meatless Dining Guide (${diningDataset.length})
         </button>
         <button class="btn ${activeViewTab === 'movies' ? 'btn-sun' : 'btn-outline'}" 
                 onclick="window.switchLiturgicalView('movies')" style="font-size: 0.88rem; padding: 8px 16px;">
@@ -13856,12 +13877,12 @@ var renderLiturgicalHub = CD.renderLiturgicalHub = global.renderLiturgicalHub = 
             ⛪ Holy Days of Obligation (${tradition.name})
           </h4>
           <p style="font-size: 0.92rem; color: #475569; margin-bottom: 0;">
-            Never miss a Mass on vacation. Here are the feasts of precept, canonical relaxation rules, and local Orlando Mass locations.
+            Never miss a Mass on vacation. Here are the feasts of precept, canonical relaxation rules, and local ${isDlr ? 'Orange County' : 'Orlando'} Mass locations.
           </p>
         </div>
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px;">
-          ${tradition.holyDays.map(hd => `
+          ${holyDays.map(hd => `
             <div class="parish-card" style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 18px; padding: 22px; box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05); display: flex; flex-direction: column; justify-content: space-between;">
               <div>
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 10px;">
@@ -13905,12 +13926,12 @@ var renderLiturgicalHub = CD.renderLiturgicalHub = global.renderLiturgicalHub = 
             🐟 Fasting &amp; Abstinence Rules (${tradition.name})
           </h4>
           <p style="font-size: 0.92rem; color: #475569; margin-bottom: 0;">
-            ${tradition.abstinenceRules.summary}
+            ${abstinenceRules.summary || ''}
           </p>
         </div>
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; margin-bottom: 24px;">
-          ${tradition.abstinenceRules.details.map(rule => `
+          ${(abstinenceRules.details || []).map(rule => `
             <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 18px; padding: 22px; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);">
               <span class="park-pill" style="background: #dbeafe; color: #1e40af; font-weight: 800; font-size: 0.78rem; margin-bottom: 8px; display: inline-block;">
                 ${rule.rule}

@@ -1,8 +1,8 @@
-// Catholic Disney: Anaheim & Orange County Catholic Parishes & Liturgical Traditions
-// Serving Disneyland Resort pilgrims (Disneyland Park & Disney California Adventure)
+import { TRADITIONS_LITURGICAL } from './holy-days-data.js';
 
 export const DISNEYLAND_TRADITIONS_LITURGICAL = {
   roman: {
+    ...TRADITIONS_LITURGICAL.roman,
     name: "Roman Rite (Diocese of Orange)",
     icon: "🇻🇦",
     summary: "The Ordinary Form of the Roman Rite in the Diocese of Orange. Featuring both historic Saint Boniface (the mother church of Anaheim, 1.5 miles north on Harbor Blvd) and the monumental Christ Cathedral in Garden Grove (seat of the diocese, housing the 35-foot bronze Shrine of Our Lady of La Vang).",
@@ -33,10 +33,15 @@ export const DISNEYLAND_TRADITIONS_LITURGICAL = {
         "Monumental 35-foot bronze Marian Shrine of Our Lady of La Vang",
         "Extensive 34-acre pilgrimage campus with outdoor Stations of the Cross"
       ]
-    }
+    },
+    holyDays: TRADITIONS_LITURGICAL.roman.holyDays.map(hd => ({
+      ...hd,
+      massAtDisney: `Special Holy Day Masses celebrated at Christ Cathedral (Garden Grove - 8 mins) & St. Boniface (Anaheim - 5 mins).`
+    }))
   },
 
   tlm: {
+    ...TRADITIONS_LITURGICAL.tlm,
     name: "Traditional Latin Mass (1962 Missal)",
     icon: "☩",
     summary: "The Traditional Latin Mass (Usus Antiquior) celebrated under diocesan faculty by the Norbertine Fathers of Saint Michael's Abbey at Saint John the Baptist in Costa Mesa, renowned for Gregorian chant and sacred liturgy.",
@@ -54,10 +59,15 @@ export const DISNEYLAND_TRADITIONS_LITURGICAL = {
         "Reverent liturgical music, Gregorian chant, and traditional vestments",
         "Generous confession availability before and during every Mass"
       ]
-    }
+    },
+    holyDays: (TRADITIONS_LITURGICAL.tlm.holyDays || TRADITIONS_LITURGICAL.roman.holyDays).map(hd => ({
+      ...hd,
+      massAtDisney: `Traditional Latin High & Low Masses celebrated at St. John the Baptist in Costa Mesa (14 mins from Disneyland).`
+    }))
   },
 
   byzantine: {
+    ...TRADITIONS_LITURGICAL.byzantine,
     name: "Byzantine Catholic Rite (Ruthenian)",
     icon: "☦️",
     summary: "The Byzantine Divine Liturgy of Saint John Chrysostom within the Ruthenian Byzantine Catholic Eparchy of Phoenix (in full communion with the Pope of Rome). Annunciation Byzantine is located practically adjacent to Disneyland on Ball Road!",
@@ -75,10 +85,15 @@ export const DISNEYLAND_TRADITIONS_LITURGICAL = {
         "Full traditional iconostasis, sacred Byzantine choral chant, and incense",
         "Communion under both species via liturgical golden spoon (leavened bread & consecrated wine)"
       ]
-    }
+    },
+    holyDays: (TRADITIONS_LITURGICAL.byzantine.holyDays || TRADITIONS_LITURGICAL.roman.holyDays).map(hd => ({
+      ...hd,
+      massAtDisney: `Feast Day Divine Liturgy celebrated at Annunciation Byzantine Church (6 mins from Disneyland gates on Ball Rd).`
+    }))
   },
 
   ordinariate: {
+    ...TRADITIONS_LITURGICAL.ordinariate,
     name: "Anglican Ordinariate (Divine Worship)",
     icon: "🇬🇧",
     summary: "The Personal Ordinariate of the Chair of Saint Peter, established by Pope Benedict XVI for communities of the Anglican tradition entering full Catholic communion while preserving their liturgical and musical patrimony.",
@@ -96,7 +111,11 @@ export const DISNEYLAND_TRADITIONS_LITURGICAL = {
         "Reverent celebration ad orientem with traditional altar rails",
         "Welcoming large-family fellowship and hospitality after Mass"
       ]
-    }
+    },
+    holyDays: (TRADITIONS_LITURGICAL.ordinariate.holyDays || TRADITIONS_LITURGICAL.roman.holyDays).map(hd => ({
+      ...hd,
+      massAtDisney: `Solemn Sung Mass celebrated by Blessed John Henry Newman Ordinariate Community at Queen of Life Chapel (Irvine).`
+    }))
   }
 };
 
