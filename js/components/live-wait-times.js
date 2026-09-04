@@ -1,11 +1,19 @@
 // Catholic Disney: Live Park Wait Times Board
 // Fetches real-time queue times from Queue-Times API (proxied via /api/queue-times/:park_id)
-// Matches attractions with tier classifications, 0.72 deflated real waits, and Catholic prayer nooks
+// Matches attractions with tier classifications, 0.72 deflated real waits, Catholic prayer nooks, and In-Park Drop Alerts
 
 import { RIDE_TIERS } from '../data/ride-tiers.js?v=20260902_v2';
 import { getCompanionForRide } from '../data/queue-companions-data.js?v=20260902_v2';
 import { getDisneylandCompanionForRide } from '../data/disneyland-queue-companions-data.js?v=20260902_v2';
 import { getActiveResort, getActiveResortId } from './resort-switcher.js?v=20260902_v2';
+import { 
+  initWaitTimeAlerts, 
+  evaluateWaitAlerts, 
+  getTriggeredAlertsBannerHTML, 
+  activeAlerts,
+  openSetAlertModal,
+  requestNotificationPermission
+} from './wait-time-alerts.js?v=20260904_v1';
 
 function getLiveParks() {
   return getActiveResort().parks;
@@ -16,10 +24,13 @@ let liveDataCache = {};
 let isLoading = false;
 let searchQuery = "";
 let statusFilter = "all"; // 'all', 'open', 'low'
+let autoPollInterval = null;
 
 export function initLiveWaitTimes(containerId = 'live-wait-times-container') {
   const container = document.getElementById(containerId);
   if (!container) return;
+
+  initWaitTimeAlerts();
 
   activeLiveParkId = getActiveResort().defaultLiveParkId;
   renderLiveWaitTimes(containerId);
@@ -30,12 +41,24 @@ export function initLiveWaitTimes(containerId = 'live-wait-times-container') {
     activeLiveParkId = res ? res.defaultLiveParkId : 16;
     loadParkWaitTimes(activeLiveParkId, containerId);
   });
+
+  // Background auto-refresh polling every 90 seconds while tab is active in-park
+  if (!autoPollInterval) {
+    autoPollInterval = setInterval(() => {
+      const waitTimesTab = document.getElementById('wait-times-tab');
+      if (waitTimesTab && !waitTimesTab.classList.contains('hidden') && !isLoading) {
+        loadParkWaitTimes(activeLiveParkId, containerId, true);
+      }
+    }, 90000);
+  }
 }
 
-export async function loadParkWaitTimes(parkId, containerId = 'live-wait-times-container') {
-  isLoading = true;
+export async function loadParkWaitTimes(parkId, containerId = 'live-wait-times-container', isSilent = false) {
+  if (!isSilent) {
+    isLoading = true;
+    renderLiveWaitTimes(containerId);
+  }
   activeLiveParkId = parkId;
-  renderLiveWaitTimes(containerId);
 
   try {
     const targetUrl = `/api/queue-times/${parkId}`;
@@ -46,12 +69,30 @@ export async function loadParkWaitTimes(parkId, containerId = 'live-wait-times-c
       timestamp: new Date(),
       data: data
     };
+
+    // Extract all rides for evaluating active alerts
+    let parkRides = [];
+    if (data && data.lands) {
+      data.lands.forEach(land => {
+        if (land.rides) {
+          land.rides.forEach(r => {
+            parkRides.push({ ...r, landName: land.name });
+          });
+        }
+      });
+    }
+
+    const currentPark = getLiveParks().find(p => p.id === parkId) || { name: 'Disney Park' };
+    evaluateWaitAlerts(parkRides, currentPark.name);
+
   } catch (err) {
     console.error("Failed to load live wait times:", err);
-    liveDataCache[parkId] = {
-      timestamp: new Date(),
-      error: "Unable to retrieve live wait times from queue servers. Please try again shortly."
-    };
+    if (!liveDataCache[parkId]) {
+      liveDataCache[parkId] = {
+        timestamp: new Date(),
+        error: "Unable to retrieve live wait times from queue servers. Please try again shortly."
+      };
+    }
   } finally {
     isLoading = false;
     renderLiveWaitTimes(containerId);
@@ -102,8 +143,13 @@ export function renderLiveWaitTimes(containerId = 'live-wait-times-container') {
     ? Math.round(allRides.filter(r => r.is_open && r.wait_time > 0).reduce((acc, r) => acc + r.wait_time, 0) / Math.max(1, allRides.filter(r => r.is_open && r.wait_time > 0).length)) 
     : 0;
 
+  const triggeredBannerHTML = getTriggeredAlertsBannerHTML(allRides);
+
   container.innerHTML = `
     <div class="live-wait-times-board" style="margin-top: 10px;">
+      <!-- Triggered Goal Alert Banner (if threshold is met) -->
+      ${triggeredBannerHTML}
+
       <!-- Header & Park Selector Bar -->
       <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 20px; padding: 22px 24px; box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04); margin-bottom: 20px;">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; margin-bottom: 18px;">
@@ -124,13 +170,16 @@ export function renderLiveWaitTimes(containerId = 'live-wait-times-container') {
           </div>
 
           <div style="display: flex; gap: 8px; align-items: center;">
+            <button class="btn btn-outline" onclick="window.testDeviceAlertChime()" style="font-size: 0.84rem; padding: 8px 14px;" title="Test Lock-Screen Notifications & Chime">
+              🔔 Test Alert Sound
+            </button>
             <button class="btn btn-sun" onclick="window.refreshLivePark(${activeLiveParkId})" ${isLoading ? 'disabled' : ''} style="font-size: 0.88rem; padding: 8px 16px;">
               ${isLoading ? '⏳ Refreshing...' : '🔄 Refresh Live Data'}
             </button>
           </div>
         </div>
 
-        <!-- 4 Park Switcher Pills -->
+        <!-- Park Switcher Pills -->
         <div style="display: flex; gap: 8px; flex-wrap: wrap; padding-bottom: 14px; border-bottom: 1px solid #f1f5f9;">
           ${parksList.map(p => `
             <button class="park-tab-pill ${p.id === activeLiveParkId ? 'active' : ''}" onclick="window.switchLivePark(${p.id})" style="font-size: 0.88rem; padding: 8px 18px;">
@@ -185,7 +234,6 @@ export function renderLiveWaitTimes(containerId = 'live-wait-times-container') {
           ${filteredRides.map(r => {
             const deflatedWait = Math.round(r.wait_time * 0.72);
             const isLongWait = r.wait_time >= 35;
-            const isWalkOn = r.is_open && r.wait_time <= 15;
             const tierMeta = Object.values(RIDE_TIERS).find(t => t.name.toLowerCase() === r.name.toLowerCase() || r.name.toLowerCase().includes(t.name.toLowerCase()));
             const prayerNook = tierMeta ? tierMeta.nearbyPrayerNook : null;
 
@@ -193,13 +241,25 @@ export function renderLiveWaitTimes(containerId = 'live-wait-times-container') {
               ? (getDisneylandCompanionForRide(r.name) || getCompanionForRide(r.name))
               : (getCompanionForRide(r.name) || getDisneylandCompanionForRide(r.name));
 
+            const existingAlert = (activeAlerts || []).find(a => String(a.ride_id) === String(r.id) || Number(a.ride_id) === Number(r.id));
+            const rideJsonSafe = encodeURIComponent(JSON.stringify({
+              id: r.id,
+              name: r.name,
+              wait_time: r.wait_time,
+              is_open: r.is_open,
+              landName: r.landName || currentPark.name
+            }));
+
             return `
-              <div style="background: #ffffff; border: 1.5px solid ${!r.is_open ? '#f1f5f9' : (isLongWait ? '#fde68a' : '#e2e8f0')}; border-radius: 16px; padding: 16px 18px; box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03); opacity: ${r.is_open ? '1' : '0.65'};">
+              <div style="background: #ffffff; border: 1.5px solid ${existingAlert ? '#86efac' : (!r.is_open ? '#f1f5f9' : (isLongWait ? '#fde68a' : '#e2e8f0'))}; border-radius: 16px; padding: 16px 18px; box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03); opacity: ${r.is_open ? '1' : '0.65'};">
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 8px;">
                   <div style="flex: 1;">
-                    <span style="font-size: 0.75rem; color: #64748b; font-weight: 700; text-transform: uppercase;">
-                      ${r.landName || currentPark.name}
-                    </span>
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                      <span style="font-size: 0.75rem; color: #64748b; font-weight: 700; text-transform: uppercase;">
+                        ${r.landName || currentPark.name}
+                      </span>
+                      ${existingAlert ? `<span style="font-size: 0.7rem; font-weight: 800; background: #dcfce7; color: #166534; padding: 1px 6px; border-radius: 999px;">🔔 Alert &le;${existingAlert.threshold}m</span>` : ''}
+                    </div>
                     <h4 style="font-size: 1.05rem; color: #0f172a; margin: 2px 0 0; font-weight: 800; line-height: 1.3;">
                       ${r.name}
                     </h4>
@@ -228,21 +288,22 @@ export function renderLiveWaitTimes(containerId = 'live-wait-times-container') {
                   </div>
                 </div>
 
-                <!-- Queue Companion Saint Link -->
-                ${companion ? `
-                  <div style="margin-top: 8px; display: flex; justify-content: space-between; align-items: center; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 6px 10px; font-size: 0.78rem;">
-                    <span style="color: #166534; font-weight: 700;">
-                      ✨ <strong>Saint Story:</strong> ${companion.saint.split(' (')[0]}
-                    </span>
-                    <button class="btn btn-sm btn-outline" onclick="window.openCompanionModal('${companion.id}')" style="font-size: 0.72rem; padding: 2px 8px; border-radius: 6px; white-space: nowrap; background: #ffffff;">
-                      Read in Line 📖
+                <!-- Action Toolbar: Set Alert & Read Companion -->
+                <div style="display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap;">
+                  <button class="btn-alert-bell ${existingAlert ? 'active' : ''}" onclick="window.openSetAlertModal('${rideJsonSafe}', '${currentPark.name}')" title="Set wait time drop alert for ${escapeHtml(r.name)}">
+                    ${existingAlert ? '🔔 Alert Set' : '🔔 Set Drop Alert'}
+                  </button>
+
+                  ${companion ? `
+                    <button class="btn btn-sm btn-outline" onclick="window.openCompanionModal('${companion.id}')" style="font-size: 0.75rem; padding: 4px 10px; border-radius: 8px; background: #f0fdf4; border-color: #bbf7d0; color: #166534; font-weight: 700;">
+                      📖 ${companion.saint.split(' (')[0]}
                     </button>
-                  </div>
-                ` : ''}
+                  ` : ''}
+                </div>
 
                 <!-- Catholic Queue Rosary Opportunity & Nearby Nook -->
                 ${r.is_open && isLongWait ? `
-                  <div style="background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 6px 10px; margin-top: 8px; font-size: 0.78rem; color: #92400e; display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+                  <div style="background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 6px 10px; margin-top: 10px; font-size: 0.78rem; color: #92400e; display: flex; justify-content: space-between; align-items: center; gap: 8px;">
                     <span>
                       📿 <strong>${r.wait_time >= 50 ? 'Full Rosary Line' : '1-2 Decades Window'}</strong> (${deflatedWait}m actual)
                     </span>
@@ -270,6 +331,16 @@ export function renderLiveWaitTimes(containerId = 'live-wait-times-container') {
       ` : ''}
     </div>
   `;
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 }
 
 // Window Event Handlers for interactive live board
