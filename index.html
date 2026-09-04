@@ -503,72 +503,99 @@
           </p>
         </div>
 
-        <div class="planner-form-grid">
-          <!-- Row 1: Item 1 - Trip Start -->
-          <div class="form-group">
-            <label class="form-label" for="planner-start-date">📅 Trip Start</label>
-            <input type="date" id="planner-start-date" class="form-input" required>
+        <!-- 1. Pilgrimage Dates & Liturgical Focus Group -->
+        <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 18px; padding: 22px; margin-bottom: 20px;">
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
+            <span style="font-size: 1.25rem;">📅</span>
+            <h4 style="font-size: 1.12rem; color: #0f172a; margin: 0; font-weight: 800;">
+              1. Pilgrimage Dates &amp; Liturgical Tradition
+            </h4>
           </div>
 
-          <!-- Row 1: Item 2 - Trip End -->
-          <div class="form-group">
-            <label class="form-label" for="planner-end-date">📅 Trip End</label>
-            <input type="date" id="planner-end-date" class="form-input" required>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px;">
+            <!-- Trip Start -->
+            <div class="form-group">
+              <label class="form-label" for="planner-start-date">📅 Trip Start</label>
+              <input type="date" id="planner-start-date" class="form-input" required>
+            </div>
+
+            <!-- Trip End -->
+            <div class="form-group">
+              <label class="form-label" for="planner-end-date">📅 Trip End</label>
+              <input type="date" id="planner-end-date" class="form-input" required>
+            </div>
+
+            <!-- Liturgical Tradition -->
+            <div class="form-group">
+              <label class="form-label" for="planner-tradition">⛪ Liturgical Tradition</label>
+              <select id="planner-tradition" class="form-select">
+                <option value="roman" selected>🇻🇦 Roman Rite (USCCB / Orlando / Orange)</option>
+                <option value="tlm">☩ Traditional Latin Mass (1962)</option>
+                <option value="byzantine">☦️ Byzantine Catholic Rite</option>
+                <option value="ordinariate">🇬🇧 Anglican Ordinariate</option>
+              </select>
+            </div>
+
+            <!-- Pilgrimage Focus -->
+            <div class="form-group">
+              <label class="form-label" for="planner-focus">🌟 Pilgrimage Focus</label>
+              <select id="planner-focus" class="form-select">
+                <option value="park-touring" selected>Balanced Park Magic &amp; Sunday Mass</option>
+                <option value="sacred-art">Sacred Art, Heritage &amp; Cathedrals</option>
+                <option value="retreat">Gentle Stroller Pace &amp; Restful Retreat</option>
+              </select>
+            </div>
           </div>
 
-          <!-- Row 1: Item 3 - Adults (18+) -->
-          <div class="form-group">
-            <label class="form-label" for="planner-adults">🧑 Adults (18+)</label>
-            <input type="number" id="planner-adults" class="form-input" min="1" value="2" placeholder="2" required>
-            <span style="font-size: 0.72rem; color: #64748b; margin-top: 2px;">Hotel base rate (up to 2).</span>
-          </div>
-
-          <!-- Row 1: Item 4 - Teens (10-17) -->
-          <div class="form-group">
-            <label class="form-label" for="planner-teens">🧒 Teens (10–17)</label>
-            <input type="number" id="planner-teens" class="form-input" min="0" value="1" placeholder="0" required>
-            <span style="font-size: 0.72rem; color: #64748b; margin-top: 2px;">Adult ticket / Child hotel rate.</span>
-          </div>
-
-          <!-- Row 2: Item 1 - Liturgical Tradition -->
-          <div class="form-group">
-            <label class="form-label" for="planner-tradition">⛪ Liturgical Tradition</label>
-            <select id="planner-tradition" class="form-select">
-              <option value="roman" selected>🇻🇦 Roman Rite (USCCB / Orlando)</option>
-              <option value="tlm">☩ Traditional Latin Mass (1962)</option>
-              <option value="byzantine">☦️ Byzantine Catholic Rite</option>
-              <option value="ordinariate">🇬🇧 Anglican Ordinariate</option>
-            </select>
-          </div>
-
-          <!-- Row 2: Item 2 - Pilgrimage Focus -->
-          <div class="form-group">
-            <label class="form-label" for="planner-focus">🌟 Pilgrimage Focus</label>
-            <select id="planner-focus" class="form-select">
-              <option value="park-touring" selected>Balanced Park Magic &amp; Sunday Mass</option>
-              <option value="sacred-art">Sacred Art, Epcot Heritage &amp; Cathedrals</option>
-              <option value="retreat">Gentle Stroller Pace &amp; Restful Retreat</option>
-            </select>
-          </div>
-
-          <!-- Row 2: Item 3 - Children (3-9) -->
-          <div class="form-group">
-            <label class="form-label" for="planner-kids">👧 Children (3–9)</label>
-            <input type="number" id="planner-kids" class="form-input" min="0" value="2" placeholder="2" required>
-            <span style="font-size: 0.72rem; color: #64748b; margin-top: 2px;">Discounted child ticket tier.</span>
-          </div>
-
-          <!-- Row 2: Item 4 - Toddlers (0-2) -->
-          <div class="form-group">
-            <label class="form-label" for="planner-infants">👶 Toddlers (0–2)</label>
-            <input type="number" id="planner-infants" class="form-input" min="0" value="1" placeholder="0" required>
-            <span style="font-size: 0.72rem; color: #166534; font-weight: 700; margin-top: 2px;">FREE admission &amp; crib.</span>
+          <!-- Designated Parish Banner -->
+          <div id="tradition-parish-preview" style="margin-top: 14px; font-size: 0.82rem; line-height: 1.4; color: #1e40af; background: #eff6ff; padding: 10px 14px; border-radius: 12px; border: 1px solid #bfdbfe;">
+            <!-- Dynamically populated based on chosen tradition -->
           </div>
         </div>
 
-        <!-- Designated Parish Banner (Full Width below the grid) -->
-        <div id="tradition-parish-preview" style="margin-bottom: 20px; font-size: 0.82rem; line-height: 1.4; color: #1e40af; background: #eff6ff; padding: 10px 14px; border-radius: 12px; border: 1px solid #bfdbfe;">
-          <!-- Dynamically populated based on chosen tradition -->
+        <!-- 2. Pilgrim Family & Party Size Group (All people together) -->
+        <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 18px; padding: 22px; margin-bottom: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 16px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 1.25rem;">👨‍👩‍👧‍👦</span>
+              <h4 style="font-size: 1.12rem; color: #0f172a; margin: 0; font-weight: 800;">
+                2. Pilgrim Family &amp; Party Size
+              </h4>
+            </div>
+            <span style="font-size: 0.78rem; color: #166534; background: #dcfce7; font-weight: 700; padding: 3px 10px; border-radius: 999px;">
+              👨‍👩‍👧‍👦 Large Families Welcome
+            </span>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px;">
+            <!-- Adults (18+) -->
+            <div class="form-group">
+              <label class="form-label" for="planner-adults">🧑 Adults (18+)</label>
+              <input type="number" id="planner-adults" class="form-input" min="1" value="2" placeholder="2" required>
+              <span style="font-size: 0.72rem; color: #64748b; margin-top: 2px;">Hotel base rate (up to 2).</span>
+            </div>
+
+            <!-- Teens (10-17) -->
+            <div class="form-group">
+              <label class="form-label" for="planner-teens">🧒 Teens (10–17)</label>
+              <input type="number" id="planner-teens" class="form-input" min="0" value="1" placeholder="0" required>
+              <span style="font-size: 0.72rem; color: #64748b; margin-top: 2px;">Adult ticket / Child hotel rate.</span>
+            </div>
+
+            <!-- Children (3-9) -->
+            <div class="form-group">
+              <label class="form-label" for="planner-kids">👧 Children (3–9)</label>
+              <input type="number" id="planner-kids" class="form-input" min="0" value="2" placeholder="2" required>
+              <span style="font-size: 0.72rem; color: #64748b; margin-top: 2px;">Discounted child ticket tier.</span>
+            </div>
+
+            <!-- Toddlers (0-2) -->
+            <div class="form-group">
+              <label class="form-label" for="planner-infants">👶 Toddlers (0–2)</label>
+              <input type="number" id="planner-infants" class="form-input" min="0" value="1" placeholder="0" required>
+              <span style="font-size: 0.72rem; color: #166534; font-weight: 700; margin-top: 2px;">FREE admission &amp; crib.</span>
+            </div>
+          </div>
         </div>
 
         <!-- Daily Park Selection (Choose which park for each day) -->
@@ -753,28 +780,18 @@
 
         <!-- Strategy Grid: Best Days of Week & Best Times of Day -->
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px;">
-          <!-- Left: Best Days of the Week for Each Park -->
-          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 18px; padding: 20px;">
-            <h4 style="font-size: 1.05rem; font-weight: 800; color: #0f172a; margin: 0 0 12px; display: flex; align-items: center; gap: 8px;">
-              <span>📆</span> Best Days of the Week for Each Park
-            </h4>
-            <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.85rem;">
-              <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #ffffff; border-radius: 10px; border: 1px solid #e2e8f0;">
-                <strong>🏰 Magic Kingdom / Disneyland</strong>
-                <span style="font-weight: 800; color: #166534; background: #dcfce7; padding: 2px 8px; border-radius: 6px;">Tuesday &amp; Thursday</span>
-              </div>
-              <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #ffffff; border-radius: 10px; border: 1px solid #e2e8f0;">
-                <strong>🌐 EPCOT / DCA</strong>
-                <span style="font-weight: 800; color: #166534; background: #dcfce7; padding: 2px 8px; border-radius: 6px;">Mon, Tue &amp; Wed (Avoid Fri/Sat)</span>
-              </div>
-              <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #ffffff; border-radius: 10px; border: 1px solid #e2e8f0;">
-                <strong>🎬 Hollywood Studios</strong>
-                <span style="font-weight: 800; color: #166534; background: #dcfce7; padding: 2px 8px; border-radius: 6px;">Monday &amp; Thursday</span>
-              </div>
-              <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #ffffff; border-radius: 10px; border: 1px solid #e2e8f0;">
-                <strong>🌳 Animal Kingdom</strong>
-                <span style="font-weight: 800; color: #166534; background: #dcfce7; padding: 2px 8px; border-radius: 6px;">Sunday Morning &amp; Wednesday</span>
-              </div>
+          <!-- Left: Best Days of the Week for Each Park (Dynamically resort-filtered) -->
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 18px; padding: 20px;" id="best-days-of-week-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 6px;">
+              <h4 style="font-size: 1.05rem; font-weight: 800; color: #0f172a; margin: 0; display: flex; align-items: center; gap: 8px;">
+                <span>📆</span> Best Days of the Week
+              </h4>
+              <span id="best-days-resort-label" style="font-size: 0.76rem; font-weight: 800; color: #1a73e8; background: #e8f0fe; padding: 2px 8px; border-radius: 999px;">
+                Walt Disney World
+              </span>
+            </div>
+            <div id="best-days-of-week-list" style="display: flex; flex-direction: column; gap: 8px; font-size: 0.85rem;">
+              <!-- Dynamically populated via renderBestDaysOfWeek() -->
             </div>
           </div>
 
@@ -1102,6 +1119,6 @@
   </form>
 
   <!-- Application Standalone JS Engine -->
-  <script src="js/bundle.js?v=20260904_besttimes1"></script>
+  <script src="js/bundle.js?v=20260904_planner_grouped1"></script>
 </body>
 </html>

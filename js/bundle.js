@@ -14138,6 +14138,7 @@ var initItineraryPlanner = CD.initItineraryPlanner = global.initItineraryPlanner
     selectedDailyParks = [];
     updateTraditionParishPreview();
     refreshDailyParksUI();
+    renderBestDaysOfWeek();
     const outputBox = document.querySelector('.itinerary-output-box');
     if (outputBox) outputBox.remove();
   });
@@ -14146,6 +14147,68 @@ var initItineraryPlanner = CD.initItineraryPlanner = global.initItineraryPlanner
   prefillDefaultDates();
   updateTraditionParishPreview();
   refreshDailyParksUI();
+  renderBestDaysOfWeek();
+}
+
+var renderBestDaysOfWeek = CD.renderBestDaysOfWeek = global.renderBestDaysOfWeek = function() {
+  const container = document.getElementById('best-days-of-week-list');
+  const resortLabel = document.getElementById('best-days-resort-label');
+  if (!container) return;
+
+  const isDlr = getActiveResortId() === 'dlr';
+  if (resortLabel) {
+    resortLabel.textContent = isDlr ? 'Disneyland Resort (California)' : 'Walt Disney World (Florida)';
+  }
+
+  if (isDlr) {
+    container.innerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0;">
+        <div>
+          <strong style="color: #0f172a; font-size: 0.92rem;">🏰 Disneyland Park</strong>
+          <div style="font-size: 0.78rem; color: #64748b;">Avoids weekend local passholders &amp; Monday travel surges</div>
+        </div>
+        <span style="font-weight: 800; color: #166534; background: #dcfce7; padding: 3px 10px; border-radius: 6px; font-size: 0.8rem;">Tuesday &amp; Thursday</span>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0;">
+        <div>
+          <strong style="color: #0f172a; font-size: 0.92rem;">🎡 Disney California Adventure</strong>
+          <div style="font-size: 0.78rem; color: #64748b;">Avoids Friday night Food &amp; Wine / seasonal festival spikes</div>
+        </div>
+        <span style="font-weight: 800; color: #166534; background: #dcfce7; padding: 3px 10px; border-radius: 6px; font-size: 0.8rem;">Mon, Tue &amp; Wed</span>
+      </div>
+    `;
+  } else {
+    container.innerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #ffffff; border-radius: 10px; border: 1px solid #e2e8f0;">
+        <div>
+          <strong style="color: #0f172a;">🏰 Magic Kingdom</strong>
+          <div style="font-size: 0.75rem; color: #64748b;">Avoids Monday travel rush &amp; Saturday peak lines</div>
+        </div>
+        <span style="font-weight: 800; color: #166534; background: #dcfce7; padding: 2px 8px; border-radius: 6px; font-size: 0.78rem;">Tuesday &amp; Thursday</span>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #ffffff; border-radius: 10px; border: 1px solid #e2e8f0;">
+        <div>
+          <strong style="color: #0f172a;">🌐 EPCOT</strong>
+          <div style="font-size: 0.75rem; color: #64748b;">Avoids Friday/Saturday World Showcase evening crowds</div>
+        </div>
+        <span style="font-weight: 800; color: #166534; background: #dcfce7; padding: 2px 8px; border-radius: 6px; font-size: 0.78rem;">Mon, Tue &amp; Wed</span>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #ffffff; border-radius: 10px; border: 1px solid #e2e8f0;">
+        <div>
+          <strong style="color: #0f172a;">🎬 Hollywood Studios</strong>
+          <div style="font-size: 0.75rem; color: #64748b;">Better Lightning Lane availability for Rise/Slinky</div>
+        </div>
+        <span style="font-weight: 800; color: #166534; background: #dcfce7; padding: 2px 8px; border-radius: 6px; font-size: 0.78rem;">Monday &amp; Thursday</span>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #ffffff; border-radius: 10px; border: 1px solid #e2e8f0;">
+        <div>
+          <strong style="color: #0f172a;">🌳 Animal Kingdom</strong>
+          <div style="font-size: 0.75rem; color: #64748b;">Low early morning standby lines; easy rope drop</div>
+        </div>
+        <span style="font-weight: 800; color: #166534; background: #dcfce7; padding: 2px 8px; border-radius: 6px; font-size: 0.78rem;">Sunday Morning &amp; Wed</span>
+      </div>
+    `;
+  }
 }
 
 function updateTraditionParishPreview() {
