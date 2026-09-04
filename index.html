@@ -7,9 +7,9 @@
   <meta name="description" content="Your cheerful Catholic guide to Walt Disney World pilgrimages, Sunday Mass near the parks, virtue-filled movie nights, liturgical living, and free high-resolution Catholic Disney wallpapers.">
   
   <!-- Design System & Stylesheets -->
-  <link rel="stylesheet" href="css/design-system.css?v=2.1">
-  <link rel="stylesheet" href="css/components.css?v=2.1">
-  <link rel="stylesheet" href="css/animations.css?v=2.1">
+  <link rel="stylesheet" href="css/design-system.css?v=20260904_responsive_days4">
+  <link rel="stylesheet" href="css/components.css?v=20260904_responsive_days4">
+  <link rel="stylesheet" href="css/animations.css?v=20260904_responsive_days4">
   
   <!-- Favicon / Crest icon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☀️</text></svg>">
@@ -629,10 +629,10 @@
       <!-- ========================================================
            BEST TIMES OF THE YEAR TO VISIT (QUEUE INTELLIGENCE)
            ======================================================== -->
-      <div id="best-times-to-visit-card" style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 24px; padding: 28px; box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05); margin-top: 24px;">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 14px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #f1f5f9;">
+      <div id="best-times-to-visit-card" class="best-times-card">
+        <div class="best-times-header">
           <div>
-            <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
               <span class="park-pill" style="background: #fef3c7; color: #92400e; font-weight: 800; font-size: 0.78rem;">
                 🌟 Historical Crowd Calibration
               </span>
@@ -640,10 +640,10 @@
                 175k+ Observations Analyzed
               </span>
             </div>
-            <h3 style="font-size: 1.5rem; color: #0f172a; margin: 6px 0 4px; font-weight: 800;">
+            <h3 style="font-size: clamp(1.2rem, 4vw, 1.5rem); color: #0f172a; margin: 6px 0 4px; font-weight: 800;">
               Best Times of the Year to Visit Disney Parks
             </h3>
-            <p style="font-size: 0.9rem; color: #64748b; margin: 0; max-width: 680px;">
+            <p style="font-size: 0.88rem; color: #64748b; margin: 0; max-width: 680px; line-height: 1.45;">
               Cross-referenced from 5-year queue data, school breaks, Florida/California weather, and Catholic feast days to maximize low standby waits and peaceful family pilgrimages.
             </p>
           </div>
@@ -653,26 +653,26 @@
         </div>
 
         <!-- 5 Top Pilgrimage Windows Grid -->
-        <h4 style="font-size: 1.1rem; color: #0f172a; font-weight: 800; margin: 0 0 12px;">
+        <h4 style="font-size: 1.05rem; color: #0f172a; font-weight: 800; margin: 0 0 12px;">
           🏆 Top 5 Lowest-Wait Travel Windows
         </h4>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-bottom: 24px;">
+        <div class="best-times-top-grid">
           <!-- 1. September Post-Labor Day -->
-          <div style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px;">
+          <div class="travel-window-card">
             <div>
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                <span style="font-size: 0.78rem; font-weight: 800; background: #dcfce7; color: #166534; padding: 2px 8px; border-radius: 999px;">
+                <span style="font-size: 0.76rem; font-weight: 800; background: #dcfce7; color: #166534; padding: 2px 8px; border-radius: 999px;">
                   🥇 #1 LOWEST WAITS (22–27m Avg)
                 </span>
                 <span style="font-size: 1.2rem;">🍂</span>
               </div>
-              <h5 style="font-size: 1.05rem; font-weight: 800; color: #0f172a; margin: 0 0 4px;">
+              <h5 style="font-size: 1.02rem; font-weight: 800; color: #0f172a; margin: 0 0 4px;">
                 September Post-Labor Day
               </h5>
-              <div style="font-size: 0.82rem; color: #0369a1; font-weight: 700; margin-bottom: 6px;">
+              <div style="font-size: 0.8rem; color: #0369a1; font-weight: 700; margin-bottom: 6px;">
                 📅 Sept 8 – Sept 25 • Feast of Nativity of Mary &amp; Michaelmas
               </div>
-              <p style="font-size: 0.84rem; color: #475569; line-height: 1.45; margin: 0;">
+              <p style="font-size: 0.82rem; color: #475569; line-height: 1.45; margin: 0;">
                 The absolute quietest weeks of the entire year. Back-to-school slump empties the lines while Halloween festivities and food festivals kick off.
               </p>
             </div>
@@ -682,21 +682,21 @@
           </div>
 
           <!-- 2. Late January to Early February -->
-          <div style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px;">
+          <div class="travel-window-card">
             <div>
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                <span style="font-size: 0.78rem; font-weight: 800; background: #dcfce7; color: #166534; padding: 2px 8px; border-radius: 999px;">
+                <span style="font-size: 0.76rem; font-weight: 800; background: #dcfce7; color: #166534; padding: 2px 8px; border-radius: 999px;">
                   🥈 26–31m Avg Standby
                 </span>
                 <span style="font-size: 1.2rem;">❄️</span>
               </div>
-              <h5 style="font-size: 1.05rem; font-weight: 800; color: #0f172a; margin: 0 0 4px;">
+              <h5 style="font-size: 1.02rem; font-weight: 800; color: #0f172a; margin: 0 0 4px;">
                 January Epiphany Window
               </h5>
-              <div style="font-size: 0.82rem; color: #0369a1; font-weight: 700; margin-bottom: 6px;">
+              <div style="font-size: 0.8rem; color: #0369a1; font-weight: 700; margin-bottom: 6px;">
                 📅 Jan 12 – Feb 10 • Epiphany &amp; Candlemas
               </div>
-              <p style="font-size: 0.84rem; color: #475569; line-height: 1.45; margin: 0;">
+              <p style="font-size: 0.82rem; color: #475569; line-height: 1.45; margin: 0;">
                 Post-holiday exodus leaves parks tranquil with crisp 70°F weather and EPCOT International Festival of the Arts in full swing.
               </p>
             </div>
@@ -706,21 +706,21 @@
           </div>
 
           <!-- 3. Early May Pre-Summer -->
-          <div style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px;">
+          <div class="travel-window-card">
             <div>
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                <span style="font-size: 0.78rem; font-weight: 800; background: #e0f2fe; color: #0369a1; padding: 2px 8px; border-radius: 999px;">
+                <span style="font-size: 0.76rem; font-weight: 800; background: #e0f2fe; color: #0369a1; padding: 2px 8px; border-radius: 999px;">
                   🥉 28–34m Avg Standby
                 </span>
                 <span style="font-size: 1.2rem;">🌸</span>
               </div>
-              <h5 style="font-size: 1.05rem; font-weight: 800; color: #0f172a; margin: 0 0 4px;">
+              <h5 style="font-size: 1.02rem; font-weight: 800; color: #0f172a; margin: 0 0 4px;">
                 Early May Eastertide
               </h5>
-              <div style="font-size: 0.82rem; color: #0369a1; font-weight: 700; margin-bottom: 6px;">
+              <div style="font-size: 0.8rem; color: #0369a1; font-weight: 700; margin-bottom: 6px;">
                 📅 May 1 – May 18 • Month of Mary &amp; Ascension
               </div>
-              <p style="font-size: 0.84rem; color: #475569; line-height: 1.45; margin: 0;">
+              <p style="font-size: 0.82rem; color: #475569; line-height: 1.45; margin: 0;">
                 The sweet spot between chaotic Easter spring breaks and heavy summer vacations. Low queue surges and lush garden floral displays.
               </p>
             </div>
@@ -730,21 +730,21 @@
           </div>
 
           <!-- 4. Early November -->
-          <div style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px;">
+          <div class="travel-window-card">
             <div>
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                <span style="font-size: 0.78rem; font-weight: 800; background: #e0f2fe; color: #0369a1; padding: 2px 8px; border-radius: 999px;">
+                <span style="font-size: 0.76rem; font-weight: 800; background: #e0f2fe; color: #0369a1; padding: 2px 8px; border-radius: 999px;">
                   29–35m Avg Standby
                 </span>
                 <span style="font-size: 1.2rem;">🕯️</span>
               </div>
-              <h5 style="font-size: 1.05rem; font-weight: 800; color: #0f172a; margin: 0 0 4px;">
+              <h5 style="font-size: 1.02rem; font-weight: 800; color: #0f172a; margin: 0 0 4px;">
                 Early November Post-Halloween
               </h5>
-              <div style="font-size: 0.82rem; color: #0369a1; font-weight: 700; margin-bottom: 6px;">
+              <div style="font-size: 0.8rem; color: #0369a1; font-weight: 700; margin-bottom: 6px;">
                 📅 Nov 3 – Nov 18 • All Saints &amp; All Souls
               </div>
-              <p style="font-size: 0.84rem; color: #475569; line-height: 1.45; margin: 0;">
+              <p style="font-size: 0.82rem; color: #475569; line-height: 1.45; margin: 0;">
                 Christmas transformations begin overnight right after Halloween. Enjoy early holiday lights and low crowds before Thanksgiving week.
               </p>
             </div>
@@ -754,21 +754,21 @@
           </div>
 
           <!-- 5. First 2 Weeks of December -->
-          <div style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px;">
+          <div class="travel-window-card">
             <div>
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                <span style="font-size: 0.78rem; font-weight: 800; background: #fef3c7; color: #92400e; padding: 2px 8px; border-radius: 999px;">
+                <span style="font-size: 0.76rem; font-weight: 800; background: #fef3c7; color: #92400e; padding: 2px 8px; border-radius: 999px;">
                   30–36m Avg Standby
                 </span>
                 <span style="font-size: 1.2rem;">🎄</span>
               </div>
-              <h5 style="font-size: 1.05rem; font-weight: 800; color: #0f172a; margin: 0 0 4px;">
+              <h5 style="font-size: 1.02rem; font-weight: 800; color: #0f172a; margin: 0 0 4px;">
                 Early Advent Window
               </h5>
-              <div style="font-size: 0.82rem; color: #0369a1; font-weight: 700; margin-bottom: 6px;">
+              <div style="font-size: 0.8rem; color: #0369a1; font-weight: 700; margin-bottom: 6px;">
                 📅 Dec 1 – Dec 14 • Immaculate Conception &amp; Guadalupe
               </div>
-              <p style="font-size: 0.84rem; color: #475569; line-height: 1.45; margin: 0;">
+              <p style="font-size: 0.82rem; color: #475569; line-height: 1.45; margin: 0;">
                 Experience full Christmas pageantry and the Candlelight Processional before the massive late December holiday surge arrives.
               </p>
             </div>
@@ -778,75 +778,95 @@
           </div>
         </div>
 
-        <!-- Strategy Grid: Best Days of Week & Best Times of Day -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px;">
-          <!-- Left: Best Days of the Week for Each Park (Dynamically resort-filtered) -->
-          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 18px; padding: 20px;" id="best-days-of-week-card">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 6px;">
-              <h4 style="font-size: 1.05rem; font-weight: 800; color: #0f172a; margin: 0; display: flex; align-items: center; gap: 8px;">
-                <span>📆</span> Best Days of the Week
-              </h4>
-              <span id="best-days-resort-label" style="font-size: 0.76rem; font-weight: 800; color: #1a73e8; background: #e8f0fe; padding: 2px 8px; border-radius: 999px;">
-                Walt Disney World
-              </span>
+        <!-- Strategy Grid: Best Days of Week & Hourly Queue Rhythm (Responsive & Dynamic) -->
+        <div class="best-times-strategy-grid">
+          <!-- Left: Best Days of the Week for Each Park (Dynamically resort-filtered with Switcher Pills) -->
+          <div class="best-times-strategy-card" id="best-days-of-week-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+              <div>
+                <h4 style="font-size: 1.05rem; font-weight: 800; color: #0f172a; margin: 0; display: flex; align-items: center; gap: 8px;">
+                  <span>📆</span> Best Days of the Week
+                </h4>
+                <div id="best-days-resort-label" style="font-size: 0.78rem; font-weight: 700; color: #1a73e8; margin-top: 2px;">
+                  Walt Disney World (Florida)
+                </div>
+              </div>
+              
+              <!-- Direct Resort Selector Chips inside card -->
+              <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                <button type="button" class="btn-resort-pill-chip active" id="chip-bestdays-wdw" onclick="window.selectCatholicResort('wdw')">
+                  🏰 Florida (WDW)
+                </button>
+                <button type="button" class="btn-resort-pill-chip" id="chip-bestdays-dlr" onclick="window.selectCatholicResort('dlr')">
+                  🌴 California (DLR)
+                </button>
+              </div>
             </div>
+            
             <div id="best-days-of-week-list" style="display: flex; flex-direction: column; gap: 8px; font-size: 0.85rem;">
-              <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #ffffff; border-radius: 10px; border: 1px solid #e2e8f0;">
+              <div class="best-days-row">
                 <div>
-                  <strong style="color: #0f172a;">🏰 Magic Kingdom</strong>
-                  <div style="font-size: 0.75rem; color: #64748b;">Avoids Monday travel rush &amp; Saturday peak lines</div>
+                  <strong style="color: #0f172a; font-size: 0.92rem;">🏰 Magic Kingdom</strong>
+                  <div style="font-size: 0.78rem; color: #64748b;">Avoids Monday travel rush &amp; Saturday local peak lines</div>
                 </div>
-                <span style="font-weight: 800; color: #166534; background: #dcfce7; padding: 2px 8px; border-radius: 6px; font-size: 0.78rem;">Tuesday &amp; Thursday</span>
+                <span class="best-days-badge">Tuesday &amp; Thursday</span>
               </div>
-              <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #ffffff; border-radius: 10px; border: 1px solid #e2e8f0;">
+              <div class="best-days-row">
                 <div>
-                  <strong style="color: #0f172a;">🌐 EPCOT</strong>
-                  <div style="font-size: 0.75rem; color: #64748b;">Avoids Friday/Saturday World Showcase evening crowds</div>
+                  <strong style="color: #0f172a; font-size: 0.92rem;">🌐 EPCOT</strong>
+                  <div style="font-size: 0.78rem; color: #64748b;">Avoids Friday/Saturday World Showcase evening crowds</div>
                 </div>
-                <span style="font-weight: 800; color: #166534; background: #dcfce7; padding: 2px 8px; border-radius: 6px; font-size: 0.78rem;">Mon, Tue &amp; Wed</span>
+                <span class="best-days-badge">Mon, Tue &amp; Wed</span>
               </div>
-              <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #ffffff; border-radius: 10px; border: 1px solid #e2e8f0;">
+              <div class="best-days-row">
                 <div>
-                  <strong style="color: #0f172a;">🎬 Hollywood Studios</strong>
-                  <div style="font-size: 0.75rem; color: #64748b;">Better Lightning Lane availability for Rise/Slinky</div>
+                  <strong style="color: #0f172a; font-size: 0.92rem;">🎬 Hollywood Studios</strong>
+                  <div style="font-size: 0.78rem; color: #64748b;">Better Lightning Lane availability for Rise/Slinky</div>
                 </div>
-                <span style="font-weight: 800; color: #166534; background: #dcfce7; padding: 2px 8px; border-radius: 6px; font-size: 0.78rem;">Monday &amp; Thursday</span>
+                <span class="best-days-badge">Monday &amp; Thursday</span>
               </div>
-              <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #ffffff; border-radius: 10px; border: 1px solid #e2e8f0;">
+              <div class="best-days-row">
                 <div>
-                  <strong style="color: #0f172a;">🌳 Animal Kingdom</strong>
-                  <div style="font-size: 0.75rem; color: #64748b;">Low early morning standby lines; easy rope drop</div>
+                  <strong style="color: #0f172a; font-size: 0.92rem;">🌳 Animal Kingdom</strong>
+                  <div style="font-size: 0.78rem; color: #64748b;">Low early morning standby lines; easy rope drop</div>
                 </div>
-                <span style="font-weight: 800; color: #166534; background: #dcfce7; padding: 2px 8px; border-radius: 6px; font-size: 0.78rem;">Sunday Morning &amp; Wed</span>
+                <span class="best-days-badge">Sunday Morning &amp; Wed</span>
+              </div>
+              <div class="best-days-row">
+                <div>
+                  <strong style="color: #0f172a; font-size: 0.92rem;">🛍️ Disney Springs &amp; Basilica</strong>
+                  <div style="font-size: 0.78rem; color: #64748b;">Abstinence fish dining &amp; sacred Eucharistic pilgrimage</div>
+                </div>
+                <span class="best-days-badge">Friday Afternoon &amp; Evening</span>
               </div>
             </div>
           </div>
 
           <!-- Right: Daily Touring Hours & The Sacred Mid-Day Pause -->
-          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 18px; padding: 20px;">
+          <div class="best-times-strategy-card" id="hourly-queue-rhythm-card">
             <h4 style="font-size: 1.05rem; font-weight: 800; color: #0f172a; margin: 0 0 12px; display: flex; align-items: center; gap: 8px;">
               <span>⏰</span> Hourly Queue Rhythm &amp; Mid-Day Pause
             </h4>
-            <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.85rem;">
-              <div style="display: flex; gap: 10px; align-items: flex-start; padding: 8px 12px; background: #ffffff; border-radius: 10px; border: 1px solid #e2e8f0;">
-                <span style="font-size: 1.2rem;">🌅</span>
+            <div id="hourly-queue-rhythm-list" style="display: flex; flex-direction: column; gap: 10px; font-size: 0.85rem;">
+              <div class="queue-rhythm-row">
+                <span style="font-size: 1.2rem; flex-shrink: 0;">🌅</span>
                 <div>
-                  <strong style="color: #166534;">8:30 AM – 10:30 AM (Rope Drop)</strong>
-                  <div style="color: #64748b; font-size: 0.8rem;">Standby waits are 45% lower. Knock out 2 headliners before crowds arrive.</div>
+                  <strong style="color: #166534; font-size: 0.88rem;">8:30 AM – 10:30 AM (Rope Drop Strategy)</strong>
+                  <div style="color: #64748b; font-size: 0.8rem; line-height: 1.4;">Standby waits are 45% lower. Knock out 2 headliners before crowds arrive.</div>
                 </div>
               </div>
-              <div style="display: flex; gap: 10px; align-items: flex-start; padding: 8px 12px; background: #eff6ff; border-radius: 10px; border: 1px solid #bfdbfe;">
-                <span style="font-size: 1.2rem;">⛪</span>
+              <div class="queue-rhythm-row sanctuary-pause">
+                <span style="font-size: 1.2rem; flex-shrink: 0;">⛪</span>
                 <div>
-                  <strong style="color: #1e40af;">12:30 PM – 3:30 PM (Mid-Day Sacred Sanctuary Pause)</strong>
-                  <div style="color: #3b82f6; font-size: 0.8rem;">Peak queues + heat. Step away to the Basilica/Chapel, pray in A/C, or take a restful family lunch.</div>
+                  <strong style="color: #1e40af; font-size: 0.88rem;">12:30 PM – 3:30 PM (Sacred Mid-Day Sanctuary Pause)</strong>
+                  <div style="color: #1d4ed8; font-size: 0.8rem; line-height: 1.4;">Peak queues + heat. Step away to the Basilica/Chapel, pray in A/C, or take a restful family lunch.</div>
                 </div>
               </div>
-              <div style="display: flex; gap: 10px; align-items: flex-start; padding: 8px 12px; background: #ffffff; border-radius: 10px; border: 1px solid #e2e8f0;">
-                <span style="font-size: 1.2rem;">🌙</span>
+              <div class="queue-rhythm-row">
+                <span style="font-size: 1.2rem; flex-shrink: 0;">🌙</span>
                 <div>
-                  <strong style="color: #7e22ce;">8:30 PM – Park Close (Twilight &amp; Post-Fireworks)</strong>
-                  <div style="color: #64748b; font-size: 0.8rem;">Lines plummet 35–50% during fireworks. Walk on Fantasyland &amp; Tomorrowland favorites!</div>
+                  <strong style="color: #7e22ce; font-size: 0.88rem;">8:30 PM – Park Close (Twilight &amp; Post-Fireworks)</strong>
+                  <div style="color: #64748b; font-size: 0.8rem; line-height: 1.4;">Lines plummet 35–50% during fireworks. Walk on Fantasyland &amp; Tomorrowland favorites!</div>
                 </div>
               </div>
             </div>
@@ -854,11 +874,11 @@
         </div>
 
         <!-- Warning Box: Peak Holiday Surges to Avoid -->
-        <div style="margin-top: 18px; background: #fef2f2; border: 1px solid #fecaca; border-radius: 14px; padding: 14px 18px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
-          <span style="font-size: 1.4rem;">⚠️</span>
-          <div style="flex: 1; min-width: 240px;">
+        <div class="crowd-warning-container">
+          <span style="font-size: 1.4rem; flex-shrink: 0;">⚠️</span>
+          <div style="flex: 1; min-width: 200px;">
             <strong style="color: #991b1b; font-size: 0.9rem;">Seasons with Extreme Queue Surges (65–90m+ Averages):</strong>
-            <span style="color: #7f1d1d; font-size: 0.84rem; display: block; margin-top: 2px;">
+            <span style="color: #7f1d1d; font-size: 0.84rem; display: block; margin-top: 2px; line-height: 1.4;">
               Christmas &amp; New Year's Week (Dec 23 – Jan 3), Easter &amp; Spring Break (Palm Sunday to Divine Mercy), and Thanksgiving Week. If visiting during these times, prioritize early morning Mass and Rope Drop.
             </span>
           </div>
@@ -1146,6 +1166,6 @@
   </form>
 
   <!-- Application Standalone JS Engine -->
-  <script src="js/bundle.js?v=20260904_optimal_days2"></script>
+  <script src="js/bundle.js?v=20260904_responsive_days4"></script>
 </body>
 </html>

@@ -65,6 +65,7 @@ export function initItineraryPlanner() {
     updateTraditionParishPreview();
     refreshDailyParksUI();
     renderBestDaysOfWeek();
+    renderHourlyQueueRhythm();
     const outputBox = document.querySelector('.itinerary-output-box');
     if (outputBox) outputBox.remove();
   });
@@ -74,64 +75,157 @@ export function initItineraryPlanner() {
   updateTraditionParishPreview();
   refreshDailyParksUI();
   renderBestDaysOfWeek();
+  renderHourlyQueueRhythm();
 }
 
 export function renderBestDaysOfWeek() {
   const container = document.getElementById('best-days-of-week-list');
   const resortLabel = document.getElementById('best-days-resort-label');
-  if (!container) return;
+  const wdwChip = document.getElementById('chip-bestdays-wdw');
+  const dlrChip = document.getElementById('chip-bestdays-dlr');
 
   const isDlr = getActiveResortId() === 'dlr';
+
+  if (wdwChip && dlrChip) {
+    if (isDlr) {
+      dlrChip.classList.add('active');
+      wdwChip.classList.remove('active');
+    } else {
+      wdwChip.classList.add('active');
+      dlrChip.classList.remove('active');
+    }
+  }
+
   if (resortLabel) {
     resortLabel.textContent = isDlr ? 'Disneyland Resort (California)' : 'Walt Disney World (Florida)';
   }
 
+  if (!container) return;
+
   if (isDlr) {
     container.innerHTML = `
-      <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0;">
+      <div class="best-days-row">
         <div>
           <strong style="color: #0f172a; font-size: 0.92rem;">🏰 Disneyland Park</strong>
-          <div style="font-size: 0.78rem; color: #64748b;">Avoids weekend local passholders &amp; Monday travel surges</div>
+          <div style="font-size: 0.78rem; color: #64748b;">Lowest wait days; avoids weekend Magic Key passholders &amp; Monday surges</div>
         </div>
-        <span style="font-weight: 800; color: #166534; background: #dcfce7; padding: 3px 10px; border-radius: 6px; font-size: 0.8rem;">Tuesday &amp; Thursday</span>
+        <span class="best-days-badge">Tuesday &amp; Thursday</span>
       </div>
-      <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0;">
+      <div class="best-days-row">
         <div>
           <strong style="color: #0f172a; font-size: 0.92rem;">🎡 Disney California Adventure</strong>
-          <div style="font-size: 0.78rem; color: #64748b;">Avoids Friday night Food &amp; Wine / seasonal festival spikes</div>
+          <div style="font-size: 0.78rem; color: #64748b;">Avoids Friday/Saturday Food &amp; Wine / Festival of Holidays evening crowds</div>
         </div>
-        <span style="font-weight: 800; color: #166534; background: #dcfce7; padding: 3px 10px; border-radius: 6px; font-size: 0.8rem;">Mon, Tue &amp; Wed</span>
+        <span class="best-days-badge">Mon, Tue &amp; Wed</span>
+      </div>
+      <div class="best-days-row">
+        <div>
+          <strong style="color: #0f172a; font-size: 0.92rem;">🦘 Park Hopper (DL + DCA)</strong>
+          <div style="font-size: 0.78rem; color: #64748b;">1-minute esplanade walk allows fast, seamless mid-day park hopping</div>
+        </div>
+        <span class="best-days-badge">Wednesday &amp; Thursday</span>
+      </div>
+      <div class="best-days-row">
+        <div>
+          <strong style="color: #0f172a; font-size: 0.92rem;">⛪ Christ Cathedral &amp; Mission Day</strong>
+          <div style="font-size: 0.78rem; color: #64748b;">Sunday Morning Mass or historic San Juan Capistrano excursion before park evening</div>
+        </div>
+        <span class="best-days-badge">Sunday Morning &amp; Friday</span>
       </div>
     `;
   } else {
     container.innerHTML = `
-      <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #ffffff; border-radius: 10px; border: 1px solid #e2e8f0;">
+      <div class="best-days-row">
         <div>
-          <strong style="color: #0f172a;">🏰 Magic Kingdom</strong>
-          <div style="font-size: 0.75rem; color: #64748b;">Avoids Monday travel rush &amp; Saturday peak lines</div>
+          <strong style="color: #0f172a; font-size: 0.92rem;">🏰 Magic Kingdom</strong>
+          <div style="font-size: 0.78rem; color: #64748b;">Avoids Monday travel rush &amp; Saturday local peak lines</div>
         </div>
-        <span style="font-weight: 800; color: #166534; background: #dcfce7; padding: 2px 8px; border-radius: 6px; font-size: 0.78rem;">Tuesday &amp; Thursday</span>
+        <span class="best-days-badge">Tuesday &amp; Thursday</span>
       </div>
-      <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #ffffff; border-radius: 10px; border: 1px solid #e2e8f0;">
+      <div class="best-days-row">
         <div>
-          <strong style="color: #0f172a;">🌐 EPCOT</strong>
-          <div style="font-size: 0.75rem; color: #64748b;">Avoids Friday/Saturday World Showcase evening crowds</div>
+          <strong style="color: #0f172a; font-size: 0.92rem;">🌐 EPCOT</strong>
+          <div style="font-size: 0.78rem; color: #64748b;">Avoids Friday/Saturday World Showcase evening crowds &amp; festival surges</div>
         </div>
-        <span style="font-weight: 800; color: #166534; background: #dcfce7; padding: 2px 8px; border-radius: 6px; font-size: 0.78rem;">Mon, Tue &amp; Wed</span>
+        <span class="best-days-badge">Mon, Tue &amp; Wed</span>
       </div>
-      <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #ffffff; border-radius: 10px; border: 1px solid #e2e8f0;">
+      <div class="best-days-row">
         <div>
-          <strong style="color: #0f172a;">🎬 Hollywood Studios</strong>
-          <div style="font-size: 0.75rem; color: #64748b;">Better Lightning Lane availability for Rise/Slinky</div>
+          <strong style="color: #0f172a; font-size: 0.92rem;">🎬 Hollywood Studios</strong>
+          <div style="font-size: 0.78rem; color: #64748b;">Better Lightning Lane availability for Rise of the Resistance &amp; Slinky Dog</div>
         </div>
-        <span style="font-weight: 800; color: #166534; background: #dcfce7; padding: 2px 8px; border-radius: 6px; font-size: 0.78rem;">Monday &amp; Thursday</span>
+        <span class="best-days-badge">Monday &amp; Thursday</span>
       </div>
-      <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #ffffff; border-radius: 10px; border: 1px solid #e2e8f0;">
+      <div class="best-days-row">
         <div>
-          <strong style="color: #0f172a;">🌳 Animal Kingdom</strong>
-          <div style="font-size: 0.75rem; color: #64748b;">Low early morning standby lines; easy rope drop</div>
+          <strong style="color: #0f172a; font-size: 0.92rem;">🌳 Animal Kingdom</strong>
+          <div style="font-size: 0.78rem; color: #64748b;">Low early morning standby lines; easy rope drop for Flight of Passage</div>
         </div>
-        <span style="font-weight: 800; color: #166534; background: #dcfce7; padding: 2px 8px; border-radius: 6px; font-size: 0.78rem;">Sunday Morning &amp; Wed</span>
+        <span class="best-days-badge">Sunday Morning &amp; Wed</span>
+      </div>
+      <div class="best-days-row">
+        <div>
+          <strong style="color: #0f172a; font-size: 0.92rem;">🛍️ Disney Springs &amp; Basilica</strong>
+          <div style="font-size: 0.78rem; color: #64748b;">Abstinence fish dining, sacred art pilgrimage &amp; restful family stroll</div>
+        </div>
+        <span class="best-days-badge">Friday Afternoon &amp; Evening</span>
+      </div>
+    `;
+  }
+}
+
+export function renderHourlyQueueRhythm() {
+  const container = document.getElementById('hourly-queue-rhythm-list');
+  if (!container) return;
+
+  const isDlr = getActiveResortId() === 'dlr';
+
+  if (isDlr) {
+    container.innerHTML = `
+      <div class="queue-rhythm-row">
+        <span style="font-size: 1.2rem; flex-shrink: 0;">🌅</span>
+        <div>
+          <strong style="color: #166534; font-size: 0.88rem;">8:00 AM – 10:30 AM (Rope Drop Strategy)</strong>
+          <div style="color: #64748b; font-size: 0.8rem; line-height: 1.4;">Standby waits are 45% lower. Knock out Space Mountain, Matterhorn, or Radiator Springs Racers before local park hoppers arrive.</div>
+        </div>
+      </div>
+      <div class="queue-rhythm-row sanctuary-pause">
+        <span style="font-size: 1.2rem; flex-shrink: 0;">⛪</span>
+        <div>
+          <strong style="color: #1e40af; font-size: 0.88rem;">12:30 PM – 3:30 PM (Sacred Mid-Day Pause)</strong>
+          <div style="color: #1d4ed8; font-size: 0.8rem; line-height: 1.4;">Peak afternoon lines &amp; California sun. Step away to Christ Cathedral (Garden Grove - 10 min) or historic Mission San Juan Capistrano / St. Boniface for sacred shade, prayer, and restful lunch.</div>
+        </div>
+      </div>
+      <div class="queue-rhythm-row">
+        <span style="font-size: 1.2rem; flex-shrink: 0;">🌙</span>
+        <div>
+          <strong style="color: #7e22ce; font-size: 0.88rem;">8:30 PM – Park Close (Twilight &amp; Post-Fireworks)</strong>
+          <div style="color: #64748b; font-size: 0.8rem; line-height: 1.4;">Lines plummet significantly after fireworks. Walk directly between Disneyland and DCA across the 1-minute esplanade!</div>
+        </div>
+      </div>
+    `;
+  } else {
+    container.innerHTML = `
+      <div class="queue-rhythm-row">
+        <span style="font-size: 1.2rem; flex-shrink: 0;">🌅</span>
+        <div>
+          <strong style="color: #166534; font-size: 0.88rem;">8:30 AM – 10:30 AM (Rope Drop Strategy)</strong>
+          <div style="color: #64748b; font-size: 0.8rem; line-height: 1.4;">Standby waits are 45% lower. Knock out 2 major headliners before Florida crowds and tour groups arrive.</div>
+        </div>
+      </div>
+      <div class="queue-rhythm-row sanctuary-pause">
+        <span style="font-size: 1.2rem; flex-shrink: 0;">⛪</span>
+        <div>
+          <strong style="color: #1e40af; font-size: 0.88rem;">12:30 PM – 3:30 PM (Sacred Mid-Day Sanctuary Pause)</strong>
+          <div style="color: #1d4ed8; font-size: 0.8rem; line-height: 1.4;">Peak queues &amp; Florida humidity. Step away to the Basilica of Mary, Queen of the Universe (5 min from Disney Springs) or Corpus Christi for quiet A/C prayer and Eucharistic Adoration.</div>
+        </div>
+      </div>
+      <div class="queue-rhythm-row">
+        <span style="font-size: 1.2rem; flex-shrink: 0;">🌙</span>
+        <div>
+          <strong style="color: #7e22ce; font-size: 0.88rem;">8:30 PM – Park Close (Twilight &amp; Post-Fireworks)</strong>
+          <div style="color: #64748b; font-size: 0.8rem; line-height: 1.4;">Lines plummet 35–50% during fireworks. Walk on Fantasyland &amp; Tomorrowland favorites with minimal waits!</div>
+        </div>
       </div>
     `;
   }
